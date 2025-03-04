@@ -11,7 +11,7 @@ def register():
     if User.query.filter_by(username=data['username']).first():
         return jsonify({'message': '用户已存在'}), 400
     passw_hash = generate_password_hash(data['password'])
-    new_user = User(username=data['username'], password=passw_hash)  # 实际应加密存储
+    new_user = User(username=data['username'], password=passw_hash)  
     db.session.add(new_user)
     db.session.commit()
     return jsonify({'message': '注册成功'}), 201
