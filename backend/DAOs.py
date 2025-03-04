@@ -1,3 +1,4 @@
+from sqlalchemy import inspect
 from sqlalchemy.orm import Session
 from typing import TypeVar, Type
 
@@ -10,9 +11,15 @@ class BaseDAO:
         self.session = db.session
         self.model = model
 
+    def _filter_valid_fields(self, data: dict) -> dict:
+        #Filter out fields that do not exist in the model
+        model_columns = inspect(self.model).columns.keys()
+        return {key: value for key, value in data.items() if key in model_columns}
+
     # create
     def create(self, **data) -> ModelType:
-        instance = self.model(**data)
+        filtered_data = self._filter_valid_fields(data)
+        instance = self.model(**filtered_data)
         self.session.add(instance)
         self.session.commit()
         self.session.refresh(instance)
@@ -20,7 +27,8 @@ class BaseDAO:
 
     # update
     def update(self, instance: ModelType, **data) -> ModelType:
-        for key, value in data.items():
+        filtered_data = self._filter_valid_fields(data)
+        for key, value in filtered_data.items():
             setattr(instance, key, value)
         self.session.commit()
         self.session.refresh(instance)
@@ -105,17 +113,27 @@ class RemembranceMessageDAO(BaseDAO):
     def __init__(self):
         super().__init__(RemembranceMessage)
 
+class DAOFactory:
+    def __init__(self):
+        # Initialize all DAO instances
+        self.dao_map = {
+            "User": UserDAO(),
+            "Memorial": MemorialDAO(),
+            "MemorialUser": MemorialUserDAO(),
+            "InviteKey": InviteKeyDAO(),
+            "MemorialPhoto": MemorialPhotoDAO(),
+            "Deceased": DeceasedDAO(),
+            "FamilyTree": FamilyTreeDAO(),
+            "Offering": OfferingDAO(),
+            "SpecialOffering": SpecialOfferingDAO(),
+            "UserOffering": UserOfferingDAO(),
+            "MemorialOffering": MemorialOfferingDAO(),
+            "MemorialMessage": MemorialMessageDAO(),
+            "RemembranceMessage": RemembranceMessageDAO()
+        }
 
-user_dao = UserDAO()
-memorial_dao = MemorialDAO()
-memorial_user_dao = MemorialUserDAO()
-invite_key_dao = InviteKeyDAO()
-memorial_photo_dao = MemorialPhotoDAO()
-deceased_dao = DeceasedDAO()
-family_tree_dao = FamilyTreeDAO()
-offering_dao = OfferingDAO()
-special_offering_dao = SpecialOfferingDAO()
-user_offering_dao = UserOfferingDAO()
-memorial_offering_dao = MemorialOfferingDAO()
-memorial_message_dao = MemorialMessageDAO()
-remembrance_message_dao = RemembranceMessageDAO()
+    def get_dao(self, name: str) -> BaseDAO | None:
+        # Return the corresponding DAO instance by name
+        return self.dao_map.get(name, None)
+
+dao_factory = DAOFactory()
