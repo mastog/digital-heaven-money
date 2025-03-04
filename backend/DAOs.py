@@ -1,15 +1,13 @@
 from sqlalchemy.orm import Session
 from typing import TypeVar, Type
 
-from werkzeug.security import generate_password_hash
-
 from backend.models import *
 
 ModelType = TypeVar('ModelType')
 
 class BaseDAO:
-    def __init__(self, session: Session, model: Type[ModelType]):
-        self.session = session
+    def __init__(self, model: Type[ModelType]):
+        self.session = db.session
         self.model = model
 
     # create
@@ -42,8 +40,8 @@ class BaseDAO:
         return self.session.query(self.model).filter_by(**filters).all()
 
 class UserDAO(BaseDAO):
-    def __init__(self, session: Session):
-        super().__init__(session, User)
+    def __init__(self):
+        super().__init__(User)
 
     def create(self, **data):
         # hash the password
@@ -53,16 +51,16 @@ class UserDAO(BaseDAO):
         return super().create(**data)
 
 class MemorialDAO(BaseDAO):
-    def __init__(self, session: Session):
-        super().__init__(session, Memorial)
+    def __init__(self):
+        super().__init__(Memorial)
 
 class MemorialUserDAO(BaseDAO):
-    def __init__(self, session: Session):
-        super().__init__(session, MemorialUser)
+    def __init__(self):
+        super().__init__(MemorialUser)
 
 class InviteKeyDAO(BaseDAO):
-    def __init__(self, session: Session):
-        super().__init__(session, InviteKey)
+    def __init__(self):
+        super().__init__(InviteKey)
 
     def create(self, **data):
         # hash key
@@ -72,38 +70,52 @@ class InviteKeyDAO(BaseDAO):
         return super().create(**data)
 
 class MemorialPhotoDAO(BaseDAO):
-    def __init__(self, session: Session):
-        super().__init__(session, MemorialPhoto)
+    def __init__(self):
+        super().__init__(MemorialPhoto)
 
 class DeceasedDAO(BaseDAO):
-    def __init__(self, session: Session):
-        super().__init__(session, Deceased)
+    def __init__(self):
+        super().__init__(Deceased)
 
 class FamilyTreeDAO(BaseDAO):
-    def __init__(self, session: Session):
-        super().__init__(session, FamilyTree)
+    def __init__(self):
+        super().__init__(FamilyTree)
 
 class OfferingDAO(BaseDAO):
-    def __init__(self, session: Session):
-        super().__init__(session, Offering)
+    def __init__(self):
+        super().__init__(Offering)
 
 class SpecialOfferingDAO(BaseDAO):
-    def __init__(self, session: Session):
-        super().__init__(session, SpecialOffering)
+    def __init__(self):
+        super().__init__(SpecialOffering)
 
 class UserOfferingDAO(BaseDAO):
-    def __init__(self, session: Session):
-        super().__init__(session, UserOffering)
+    def __init__(self):
+        super().__init__(UserOffering)
 
 class MemorialOfferingDAO(BaseDAO):
-    def __init__(self, session: Session):
-        super().__init__(session, MemorialOffering)
+    def __init__(self):
+        super().__init__(MemorialOffering)
 
 class MemorialMessageDAO(BaseDAO):
-    def __init__(self, session: Session):
-        super().__init__(session, MemorialMessage)
+    def __init__(self):
+        super().__init__(MemorialMessage)
 
 class RemembranceMessageDAO(BaseDAO):
-    def __init__(self, session: Session):
-        super().__init__(session, RemembranceMessage)
+    def __init__(self):
+        super().__init__(RemembranceMessage)
 
+
+user_dao = UserDAO()
+memorial_dao = MemorialDAO()
+memorial_user_dao = MemorialUserDAO()
+invite_key_dao = InviteKeyDAO()
+memorial_photo_dao = MemorialPhotoDAO()
+deceased_dao = DeceasedDAO()
+family_tree_dao = FamilyTreeDAO()
+offering_dao = OfferingDAO()
+special_offering_dao = SpecialOfferingDAO()
+user_offering_dao = UserOfferingDAO()
+memorial_offering_dao = MemorialOfferingDAO()
+memorial_message_dao = MemorialMessageDAO()
+remembrance_message_dao = RemembranceMessageDAO()
