@@ -1,5 +1,5 @@
 ---
-title: 'Ohigan: The Japanese Equinox Memorial Tradition'
+title: 'Ohigan: Japanese Autumn Equinox Festival commemorates tradition'
 pubDate: 2024-03-05
 author: 'Chen Boguang'
 authImage: 'https://th.bing.com/th/id/OIP.VLIeFPpOnf4No6ksx_eLcwHaHa?rs=1&pid=ImgDetMain'

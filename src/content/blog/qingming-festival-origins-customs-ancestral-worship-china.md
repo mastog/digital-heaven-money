@@ -1,14 +1,24 @@
 ---
-title: 'Qingming Festival: Origins, Customs, and Ancestral Worship in China'
+title: 'Get to know Qingming Festival with a member who participated in the ceremony in China'
 pubDate: 2024-03-05
 author: 'Chen Boguang'
 authImage: 'https://th.bing.com/th/id/OIP.VLIeFPpOnf4No6ksx_eLcwHaHa?rs=1&pid=ImgDetMain'
 image: 'qingming-festival-china.png'
 tags: ['culture', 'tradition', 'festival','China']
 slug: qingming-festival-origins-customs-ancestral-worship-china
-summary: "Qingming Festival, also known as Tomb-Sweeping Day, is a traditional Chinese festival dedicated to honoring ancestors and welcoming the arrival of spring. This article explores the origins, customs, and significance of this deeply rooted cultural event."
+summary: "Qingming Festival is a traditional festival in China that commemorates ancestors and welcomes the arrival of spring. Listening to the self narration of the members who held the memorial ceremony, and exploring the origin, customs, and significance of this deeply rooted cultural event."
 type: "Article"
 ---
+
+## A description from a member who mourns their loved ones
+
+Today is Qingming Festival, and my family and I have come to the Babaoshan Cemetery in Beijing to honor our deceased grandparents. The sun is shining brightly, and the air is fresh, but as I walk along the path in the cemetery, my mood is somewhat heavy.
+
+We arrived at my grandparents' tomb, and the tombstone had already been cleaned thoroughly. I gently placed the chrysanthemums I brought and, following tradition, used a damp cloth to wipe the tombstone, removing fallen leaves and dust. Every year on Qingming, my mother brings us here to pay our respects. The passing of my grandparents has always left me with deep regret, but standing before their tomb every Qingming Festival warms my heart, as if I can feel their care and blessings.
+
+I lowered my head and silently prayed, hoping that my grandparents are at peace in the afterlife. I recall my childhood, when my grandfather would take me for walks in the park, and my grandmother would lovingly prepare delicious meals with her warm hands. I miss their smiles and words, but this longing doesn't bring sadness; instead, it fills me with gratitude for life.
+
+Qingming Festival is not only a day to honor our ancestors but also a time for family reunion. By visiting the tombs, we not only remember our departed loved ones but also remind ourselves to cherish those who are still with us and appreciate every moment we have.
 
 ## Origins and Customs
 
