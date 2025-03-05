@@ -163,3 +163,7 @@
   font-size: 1.4rem;
   font-weight: bold;
 }
+
+.white-space-pre {
+  white-space: pre-line;
+}
