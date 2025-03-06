@@ -4,7 +4,7 @@ pubDate: 2024-03-05
 author: 'Chen Boguang'
 authImage: 'https://th.bing.com/th/id/OIP.VLIeFPpOnf4No6ksx_eLcwHaHa?rs=1&pid=ImgDetMain'
 image: 'ohigan-japan-equinox-memorial-tradition.png'
-tags: ['culture', 'tradition', 'festival', 'Japan']
+tags: ['tradition', 'festival', 'Japan']
 slug: ohigan-japan-equinox-memorial-tradition
 summary: "Ohigan, observed during the spring and autumn equinoxes in Japan, is a traditional festival dedicated to honoring ancestors and reflecting on life. This article explores its origins, customs, and cultural significance."
 type: "Article"

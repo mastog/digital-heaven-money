@@ -11,6 +11,7 @@ app.config.from_object(Config)
 CORS(app)
 db = SQLAlchemy(app)
 jwt = JWTManager(app)
+
 from backend import routes, models
 
 #with app.app_context():
