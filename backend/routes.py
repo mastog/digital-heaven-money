@@ -24,7 +24,7 @@ def login():
     user = dao_factory.get_dao("User").get(username=data.get('username'))
     if not user or not user.check_password(data.get('password')):
         return jsonify({'error': 'Invalid credentials'}), 401
-    access_token = create_access_token(identity=user.id)
+    access_token = create_access_token(identity=str(user.id))
     return jsonify({'access_token': access_token}), 200
 
 @app.route('/profile', methods=['GET', 'PUT'])
@@ -33,11 +33,11 @@ def profile():
     current_user_id = get_jwt_identity()
     user = dao_factory.get_dao("User").get(id=current_user_id)
     if request.method == 'GET':
-        return jsonify(user.serialize()), 200
+        return jsonify(user.to_dict()), 200
     elif request.method == 'PUT':
         data = request.get_json()
         updated_user = dao_factory.get_dao("User").update(user, **data)
-        return jsonify(updated_user.serialize()), 200
+        return jsonify(updated_user.to_dict()), 200
 
 # Data Management (CRUD)
 @app.route('/crud/<resource>', methods=['POST', 'GET', 'PUT', 'DELETE'])
@@ -50,18 +50,18 @@ def data_management(resource):
     if not data:
         return jsonify({'error': 'No data provided'}), 400
     if request.method == 'POST':
-        dao.create(**data)
+        return jsonify(dao.create(**data).to_dict()),200
     elif request.method == 'PUT':
         if not data.get('id') or not dao.get(id=data.get('id')):
             return jsonify({'error': 'item not found'}), 400
-        dao.update(dao.get(id=data.get('id'),**data))
+        return jsonify(dao.update(dao.get(id=data.get('id')),**data).to_dict()),200
     elif request.method == 'GET':
-        return dao.get_all(**data)
+        return jsonify([obj.to_dict() for obj in dao.get_all(**data)]),200
     else:
         if not data.get('id') or not dao.get(id=data.get('id')):
             return jsonify({'error': 'item not found'}), 400
         dao.delete(dao.get(id=data.get('id')))
-    return jsonify({'success': True}), 200
+        return jsonify({'success': True}), 200
 
 
 # Invite Users to Memorial Hall
