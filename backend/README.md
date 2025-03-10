@@ -51,7 +51,7 @@
     "email": "string",
     "password": "string",
     "photo_url": "string",
-    "is_admin": boolean
+    "is_admin": "boolean"
   }
   ```
 - **Response Format**:
@@ -90,17 +90,17 @@
   {
     "email": "string",
     "photo_url": "string",
-    "is_admin": boolean
+    "is_admin": "boolean"
   }
   ```
 - **Response Format**:
   ```json
   {
-    "id": integer,
+    "id": "integer",
     "username": "string",
     "email": "string",
     "photo_url": "string",
-    "is_admin": boolean,
+    "is_admin": "boolean",
     "created_at": "datetime"
   }
   ```
@@ -115,16 +115,16 @@
   {
     "field1": "value1",
     "field2": "value2",
-    ...
+    "..."
   }
   ```
 - **Response Format**:
   ```json
   {
-    "id": integer,
+    "id": "integer",
     "field1": "value1",
     "field2": "value2",
-    ...
+    "..."
   }
   ```
 - **Description**: Handles CRUD operations for various resources. The `<resource>` parameter specifies the type of data to manage (e.g., "Memorial", "MemorialUser", "InviteKey", etc.). The exact fields depend on the resource type.
