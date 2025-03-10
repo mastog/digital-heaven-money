@@ -1,10 +1,15 @@
-from flask import Flask, request, jsonify, redirect
-from werkzeug.security import check_password_hash
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
+import secrets
+import string
+
+from flask import request, jsonify
+from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from backend import app
-from backend.DAOs import dao_factory
+from backend.models.DAOs import dao_factory
 
 # User Management
+from backend.services import aiService
+
+
 @app.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
@@ -49,14 +54,18 @@ def data_management(resource):
     data = request.get_json()
     if not data:
         return jsonify({'error': 'No data provided'}), 400
+
     if request.method == 'POST':
         return jsonify(dao.create(**data).to_dict()),200
+
     elif request.method == 'PUT':
         if not data.get('id') or not dao.get(id=data.get('id')):
             return jsonify({'error': 'item not found'}), 400
         return jsonify(dao.update(dao.get(id=data.get('id')),**data).to_dict()),200
+
     elif request.method == 'GET':
         return jsonify([obj.to_dict() for obj in dao.get_all(**data)]),200
+
     else:
         if not data.get('id') or not dao.get(id=data.get('id')):
             return jsonify({'error': 'item not found'}), 400
@@ -67,10 +76,25 @@ def data_management(resource):
 # Invite Users to Memorial Hall
 @app.route('/memorial/<int:id>/invite', methods=['POST'])
 @jwt_required()
-def invite_users(id):
+def invite_users(id):  # memorial id
+    current_user_id = get_jwt_identity()
+    alphabet = string.ascii_letters + string.digits  # Contains letters and numbers
+    invite_key = ''.join(secrets.choice(alphabet) for _ in range(16))  # Generates a 16-bit random invitation code
+    data = {'user_id': current_user_id,
+            'memorial_id': id,
+            'key': invite_key}
+    dao_factory.get_dao("InviteKey").create(**data)
+    return jsonify({'invite_key': invite_key}), 201
+
+@app.route('/ai', methods=['POST'])
+@jwt_required()
+def ai_request():
     data = request.get_json()
-    invite_link = dao_factory.get_dao("InviteKey").create(**data)
-    return jsonify({'invite_link': invite_link.key}), 201
+    if not data:
+        return jsonify({'error': 'No data provided'}), 400
+    response=aiService.connect(data.get('text'))
+    return jsonify({'response': response}), 201
+
 
 
 

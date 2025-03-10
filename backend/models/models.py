@@ -50,7 +50,7 @@ class User(BaseModel):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-# Memorial Model
+# Memorial Hall Model
 class Memorial(BaseModel):
     __tablename__ = 'memorials'
     id = Column(Integer, primary_key=True, autoincrement=True)

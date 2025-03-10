@@ -53,6 +53,11 @@ def test_crud(access_token):
     response = requests.post(f"{BASE_URL}/crud/RemembranceMessage", headers=headers, json=payload)
     print("Response (POST):", response.status_code, response.json())
 
+    #  POST creat memorial hall
+    payload = {"name": 'testMemorialHall', "creator_id": "1"}
+    response = requests.post(f"{BASE_URL}/crud/Memorial", headers=headers, json=payload)
+    print("Response (POST):", response.status_code, response.json())
+
     #  GET
     payload = {"id": 1}
     response = requests.get(f"{BASE_URL}/crud/RemembranceMessage", headers=headers, json=payload)
@@ -63,12 +68,25 @@ def test_crud(access_token):
     response = requests.put(f"{BASE_URL}/crud/RemembranceMessage", headers=headers, json=payload)
     print("Response (PUT):", response.status_code, response.json())
 
+    test_invite(access_token)
+
     #  DELETE
     payload = {"id": 1}
     response = requests.delete(f"{BASE_URL}/crud/User", headers=headers, json=payload)
     print("Response (DELETE):", response.status_code, response.json())
 
+def test_invite(access_token):
+    print("\nTesting Invite Endpoint")
+    headers = {"Authorization": f"Bearer {access_token}"}
+    response = requests.post(f"{BASE_URL}/memorial/1/invite", headers=headers)
+    print("Response (POST):", response.status_code, response.json())
 
+def test_ai(access_token):
+    print("\nTesting ai Endpoint")
+    headers = {"Authorization": f"Bearer {access_token}"}
+    payload = {"text": "介绍一下自己"}
+    response = requests.post(f"{BASE_URL}/ai", headers=headers, json=payload)
+    print("Response (POST):", response.status_code, response.json())
 
 
 if __name__ == "__main__":
@@ -85,3 +103,4 @@ if __name__ == "__main__":
 
         test_crud(access_token)
 
+        test_ai(access_token)
