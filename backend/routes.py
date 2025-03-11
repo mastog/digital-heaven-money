@@ -10,6 +10,7 @@ from backend.models.DAOs import dao_factory
 
 # User Management
 from backend.services import aiService
+from backend.services.lunarCalendarService import get_lunarCalendar
 
 
 @app.route('/register', methods=['POST'])
@@ -107,6 +108,10 @@ def daily_question():
 def history():
     formatted_date = datetime.datetime.today().strftime("%m%d")
     return jsonify([obj.to_dict() for obj in dao_factory.get_dao("history").get_all(date=formatted_date)]), 200
+
+@app.route('/lunar', methods=['GET'])
+def lunarCalendar():
+    return jsonify(get_lunarCalendar()), 200
 
 
 
