@@ -21,6 +21,7 @@ export default {
         green: "var(--green)",
         black: "var(--black)",
         dark: "var(--dark)",
+        darkgray: "var(--darkgray)",
         gray: "var(--gray)",
         white: "var(--white)",
       },
