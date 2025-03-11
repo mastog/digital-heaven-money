@@ -50,7 +50,7 @@ class User(BaseModel):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-# Memorial Model
+# Memorial Hall Model
 class Memorial(BaseModel):
     __tablename__ = 'memorials'
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -222,3 +222,22 @@ class RemembranceMessage(BaseModel):
 
     # Relationships
     user = relationship("User", back_populates="remembrance_messages")
+
+class DailyQuestion(BaseModel):
+    __tablename__ = 'daily_question'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    question=Column(Text, nullable=False)
+    answerA=Column(Text, nullable=False)
+    answerB = Column(Text, nullable=False)
+    answerC = Column(Text, nullable=False)
+    answerD = Column(Text, nullable=False)
+    correctAnswer=Column(Text, nullable=False)
+    explanation=Column(Text, nullable=False)
+
+class History(BaseModel):
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    date=Column(Integer)
+    name=Column(String(100), nullable=False)
+    year=Column(Integer)
+    description = Column(Text)
+    url=Column(String(100))

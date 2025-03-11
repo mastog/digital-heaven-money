@@ -2,7 +2,7 @@ from sqlalchemy import inspect
 from sqlalchemy.orm import Session
 from typing import TypeVar, Type
 
-from backend.models import *
+from backend.models.models import *
 
 ModelType = TypeVar('ModelType')
 
@@ -113,6 +113,14 @@ class RemembranceMessageDAO(BaseDAO):
     def __init__(self):
         super().__init__(RemembranceMessage)
 
+class DailyQuestionDAO(BaseDAO):
+    def __init__(self):
+        super().__init__(DailyQuestion)
+
+class HistoryDAO(BaseDAO):
+    def __init__(self):
+        super().__init__(History)
+
 class DAOFactory:
     def __init__(self):
         # Initialize all DAO instances
@@ -129,7 +137,9 @@ class DAOFactory:
             "UserOffering": UserOfferingDAO(),
             "MemorialOffering": MemorialOfferingDAO(),
             "MemorialMessage": MemorialMessageDAO(),
-            "RemembranceMessage": RemembranceMessageDAO()
+            "RemembranceMessage": RemembranceMessageDAO(),
+            "DailyQuestion": DailyQuestionDAO(),
+            "History": HistoryDAO()
         }
 
     def get_dao(self, name: str) -> BaseDAO | None:
