@@ -8,7 +8,7 @@ def get_lunarCalendar():
     return {
         "date": lunar_date.date,
         "lunar": (lunar_date.lunarYear, lunar_date.lunarMonth, lunar_date.lunarDay, 'leap' if lunar_date.isLunarLeapMonth else ''),
-        "holiday": (lunar_date.get_legalHolidays(), lunar_date.get_otherHolidays(), lunar_date.get_otherLunarHolidays()),
+        "holiday": (lunar_date.get_legalHolidays(), lunar_date.get_otherHolidays()),
         "star": lunar_date.starZodiac,
         "good": lunar_date.goodThing,
         "bad": lunar_date.badThing

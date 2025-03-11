@@ -1,5 +1,7 @@
+import datetime
 import secrets
 import string
+import random
 
 from flask import request, jsonify
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
@@ -95,6 +97,16 @@ def ai_request():
     response=aiService.connect(data.get('text'))
     return jsonify({'response': response}), 201
 
+@app.route('/dailyQuestion', methods=['GET'])
+def daily_question():
+    random.seed(datetime.date.today())  #The same date generates the same random number
+    id_today=random.randint(1, 60)
+    return jsonify(dao_factory.get_dao("DailyQuestion").get({id==id_today}).to_dict()), 200
+
+@app.route('/history', methods=['GET'])
+def history():
+    formatted_date = datetime.datetime.today().strftime("%m%d")
+    return jsonify([obj.to_dict() for obj in dao_factory.get_dao("history").get_all(date=formatted_date)]), 200
 
 
 
