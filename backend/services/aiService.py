@@ -43,10 +43,3 @@ def connect(request):
     request_body = create_request_body("glm-4-flash", messages)
     response = send_post_request(request_body)
     return get_content(response)
-
-
-def ai_test(request):
-    print(connect(request))
-
-if __name__ == "__main__":
-    ai_test("Introduce yourself")

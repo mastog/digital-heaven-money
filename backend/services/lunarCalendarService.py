@@ -1,7 +1,7 @@
 import datetime
 import cnlunar
 
-from translateService import replace_words
+from backend.services.translateService import replace_words
 
 
 def get_lunarCalendar():
@@ -16,16 +16,3 @@ def get_lunarCalendar():
         "good": replace_words(lunar_date.goodThing),
         "bad": replace_words(lunar_date.badThing)
     }
-
-
-def date_test():
-    date_info = get_lunarCalendar()
-    print(f"Gregorian calendar date：{date_info['date']}")
-    print(f"Lunar date：{date_info['lunar']}")
-    print(f"Holiday：{date_info['holiday']}")
-    print(f"Star sign：{date_info['star']}")
-    print(f"Advisable：{date_info['good']}")
-    print(f"Inadvisable：{date_info['bad']}")
-
-if __name__ == "__main__":
-    date_test()

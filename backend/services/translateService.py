@@ -1,10 +1,15 @@
 import configparser
+import os
+
+from backend.config import basedir
+
 
 def load_word_mappings():
     # Load English and Chinese word mappings from the configuration file
 
     config = configparser.ConfigParser()
-    config.read("words.ini", encoding="utf-8")
+    config_path = os.path.join(basedir,"services", "words.ini")
+    config.read(config_path, encoding="utf-8")
     word_mappings = config["Translations"]
     return word_mappings
 
