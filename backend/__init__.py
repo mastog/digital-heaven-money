@@ -12,9 +12,3 @@ CORS(app)
 db = SQLAlchemy(app)
 jwt = JWTManager(app)
 
-from backend import routes, models
-
-if __name__ == "__main__":
-    #with app.app_context():
-        #db.create_all()
-    app.run(debug=True)

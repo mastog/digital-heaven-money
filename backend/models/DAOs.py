@@ -1,5 +1,3 @@
-from sqlalchemy import inspect
-from sqlalchemy.orm import Session
 from typing import TypeVar, Type
 
 from backend.models.models import *

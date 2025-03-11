@@ -1,7 +1,7 @@
 import datetime
 import cnlunar
 
-from backend.services.translateService import replace_words
+from backend.services.translateService import replace_words_list, replace_words
 
 
 def get_lunarCalendar():
@@ -10,9 +10,9 @@ def get_lunarCalendar():
 
     return {
         "date": lunar_date.date,
-        "lunar": (lunar_date.lunarYear, lunar_date.lunarMonth, lunar_date.lunarDay, 'leap' if lunar_date.isLunarLeapMonth else ''),
-        "holiday": (lunar_date.get_legalHolidays(), lunar_date.get_otherHolidays()),
+        "lunar": str(lunar_date.lunarYear)+"-"+ str(lunar_date.lunarMonth)+"-"+ str(lunar_date.lunarDay)+" "+ ('leap' if lunar_date.isLunarLeapMonth else ''),
+        "holiday": replace_words((lunar_date.get_legalHolidays() + "," if lunar_date.get_legalHolidays() else "") + lunar_date.get_otherHolidays()),
         "star": replace_words(lunar_date.starZodiac),
-        "good": replace_words(lunar_date.goodThing),
-        "bad": replace_words(lunar_date.badThing)
+        "good": replace_words_list(lunar_date.goodThing),
+        "bad": replace_words_list(lunar_date.badThing)
     }

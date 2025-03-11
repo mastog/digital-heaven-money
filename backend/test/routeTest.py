@@ -90,10 +90,11 @@ def test_ai(access_token):
 
 def test_lunar():
     print("\nTesting Lunar Calendar Endpoint")
-    response = requests.post(f"{BASE_URL}/lunar")
+    response = requests.get(f"{BASE_URL}/lunar")
     print("Response (GET):", response.status_code, response.json())
 
 if __name__ == "__main__":
+    test_lunar()
 
     test_register()
 
@@ -108,5 +109,3 @@ if __name__ == "__main__":
         test_crud(access_token)
 
         test_ai(access_token)
-
-    test_lunar()
