@@ -111,7 +111,7 @@ def history():
 
 @app.route('/lunar', methods=['GET'])
 def lunarCalendar():
-    return jsonify(get_lunarCalendar()), 200
+    return jsonify(get_lunarCalendar(datetime.datetime.now())), 200
 
 
 

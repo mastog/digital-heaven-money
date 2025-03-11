@@ -4,9 +4,9 @@ import cnlunar
 from backend.services.translateService import replace_words_list, replace_words
 
 
-def get_lunarCalendar():
+def get_lunarCalendar(datetime):
 
-    lunar_date = cnlunar.Lunar(datetime.datetime.now(), godType='8char')
+    lunar_date = cnlunar.Lunar(datetime, godType='8char')
 
     return {
         "date": lunar_date.date,
