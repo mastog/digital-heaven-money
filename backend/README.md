@@ -1,4 +1,4 @@
-# API Development Manual
+# API Development Manual (Updated)
 
 ## User Management
 
@@ -18,6 +18,7 @@
 | /crud/<resource>| GET    | Get all resources              | filter fields (optional)          | list of resource objects           | 200         |
 | /crud/<resource>| DELETE | Delete a resource              | id                                | success message                    | 200         |
 
+
 ## Invite Users to Memorial Hall
 
 | Route           | Method | Description                     | Request Body Fields               | Response Body Fields               | Status Code |
@@ -29,6 +30,12 @@
 | Route           | Method | Description                     | Request Body Fields               | Response Body Fields               | Status Code |
 |-----------------|--------|---------------------------------|-----------------------------------|------------------------------------|-------------|
 | /ai             | POST   | Send a request to AI service   | text                              | response                           | 201         |
+
+## Other Functions
+
+| Route           | Method | Description                     | Request Body Fields               | Response Body Fields               | Status Code |
+| /dailyQuestion  | GET    | Get daily question             | None                              | question, answerA, answerB, answerC, answerD, correctAnswer, explanation | 200         |
+| /history        | GET    | Get historical events for today | None                              | list of historical events          | 200         |
 
 ## Error Handlers
 
@@ -129,6 +136,7 @@
   ```
 - **Description**: Handles CRUD operations for various resources. The `<resource>` parameter specifies the type of data to manage (e.g., "Memorial", "MemorialUser", "InviteKey", etc.). The exact fields depend on the resource type.
 
+
 ## Invite Users to Memorial Hall
 
 - **URL**: `/memorial/<int:id>/invite`
@@ -158,6 +166,44 @@
   }
   ```
 - **Description**: Sends a request to the AI service and returns the response.
+
+### Daily Question
+
+- **URL**: `/dailyQuestion`
+- **Method**: GET
+- **Response Format**:
+  ```json
+  {
+    "id": "integer",
+    "question": "string",
+    "answerA": "string",
+    "answerB": "string",
+    "answerC": "string",
+    "answerD": "string",
+    "correctAnswer": "string",
+    "explanation": "string"
+  }
+  ```
+- **Description**: Returns the daily question based on the current date. The same date will always return the same question.
+
+### Today in hostory
+
+- **URL**: `/history`
+- **Method**: GET
+- **Response Format**:
+  ```json
+  [
+    {
+      "id": "integer",
+      "date": "integer",
+      "name": "string",
+      "year": "integer",
+      "description": "string",
+      "url": "string"
+    }
+  ]
+  ```
+- **Description**: Returns historical events for the current date in MMDD format.
 
 ## Error Handling
 
@@ -201,7 +247,7 @@ curl -X PUT -H "Content-Type: application/json" -H "Authorization: Bearer <acces
 ### Create a Memorial
 ```bash
 curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <access_token>" -d '{
-  "name": "John's Memorial",
+  "name": "John\'s Memorial",
   "description": "A memorial for John Doe",
   "is_private": true
 }' http://localhost:5000/crud/Memorial
@@ -217,4 +263,14 @@ curl -X POST -H "Authorization: Bearer <access_token>" http://localhost:5000/mem
 curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <access_token>" -d '{
   "text": "What is the meaning of life?"
 }' http://localhost:5000/ai
+```
+
+### Get Daily Question
+```bash
+curl http://localhost:5000/dailyQuestion
+```
+
+### Get Today in History
+```bash
+curl http://localhost:5000/history
 ```
