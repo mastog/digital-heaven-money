@@ -234,10 +234,13 @@ class DailyQuestion(BaseModel):
     correctAnswer=Column(Text, nullable=False)
     explanation=Column(Text, nullable=False)
 
-class History(BaseModel):
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    date=Column(Integer)
-    name=Column(String(100), nullable=False)
-    year=Column(Integer)
-    description = Column(Text)
-    url=Column(String(100))
+class TodayInHistory(BaseModel):
+    __tablename__ = 'today_in_history'
+    id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
+    year = db.Column(db.Integer, nullable=False)
+    month = db.Column(db.Integer, nullable=False)
+    day = db.Column(db.Integer, nullable=False)
+    type = db.Column(db.Integer, nullable=False)
+    name = db.Column(db.String(255), nullable=False)
+    data = db.Column(db.Text, nullable=False)
+    insert_time = db.Column(db.BigInteger, nullable=False)

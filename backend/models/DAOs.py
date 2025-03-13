@@ -117,7 +117,7 @@ class DailyQuestionDAO(BaseDAO):
 
 class HistoryDAO(BaseDAO):
     def __init__(self):
-        super().__init__(History)
+        super().__init__(TodayInHistory)
 
 class DAOFactory:
     def __init__(self):
