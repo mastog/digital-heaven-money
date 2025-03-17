@@ -168,3 +168,13 @@
 .white-space-pre {
   white-space: pre-line;
 }
+
+.testimonial-slider-pagination {
+  .swiper-pagination-bullet {
+    @apply h-2.5 w-2.5 bg-green opacity-100 dark:bg-green;
+  }
+
+  .swiper-pagination-bullet-active {
+    @apply h-4 w-4 bg-black dark:bg-black;
+  }
+}
