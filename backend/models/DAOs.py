@@ -1,5 +1,3 @@
-from sqlalchemy import inspect
-from sqlalchemy.orm import Session
 from typing import TypeVar, Type
 
 from backend.models.models import *
@@ -119,7 +117,7 @@ class DailyQuestionDAO(BaseDAO):
 
 class HistoryDAO(BaseDAO):
     def __init__(self):
-        super().__init__(History)
+        super().__init__(TodayInHistory)
 
 class DAOFactory:
     def __init__(self):

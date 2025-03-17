@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime,date
 import secrets
 import string
 import random
@@ -10,6 +10,7 @@ from backend.models.DAOs import dao_factory
 
 # User Management
 from backend.services import aiService
+from backend.services.lunarCalendarService import get_lunarCalendar
 
 
 @app.route('/register', methods=['POST'])
@@ -99,14 +100,30 @@ def ai_request():
 
 @app.route('/dailyQuestion', methods=['GET'])
 def daily_question():
-    random.seed(datetime.date.today())  #The same date generates the same random number
+    random.seed(date.today())  #The same date generates the same random number
     id_today=random.randint(1, 60)
     return jsonify(dao_factory.get_dao("DailyQuestion").get({id==id_today}).to_dict()), 200
 
 @app.route('/history', methods=['GET'])
 def history():
-    formatted_date = datetime.datetime.today().strftime("%m%d")
-    return jsonify([obj.to_dict() for obj in dao_factory.get_dao("history").get_all(date=formatted_date)]), 200
+    current_month = datetime.now().month
+    current_day = datetime.now().day
+
+    history_objects = dao_factory.get_dao("history").get_all(month=current_month, day=current_day)
+    result=[]
+    for obj in history_objects:
+        url="https://en.wikipedia.org/wiki/"+obj.name
+        obj_dict = obj.to_dict()
+        #  Add url key-value pairs
+        obj_dict["url"] = url
+        result.append(obj_dict)
+
+    return jsonify(result), 200
+
+
+@app.route('/lunar', methods=['GET'])
+def lunarCalendar():
+    return jsonify(get_lunarCalendar(datetime.now())), 200
 
 
 

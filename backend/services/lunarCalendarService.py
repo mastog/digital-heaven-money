@@ -1,28 +1,18 @@
 import datetime
 import cnlunar
 
-def get_lunarCalendar():
+from backend.services.translateService import replace_words_list, replace_words
 
-    lunar_date = cnlunar.Lunar(datetime.datetime.now(), godType='8char')
+
+def get_lunarCalendar(datetime):
+
+    lunar_date = cnlunar.Lunar(datetime, godType='8char')
 
     return {
         "date": lunar_date.date,
-        "lunar": (lunar_date.lunarYear, lunar_date.lunarMonth, lunar_date.lunarDay, 'leap' if lunar_date.isLunarLeapMonth else ''),
-        "holiday": (lunar_date.get_legalHolidays(), lunar_date.get_otherHolidays()),
-        "star": lunar_date.starZodiac,
-        "good": lunar_date.goodThing,
-        "bad": lunar_date.badThing
+        "lunar": str(lunar_date.lunarYear)+"-"+ str(lunar_date.lunarMonth)+"-"+ str(lunar_date.lunarDay)+" "+ ('leap' if lunar_date.isLunarLeapMonth else ''),
+        "holiday": replace_words((lunar_date.get_legalHolidays() + "," if lunar_date.get_legalHolidays() else "") + lunar_date.get_otherHolidays()),
+        "star": replace_words(lunar_date.starZodiac),
+        "good": replace_words_list(lunar_date.goodThing),
+        "bad": replace_words_list(lunar_date.badThing)
     }
-
-
-def date_test():
-    date_info = get_lunarCalendar()
-    print(f"Gregorian calendar date：{date_info['date']}")
-    print(f"Lunar date：{date_info['lunar']}")
-    print(f"Holiday：{date_info['holiday']}")
-    print(f"Star sign：{date_info['star']}")
-    print(f"Advisable：{date_info['good']}")
-    print(f"Inadvisable：{date_info['bad']}")
-
-if __name__ == "__main__":
-    date_test()
