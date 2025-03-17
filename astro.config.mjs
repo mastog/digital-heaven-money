@@ -10,4 +10,7 @@ export default defineConfig({
   integrations: [tailwind()],
   output: 'server',
   adapter: vercel(),
+  server: {
+    allowedHosts: ['csi6220-1-vm4.ucd.ie']
+  }
 });
