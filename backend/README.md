@@ -4,10 +4,10 @@
 
 | Route           | Method | Description                     | Request Body Fields               | Response Body Fields               | Status Code |
 |-----------------|--------|---------------------------------|-----------------------------------|------------------------------------|-------------|
-| /register       | POST   | Register a new user            | username, password, email, photo_url | message                            | 201         |
+| /register       | POST   | Register a new user            | username, password, email, pic_url | message                            | 201         |
 | /login          | POST   | User login                     | username, password                | access_token                       | 200         |
 | /profile        | GET    | Get current user's profile    | None                              | user object                        | 200         |
-| /profile        | PUT    | Update current user's profile | username, email, photo_url        | updated user object                | 200         |
+| /profile        | PUT    | Update current user's profile | username, email, pic_url        | updated user object                | 200         |
 
 ## Data Management (CRUD)
 
@@ -57,7 +57,7 @@
     "username": "string",
     "email": "string",
     "password": "string",
-    "photo_url": "string",
+    "pic_url": "string",
     "is_admin": "boolean"
   }
   ```
@@ -96,7 +96,7 @@
   ```json
   {
     "email": "string",
-    "photo_url": "string",
+    "pic_url": "string",
     "is_admin": "boolean"
   }
   ```
@@ -106,7 +106,7 @@
     "id": "integer",
     "username": "string",
     "email": "string",
-    "photo_url": "string",
+    "pic_url": "string",
     "is_admin": "boolean",
     "created_at": "datetime"
   }
@@ -218,7 +218,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
   "username": "john_doe",
   "email": "john@example.com",
   "password": "securepassword",
-  "photo_url": "https://example.com/avatar.jpg",
+  "pic_url": "avatar.jpg",
   "is_admin": false
 }' http://localhost:5000/register
 ```
@@ -240,7 +240,7 @@ curl -H "Authorization: Bearer <access_token>" http://localhost:5000/profile
 ```bash
 curl -X PUT -H "Content-Type: application/json" -H "Authorization: Bearer <access_token>" -d '{
   "email": "new_email@example.com",
-  "photo_url": "https://example.com/new_avatar.jpg"
+  "pic_url": "new_avatar.jpg"
 }' http://localhost:5000/profile
 ```
 
