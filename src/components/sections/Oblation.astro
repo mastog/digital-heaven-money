@@ -3,9 +3,7 @@ import { markdownify } from "../..//content/textConverter";
 import ImageMod from "../../components/ImageMod.astro";
 interface TestimonialItem {
   avatar: string;
-  content: string;
   name: string;
-  designation: string;
 }
 
 interface TestimonialData {
@@ -33,9 +31,7 @@ const { testimonialData } = Astro.props as Props;
                 {testimonialData.testimonials.map(
                   (item: {
                     avatar: string;
-                    content: string;
                     name: string;
-                    designation: string;
                   }) => (
                     <div class="swiper-slide">
                       <div class="rounded-lg bg-green px-7 py-5 dark:bg-darkmode-light">
@@ -77,7 +73,6 @@ const { testimonialData } = Astro.props as Props;
   import "swiper/css/pagination";
   import { Autoplay, Pagination } from "swiper/modules";
 
-  // astro:page-load event is fired when the page is loaded
   new Swiper(".testimonial-slider", {
     modules: [Pagination, Autoplay],
     spaceBetween: 24,
