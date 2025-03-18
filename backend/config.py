@@ -13,5 +13,6 @@ class Config(object):
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    FILE_UPLOAD_DIR = os.path.join(basedir, 'uploaded_File')
+    FILE_UPLOAD_DIR = os.path.join(os.path.dirname(basedir),"public", 'uploaded_Pic')
 
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
