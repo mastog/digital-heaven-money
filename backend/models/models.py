@@ -24,21 +24,39 @@ class BaseModel(db.Model):
                 result[column] = value
         return result
 
+class BasePicModel(BaseModel):
+    __abstract__ = True  # Marked as an abstract class
+
+    # Defines an internal field to store the actual photo URL value
+    _pic_url = Column("pic_url", String(255))
+
+    @property
+    def pic_url(self):
+        # Returns the complete path when accessing the photo URL
+        return self._pic_url
+
+    @pic_url.setter
+    def pic_url(self, value):
+        # When setting the photo URL, automatically adds path to the front
+        if value and not value.startswith("/uploaded_Pic/"):
+            self._pic_url = f"/uploaded_Pic/{value}"
+        else:
+            self._pic_url = value
+
+
 # User Model
-class User(BaseModel):
+class User(BasePicModel):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String(50), unique=True, nullable=False)
     email = Column(String(100))
     password_hash = Column(String(255), nullable=False)
-    photo_url = Column(String(255))
     is_admin = Column(Boolean, default=False)
 
     # Relationships
     memorials = relationship("Memorial", back_populates="creator", cascade="all, delete-orphan")
     memorial_user_links = relationship("MemorialUser", back_populates="user", cascade="all, delete-orphan")
     invited_keys = relationship("InviteKey", back_populates="user", cascade="all, delete-orphan")
-    photos = relationship("MemorialPhoto", back_populates="user", cascade="all, delete-orphan")
     user_offerings = relationship("UserOffering", back_populates="user", cascade="all, delete-orphan")
     memorial_offerings = relationship("MemorialOffering", back_populates="user", cascade="all, delete-orphan")
     memorial_messages = relationship("MemorialMessage", back_populates="user", cascade="all, delete-orphan")
@@ -51,13 +69,12 @@ class User(BaseModel):
         return check_password_hash(self.password_hash, password)
 
 # Memorial Hall Model
-class Memorial(BaseModel):
+class Memorial(BasePicModel):
     __tablename__ = 'memorials'
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
     description = Column(Text)
     creator_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
-    photo_url = Column(String(255))
     is_private = Column(Boolean, default=False)
     created_at = Column(DateTime, server_default=db.func.current_timestamp())
 
@@ -65,7 +82,6 @@ class Memorial(BaseModel):
     creator = relationship("User", back_populates="memorials")
     users = relationship("MemorialUser", back_populates="memorial", cascade="all, delete-orphan")
     invited_keys = relationship("InviteKey", back_populates="memorial", cascade="all, delete-orphan")
-    photos = relationship("MemorialPhoto", back_populates="memorial", cascade="all, delete-orphan")
     deceased = relationship("Deceased", back_populates="memorial", cascade="all, delete-orphan")
     family_tree = relationship("FamilyTree", back_populates="memorial", cascade="all, delete-orphan")
     offerings = relationship("MemorialOffering", back_populates="memorial", cascade="all, delete-orphan")
@@ -103,12 +119,11 @@ class InviteKey(BaseModel):
         return check_password_hash(self.key_hash, key)
 
 # MemorialPhoto Model
-class MemorialPhoto(BaseModel):
+class MemorialPhoto(BasePicModel):
     __tablename__ = 'memorial_photos'
     id = Column(Integer, primary_key=True, autoincrement=True)
     memorial_id = Column(Integer, ForeignKey('memorials.id', ondelete='CASCADE'), nullable=False)
     user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
-    photo_url = Column(String(255), nullable=False)
     description = Column(Text)
     photo_date = Column(Date)
     uploaded_at = Column(DateTime, server_default=db.func.current_timestamp())
@@ -118,7 +133,7 @@ class MemorialPhoto(BaseModel):
     user = relationship("User", back_populates="photos")
 
 # Deceased Model
-class Deceased(BaseModel):
+class Deceased(BasePicModel):
     __tablename__ = 'deceased'
     id = Column(Integer, primary_key=True, autoincrement=True)
     memorial_id = Column(Integer, ForeignKey('memorials.id', ondelete='CASCADE'), nullable=False)
@@ -126,7 +141,6 @@ class Deceased(BaseModel):
     birth_date = Column(Date)
     death_date = Column(Date)
     biography = Column(Text)
-    photo_url = Column(String(255))
 
     # Relationships
     memorial = relationship("Memorial", back_populates="deceased")
@@ -148,12 +162,11 @@ class FamilyTree(BaseModel):
     deceased2 = relationship("Deceased", foreign_keys=[deceased2_id])
 
 # Offering Model
-class Offering(BaseModel):
+class Offering(BasePicModel):
     __tablename__ = 'offerings'
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
     description = Column(Text)
-    image_url = Column(String(255))
     special_offering = Column(Boolean, default=False)
 
     # Relationships
