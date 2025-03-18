@@ -10,39 +10,27 @@ const testimonialContent = {
   testimonials: [
     {
       avatar: "/images/author1.png",
-      content: "The most **thoughtful** digital memorial service we've encountered.",
-      name: "Emily Zhang",
-      designation: "Family Archivist"
+      name: "Emily Zhang"
     },
     {
-      avatar: "/images/avatars/jane-smith.webp",
-      content: "_Revolutionary_ approach to preserving life stories.",
-      name: "Dr. Raj Patel",
-      designation: "Digital Historian"
+      avatar: "/images/author1.png",
+      name: "Emily Zhang"
     },
     {
-      avatar: "/images/avatars/jane-smith.webp",
-      content: "_Revolutionary_ approach to preserving life stories.",
-      name: "Dr. Raj Patel",
-      designation: "Digital Historian"
+      avatar: "/images/author1.png",
+      name: "Emily Zhang"
     },
     {
-      avatar: "/images/avatars/jane-smith.webp",
-      content: "_Revolutionary_ approach to preserving life stories.",
-      name: "Dr. Raj Patel",
-      designation: "Digital Historian"
+      avatar: "/images/author1.png",
+      name: "Emily Zhang"
     },
     {
-      avatar: "/images/avatars/jane-smith.webp",
-      content: "_Revolutionary_ approach to preserving life stories.",
-      name: "Dr. Raj Patel",
-      designation: "Digital Historian"
+      avatar: "/images/author1.png",
+      name: "Emily Zhang"
     },
     {
-      avatar: "/images/avatars/jane-smith.webp",
-      content: "_Revolutionary_ approach to preserving life stories.",
-      name: "Dr. Raj Patel",
-      designation: "Digital Historian"
+      avatar: "/images/author1.png",
+      name: "Emily Zhang"
     }
   ]
 }
@@ -65,7 +53,9 @@ const testimonialContent = {
         </div>
         <AboutCard />
         <div class="px-4 mx-auto max-w-screen-xl lg:px-3">
-          <Oblation testimonialData={testimonialContent} />
+          <div class="relative flex flex-col-reverse items-center">
+            <Oblation testimonialData={testimonialContent} />
+          </div>
         </div>
         <Testimonials />
 	</main>
