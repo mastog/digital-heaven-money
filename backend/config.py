@@ -15,3 +15,4 @@ class Config(object):
 
     FILE_UPLOAD_DIR = os.path.join(os.path.dirname(basedir),"public", 'uploaded_Pic')
 
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}

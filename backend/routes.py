@@ -1,3 +1,5 @@
+import os
+import time
 from datetime import datetime,date
 import secrets
 import string
@@ -5,12 +7,15 @@ import random
 
 from flask import request, jsonify
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
+from werkzeug.utils import secure_filename
+
 from backend import app
 from backend.models.DAOs import dao_factory
 
 # User Management
 from backend.services import aiService
 from backend.services.lunarCalendarService import get_lunarCalendar
+from backend.services.utils import allowed_file
 
 
 @app.route('/register', methods=['POST'])
@@ -125,7 +130,28 @@ def history():
 def lunarCalendar():
     return jsonify(get_lunarCalendar(datetime.now())), 200
 
+@app.route('/upload_pic', methods=['POST'])
+def upload_pic():
+    if 'pic' not in request.files:
+        return jsonify({'error': 'No picture part'}), 400
 
+    file = request.files['pic']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+
+        name, ext = os.path.splitext(filename)
+        # Add a timestamp to the file name
+        timestamped_filename = f"{name}_{int(time.time())}{ext}"
+
+        file_path = os.path.join(app.config['FILE_UPLOAD_DIR'], timestamped_filename)
+        file.save(file_path)  # save the picture
+
+        return jsonify({'message': 'Picture uploaded successfully','pic_name': timestamped_filename}), 200
+
+    return jsonify({'error': 'Invalid file type'}), 400
 
 # Error Handlers
 @app.errorhandler(404)

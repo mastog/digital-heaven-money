@@ -1,5 +1,7 @@
+import os
 from typing import TypeVar, Type
 
+from backend import app
 from backend.models.models import *
 
 ModelType = TypeVar('ModelType')
@@ -34,6 +36,11 @@ class BaseDAO:
 
     # delete
     def delete(self, instance: ModelType) -> None:
+        if hasattr(instance, 'pic_url') and instance.pic_url:
+            file_path = os.path.join(app.config['FILE_UPLOAD_DIR'], instance.pic_url.replace("/uploaded_Pic/", ""))
+            if os.path.exists(file_path):
+                # delete file
+                os.remove(file_path)
         self.session.delete(instance)
         self.session.commit()
 
