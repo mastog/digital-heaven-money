@@ -1,7 +1,7 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
 import AboutCard from "../components/sections/AboutCard.astro";
-import Testimonial from "../components/sections/Testimonial.astro";
+import Oblation from "../components/sections/Oblation.astro";
 import Testimonials from "../components/sections/Testimonials.astro";
 const testimonialContent = {
   enable: true,
@@ -9,10 +9,16 @@ const testimonialContent = {
   description: "_Voices from our community_",
   testimonials: [
     {
-      avatar: "/images/avatars/john-doe.webp",
+      avatar: "/images/author1.png",
       content: "The most **thoughtful** digital memorial service we've encountered.",
       name: "Emily Zhang",
       designation: "Family Archivist"
+    },
+    {
+      avatar: "/images/avatars/jane-smith.webp",
+      content: "_Revolutionary_ approach to preserving life stories.",
+      name: "Dr. Raj Patel",
+      designation: "Digital Historian"
     },
     {
       avatar: "/images/avatars/jane-smith.webp",
@@ -59,7 +65,7 @@ const testimonialContent = {
         </div>
         <AboutCard />
         <div class="px-4 mx-auto max-w-screen-xl lg:px-3">
-          <Testimonial testimonialData={testimonialContent} />
+          <Oblation testimonialData={testimonialContent} />
         </div>
         <Testimonials />
 	</main>
