@@ -86,7 +86,7 @@
     "access_token": "string"
   }
   ```
-- **Description**: Authenticates a user and returns an access token for subsequent requests.
+- **Description**: Authenticates a user and returns an access token for subsequent requests. [Maintaining User Login State with JWT in the Frontend](JWT.md)
 
 ### Profile
 
