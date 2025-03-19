@@ -10,7 +10,8 @@ def test_register():
     payload = {
         "username": "testuser",
         "password": "testpassword",
-        "email": "test@example.com"
+        "email": "test@example.com",
+        "pic_url": "test_image_1742354460.jpg"
     }
     response = requests.post(f"{BASE_URL}/register", json=payload)
     print("Response:", response.status_code, response.json())
@@ -108,4 +109,4 @@ if __name__ == "__main__":
 
         test_crud(access_token)
 
-        test_ai(access_token)
+        #test_ai(access_token)

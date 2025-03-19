@@ -14,6 +14,8 @@ class BaseDAO:
     def _filter_valid_fields(self, data: dict) -> dict:
         #Filter out fields that do not exist in the model
         model_columns = inspect(self.model).columns.keys()
+        if "_pic_url" in model_columns:
+            model_columns.append("pic_url")
         return {key: value for key, value in data.items() if key in model_columns}
 
     # create

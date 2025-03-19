@@ -82,6 +82,7 @@ class Memorial(BasePicModel):
     creator = relationship("User", back_populates="memorials")
     users = relationship("MemorialUser", back_populates="memorial", cascade="all, delete-orphan")
     invited_keys = relationship("InviteKey", back_populates="memorial", cascade="all, delete-orphan")
+    photos = relationship("MemorialPhoto", back_populates="memorial", cascade="all, delete-orphan")
     deceased = relationship("Deceased", back_populates="memorial", cascade="all, delete-orphan")
     family_tree = relationship("FamilyTree", back_populates="memorial", cascade="all, delete-orphan")
     offerings = relationship("MemorialOffering", back_populates="memorial", cascade="all, delete-orphan")
@@ -123,14 +124,14 @@ class MemorialPhoto(BasePicModel):
     __tablename__ = 'memorial_photos'
     id = Column(Integer, primary_key=True, autoincrement=True)
     memorial_id = Column(Integer, ForeignKey('memorials.id', ondelete='CASCADE'), nullable=False)
-    user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    deceased_id = Column(Integer, ForeignKey('deceased.id', ondelete='CASCADE'), nullable=False)
     description = Column(Text)
     photo_date = Column(Date)
     uploaded_at = Column(DateTime, server_default=db.func.current_timestamp())
 
     # Relationships
     memorial = relationship("Memorial", back_populates="photos")
-    user = relationship("User", back_populates="photos")
+    deceased = relationship("Deceased", back_populates="photos")
 
 # Deceased Model
 class Deceased(BasePicModel):
@@ -146,6 +147,7 @@ class Deceased(BasePicModel):
     memorial = relationship("Memorial", back_populates="deceased")
     family1 = relationship("FamilyTree", foreign_keys="[FamilyTree.deceased1_id]", back_populates="deceased1")
     family2 = relationship("FamilyTree", foreign_keys="[FamilyTree.deceased2_id]", back_populates="deceased2")
+    photos = relationship("MemorialPhoto", back_populates="deceased", cascade="all, delete-orphan")
 
 # FamilyTree Model
 class FamilyTree(BaseModel):
