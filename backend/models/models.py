@@ -13,6 +13,9 @@ class BaseModel(db.Model):
 
     def to_dict(self):
         columns = inspect(self.__class__).columns.keys()
+        if "_pic_url" in columns:
+            columns.remove("_pic_url")
+            columns.append("pic_url")
         result = {}
         for column in columns:
             value = getattr(self, column)
