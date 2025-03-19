@@ -34,6 +34,7 @@
 ## Other Functions
 
 | Route           | Method | Description                     | Request Body Fields               | Response Body Fields               | Status Code |
+|-----------------|--------|---------------------------------|-----------------------------------|------------------------------------|-------------|
 | /dailyQuestion  | GET    | Get daily question             | None                              | question, answerA, answerB, answerC, answerD, correctAnswer, explanation | 200         |
 | /history        | GET    | Get historical events for today | None                              | list of historical events          | 200         |
 | /upload_pic     | POST   | Upload a picture               | pic (file)                        | message, pic_name                  | 200         |
