@@ -36,6 +36,7 @@
 | Route           | Method | Description                     | Request Body Fields               | Response Body Fields               | Status Code |
 | /dailyQuestion  | GET    | Get daily question             | None                              | question, answerA, answerB, answerC, answerD, correctAnswer, explanation | 200         |
 | /history        | GET    | Get historical events for today | None                              | list of historical events          | 200         |
+| /upload_pic     | POST   | Upload a picture               | pic (file)                        | message, pic_name                  | 200         |
 
 ## Error Handlers
 
@@ -205,6 +206,20 @@
   ```
 - **Description**: Returns historical events for the current date in MMDD format.
 
+### Upload Picture
+
+- **URL**: `/upload_pic`
+- **Method**: POST
+- **Request Format**: multipart/form-data with a file field
+- **Response Format**:
+  ```json
+  {
+    "message": "Picture uploaded successfully",
+    "pic_name": "string"
+  }
+  ```
+- **Description**: Uploads a picture file. Supported file types are determined by the `allowed_file` function. The uploaded file is saved with a timestamp in its name to ensure uniqueness. First upload the image and then assign the returned file name to "pic_url".
+
 ## Error Handling
 
 - **404 Not Found**: Returned when a requested resource is not found.
@@ -273,4 +288,9 @@ curl http://localhost:5000/dailyQuestion
 ### Get Today in History
 ```bash
 curl http://localhost:5000/history
+```
+
+### Upload Picture
+```bash
+curl -X POST -F "pic=@/path/to/your/file.jpg" http://localhost:5000/upload_pic
 ```
