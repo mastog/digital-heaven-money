@@ -11,9 +11,9 @@ const cards = [
     name:
       "Kobe",
     status:
-      "Born",
+      "",
     date:
-      "1.26",
+      "1997",
     link: "https://google.com",
   },
   {
@@ -23,9 +23,9 @@ const cards = [
     name:
       "Kobe",
     status:
-      "Dead",
+      "",
     date:
-      "1.26",
+      "1997",
     link: "https://google.com",
   },
   {
@@ -35,9 +35,9 @@ const cards = [
     name:
       "Kobe",
     status:
-      "Dead",
+      "Born",
     date:
-      "1.26",
+      "1997",
     link: "https://google.com",
   },
 ];
@@ -61,7 +61,7 @@ import { date } from "astro:schema";
           {/* left upper corner: Name */}
           <h1 class="text-4xl font-bold">{card.name}</h1>
           {/* right upper corner: state Dead or Born */}
-          <h2 class="text-2xl font-semibold">{card.status}</h2>
+          {/* <h2 class="text-2xl font-semibold">{card.status}</h2> */}
           <div>
             <img
               src={
