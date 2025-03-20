@@ -1,5 +1,6 @@
 ---
 import { getYiJiData } from "../../utils/huangli.js";
+import Card from "../ui/Card.astro";
 
 const today = new Date();
 const dateNumber = today.getDate(); // date
@@ -10,26 +11,36 @@ const year = today.getFullYear();
 // dynamically generated based on dates or solar terms
 const { yi, ji } = getYiJiData(today);
 ---
+<section id="huangli" class="py-10 px-6 flex justify-center items-center">
+  <!-- Outer large container with the same style as your classmate's component -->
+  <Card>
+    <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6 w-full">Traditional Chinese Almanac</h2>
 
-<section id="huangli" class="py-10">
-  <div class="flex justify-center items-center gap-6">
+    <!-- Inner Flexbox container for the three cards with a max width -->
+    <div class="flex justify-center items-center gap-3 w-full">
 
-    <div class="bg-white shadow-md rounded-2xl p-6 w-1/5 border border-gray-200 hover:shadow-lg transition">
-      <h2 class="text-xl font-semibold text-green-600 mb-2">Suitable</h2>
-      <p class="text-gray-700">{yi}</p>
-    </div>
+      <div class="flex justify-center items-center gap-3">
+        <!-- Suitable Card -->
+        <div class="bg-white shadow-md rounded-[20px] border border-gray-200 hover:shadow-lg transition w-40 h-40 flex flex-col justify-center items-center">
+          <h3 class="text-lg font-semibold text-green-600">Suitable</h3>
+          <p class="text-gray-700 text-center mt-2 ">{yi}</p>
+        </div>
 
-    <div class="bg-gray-100 shadow-md rounded-2xl p-6 w-1/5 border border-gray-200 hover:shadow-lg transition">
-      <div class="text-center">
-        <div class="text-5xl font-bold text-black">{dateNumber}</div>
-        <div class="text-lg text-gray-600 mt-2">{weekDay}</div>
-        <div class="text-xl text-gray-800 mt-2">{year}</div>
+        <!-- Date and Weekday Card -->
+        <div class="bg-gray-100 shadow-md rounded-[20px] border border-gray-200 hover:shadow-lg transition w-40 h-40 flex flex-col justify-center items-center">
+          <div class="text-center">
+            <div class="text-4xl font-bold text-black">{dateNumber}</div>
+            <div class="text-lg text-gray-600 mt-2">{weekDay}</div>
+            <div class="text-md text-gray-800 mt-1">{year}</div>
+          </div>
+        </div>
+
+        <!-- Avoid Card -->
+        <div class="bg-white shadow-md rounded-[20px] border border-gray-200 hover:shadow-lg transition w-40 h-40 flex flex-col justify-center items-center">
+          <h3 class="text-lg font-semibold text-red-600">Avoid</h3>
+          <p class="text-gray-700 text-center mt-2">{ji}</p>
+        </div>
       </div>
     </div>
-
-    <div class="bg-white shadow-md rounded-2xl p-6 w-1/5 border border-gray-200 hover:shadow-lg transition">
-      <h2 class="text-xl font-semibold text-red-600 mb-2">Avoid</h2>
-      <p class="text-gray-700">{ji}</p>
-    </div>
-  </div>
+  </Card>
 </section>
