@@ -1,0 +1,103 @@
+---
+import { markdownify } from "../..//content/textConverter";
+import ImageMod from "../../components/ImageMod.astro";
+interface TestimonialItem {
+  avatar: string;
+  name: string;
+}
+
+interface TestimonialData {
+  enable: boolean;
+  title: string;
+  description: string;
+  testimonials: TestimonialItem[];
+}
+
+interface Props {
+  testimonialData: TestimonialData
+}
+
+const { testimonialData } = Astro.props as Props;
+---
+
+{
+  testimonialData.enable && (
+    <section class="section">
+      <div class="w-full max-w-[1280px] mx-auto">
+        <div class="relative flex flex-col-reverse items-center">
+          <div class="container">
+            <div class="row">
+              <div class="col-12">
+                <div class="swiper testimonial-slider">
+                  <div class="swiper-wrapper">
+                    {testimonialData.testimonials.map(
+                      (item: {
+                        avatar: string;
+                        name: string;
+                      }) => (
+                        <div class="swiper-slide">
+                          <div class="rounded-lg bg-green px-7 py-5 dark:bg-darkmode-light">
+                            <div class="text-text-dark dark:text-white">
+                                <ImageMod
+                                  height={400}
+                                  width={400}
+                                  class="rounded-full w-full"
+                                  src={item.avatar}
+                                  alt={item.name}
+                                  format="webp"
+                                />
+                              </div>
+                            <div class="mt-5 flex items-center">
+                              <div>
+                                <h3
+                                  set:text={item.name}
+                                  class="h5 font-primary font-semibold"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    )}
+                  </div>
+                  <div class="testimonial-slider-pagination mt-9 flex items-center justify-center text-center" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<script>
+  import { Swiper } from "swiper";
+  import "swiper/css";
+  import "swiper/css/pagination";
+  import { Autoplay, Pagination } from "swiper/modules";
+
+  new Swiper(".testimonial-slider", {
+    modules: [Pagination, Autoplay],
+    spaceBetween: 24,
+    loop: true,
+    centeredSlides: true,
+    autoplay: {
+      delay: 2500,
+      disableOnInteraction: false,
+    },
+    pagination: {
+      el: ".testimonial-slider-pagination",
+      type: "bullets",
+      clickable: false,
+    },
+    breakpoints: {
+      768: {
+        slidesPerView: 3,
+      },
+      992: {
+        slidesPerView: 5,
+      },
+    },
+  });
+</script>

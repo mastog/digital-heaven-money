@@ -4,10 +4,10 @@
 
 | Route           | Method | Description                     | Request Body Fields               | Response Body Fields               | Status Code |
 |-----------------|--------|---------------------------------|-----------------------------------|------------------------------------|-------------|
-| /register       | POST   | Register a new user            | username, password, email, photo_url | message                            | 201         |
+| /register       | POST   | Register a new user            | username, password, email, pic_url | message                            | 201         |
 | /login          | POST   | User login                     | username, password                | access_token                       | 200         |
 | /profile        | GET    | Get current user's profile    | None                              | user object                        | 200         |
-| /profile        | PUT    | Update current user's profile | username, email, photo_url        | updated user object                | 200         |
+| /profile        | PUT    | Update current user's profile | username, email, pic_url        | updated user object                | 200         |
 
 ## Data Management (CRUD)
 
@@ -34,8 +34,10 @@
 ## Other Functions
 
 | Route           | Method | Description                     | Request Body Fields               | Response Body Fields               | Status Code |
+|-----------------|--------|---------------------------------|-----------------------------------|------------------------------------|-------------|
 | /dailyQuestion  | GET    | Get daily question             | None                              | question, answerA, answerB, answerC, answerD, correctAnswer, explanation | 200         |
 | /history        | GET    | Get historical events for today | None                              | list of historical events          | 200         |
+| /upload_pic     | POST   | Upload a picture               | pic (file)                        | message, pic_name                  | 200         |
 
 ## Error Handlers
 
@@ -57,7 +59,7 @@
     "username": "string",
     "email": "string",
     "password": "string",
-    "photo_url": "string",
+    "pic_url": "string",
     "is_admin": "boolean"
   }
   ```
@@ -86,7 +88,7 @@
     "access_token": "string"
   }
   ```
-- **Description**: Authenticates a user and returns an access token for subsequent requests.
+- **Description**: Authenticates a user and returns an access token for subsequent requests. [Maintaining User Login State with JWT in the Frontend](docs/JWT.md)
 
 ### Profile
 
@@ -96,7 +98,7 @@
   ```json
   {
     "email": "string",
-    "photo_url": "string",
+    "pic_url": "string",
     "is_admin": "boolean"
   }
   ```
@@ -106,7 +108,7 @@
     "id": "integer",
     "username": "string",
     "email": "string",
-    "photo_url": "string",
+    "pic_url": "string",
     "is_admin": "boolean",
     "created_at": "datetime"
   }
@@ -205,6 +207,20 @@
   ```
 - **Description**: Returns historical events for the current date in MMDD format.
 
+### Upload Picture
+
+- **URL**: `/upload_pic`
+- **Method**: POST
+- **Request Format**: multipart/form-data with a file field
+- **Response Format**:
+  ```json
+  {
+    "message": "Picture uploaded successfully",
+    "pic_name": "string"
+  }
+  ```
+- **Description**: Uploads a picture file. Supported file types are determined by the `allowed_file` function. The uploaded file is saved with a timestamp in its name to ensure uniqueness. First upload the image and then assign the returned file name to "pic_url".
+
 ## Error Handling
 
 - **404 Not Found**: Returned when a requested resource is not found.
@@ -218,7 +234,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
   "username": "john_doe",
   "email": "john@example.com",
   "password": "securepassword",
-  "photo_url": "https://example.com/avatar.jpg",
+  "pic_url": "avatar.jpg",
   "is_admin": false
 }' http://localhost:5000/register
 ```
@@ -240,7 +256,7 @@ curl -H "Authorization: Bearer <access_token>" http://localhost:5000/profile
 ```bash
 curl -X PUT -H "Content-Type: application/json" -H "Authorization: Bearer <access_token>" -d '{
   "email": "new_email@example.com",
-  "photo_url": "https://example.com/new_avatar.jpg"
+  "pic_url": "new_avatar.jpg"
 }' http://localhost:5000/profile
 ```
 
@@ -273,4 +289,9 @@ curl http://localhost:5000/dailyQuestion
 ### Get Today in History
 ```bash
 curl http://localhost:5000/history
+```
+
+### Upload Picture
+```bash
+curl -X POST -F "pic=@/path/to/your/file.jpg" http://localhost:5000/upload_pic
 ```

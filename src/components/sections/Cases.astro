@@ -1,31 +1,50 @@
 ---
-import { Image } from "astro:assets";
+import { Image, imageConfig } from "astro:assets";
 import Card from "../ui/Card.astro";
 import Section from "./Section.astro";
 
 const cards = [
   {
     index: 0,
-    title:
-      "For a local restaurant, we implemented a targeted PPC campaign that resulted in a 50% increase in website traffic and a 25% increase in sales.",
+    description:
+      "Legendary NBA professional basketball player (born in 1978)",
+    name:
+      "Kobe",
+    status:
+      "",
+    date:
+      "1997",
     link: "https://google.com",
   },
   {
     index: 1,
-    title:
-      "For a B2B software company, we developed an SEO strategy that resulted in a first page ranking for key keywords and a 200% increase in organic traffic.",
+    description:
+      "Legendary NBA professional basketball player (born in 1978)",
+    name:
+      "Kobe",
+    status:
+      "",
+    date:
+      "1997",
     link: "https://google.com",
   },
   {
-    index: 1,
-    title:
-      "For a national retail chain, we created a social media marketing campaign that increased followers by 25% and generated a 20% increase in online sales.",
+    index: 2,
+    description:
+      "Legendary NBA professional basketball player (born in 1978)",
+    name:
+      "Kobe",
+    status:
+      "Born",
+    date:
+      "1997",
     link: "https://google.com",
   },
 ];
 
 import larrow from "../../assets/icon3.svg";
 import SectionTitle from "../ui/SectionTitle.astro";
+import { date } from "astro:schema";
 ---
 
 <Section id="cases">
@@ -33,22 +52,40 @@ import SectionTitle from "../ui/SectionTitle.astro";
     sectionTitle="Case Studies"
     description="Explore Real-Life Examples of Our Proven Digital Marketing Success through Our Case Studies"
   />
-  <div class="flex flex-col lg:flex-row justify-between rounded-[45px] p-1">
+  <div class="flex flex-col lg:flex-row justify-between rounded-[45px] p-1 mb-[30px]">
     {
       cards.map((card) => (
-        <Card>
-          <div class="flex p-[60px] h-full bg-dark text-gray rounded-[45px] m-[1px]">
-            <div class="flex flex-col gap-5">
-              <p>{card.title}</p>
-              <a href={card.link} class="flex items-center gap-[15px]">
-                <span class="text-green">Case Info</span>
-                <picture>
-                  <Image src={larrow} alt="Arrow pointing up right" />
-                </picture>
-              </a>
-            </div>
+      <Card>
+      <div class="flex p-[60px] h-full bg-dark text-gray rounded-[45px] m-[1px] flex-col">
+        <div class="flex justify-between items-center">
+          {/* left upper corner: Name */}
+          <h1 class="text-4xl font-bold">{card.name}</h1>
+          {/* right upper corner: state Dead or Born */}
+          {/* <h2 class="text-2xl font-semibold">{card.status}</h2> */}
+          <div>
+            <img
+              src={
+                card.status === "Born"
+                  ? "/born_and_dead/sun.svg"
+                  : "/born_and_dead/skull.svg"
+              }
+              alt={card.status}
+              class="h-8 w-8"
+            />
           </div>
-        </Card>
+        </div>
+        {/* small font: date */}
+        <p class="text-sm text-gray-400">{card.date}</p>
+        {/* middle font: description */}
+        <p class="text-lg mt-4">{card.description}</p>
+        <a href={card.link} class="flex items-center gap-[15px] mt-4">
+          <span class="text-green">Wiki Info</span>
+          <picture>
+            <Image src={larrow} alt="Arrow pointing up right" />
+          </picture>
+        </a>
+      </div>
+    </Card>
       ))
     }
   </div>
