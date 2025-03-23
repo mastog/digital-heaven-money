@@ -5,7 +5,7 @@ import siteConfig from '../data/site-config';
 
 <section class="w-full flex flex-col gap-8 mb-16 sm:mb-24">
     <div class="hero hero__bg w-full max-w-[980px] mx-auto aspect-[16/9]">
-        <div class="hero__content h-full flex flex-col justify-center items-center text-center">
+        <div class="hero__content h-full max-w-[800px] mx-auto flex flex-col justify-center items-center text-center">
             <div id="typejs" class="text-4xl font-bold"/>
         </div>
     </div>
@@ -35,12 +35,12 @@ import siteConfig from '../data/site-config';
     import typedjs from 'typed.js';
     const type = () => {
        const options = {
-        strings: ['我也不知道这个能干什么，先放在这儿吧', 'syb'],
-        typeSpeed: 50,
+        strings: ['I don\'t know what this can do, so I\'ll just leave it here for now', 'syb'],
+        typeSpeed: 30,
         startDelay: 300,
         loop: true,
         showCursor: false,
-        backSpeed:30
+        backSpeed:20
         };
         const typed = new typedjs('#typejs', options);
         typed.start();
