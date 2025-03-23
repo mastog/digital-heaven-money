@@ -8,6 +8,9 @@ from sqlalchemy import Column, Integer, String, Text, Boolean, DateTime, Foreign
 from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 
+from backend.services.utils import allowed_file
+
+
 class BaseModel(db.Model):
     __abstract__ = True
 
@@ -41,10 +44,11 @@ class BasePicModel(BaseModel):
     @pic_url.setter
     def pic_url(self, value):
         # When setting the photo URL, automatically adds path to the front
-        if value and not value.startswith("/uploaded_Pic/"):
-            self._pic_url = f"/uploaded_Pic/{value}"
-        else:
-            self._pic_url = value
+        if allowed_file(value):
+            if value and not value.startswith("/uploaded_Pic/"):
+                self._pic_url = f"/uploaded_Pic/{value}"
+            else:
+                self._pic_url = value
 
 
 # User Model

@@ -11,7 +11,7 @@ def test_register():
         "username": "testuser",
         "password": "testpassword",
         "email": "test@example.com",
-        "pic_url": "test_image_1742354460.jpg"
+        "pic_url": "test_image_1742704145.jpg"
     }
     response = requests.post(f"{BASE_URL}/register", json=payload)
     print("Response:", response.status_code, response.json())
@@ -39,7 +39,7 @@ def test_profile(access_token):
     print("Response (GET):", response.status_code, response.json())
 
     # put
-    payload = {"email": "updatedtest@example.com"}
+    payload = {"email": "updatedtest@example.com","pic_url": "updated_test_image_1742704145.jpg"}
     response = requests.put(f"{BASE_URL}/profile", headers=headers, json=payload)
     print("Response (PUT):", response.status_code, response.json())
 

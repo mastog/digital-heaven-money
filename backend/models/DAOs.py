@@ -30,6 +30,9 @@ class BaseDAO:
     # update
     def update(self, instance: ModelType, **data) -> ModelType:
         filtered_data = self._filter_valid_fields(data)
+        if 'pic_url' in filtered_data and filtered_data['pic_url']!=getattr(instance, 'pic_url', ''):
+            # pic_url is not empty and has been changed
+            delete_pic(instance)
         for key, value in filtered_data.items():
             setattr(instance, key, value)
         self.session.commit()
@@ -38,11 +41,7 @@ class BaseDAO:
 
     # delete
     def delete(self, instance: ModelType) -> None:
-        if hasattr(instance, 'pic_url') and instance.pic_url:
-            file_path = os.path.join(app.config['FILE_UPLOAD_DIR'], instance.pic_url.replace("/uploaded_Pic/", ""))
-            if os.path.exists(file_path):
-                # delete file
-                os.remove(file_path)
+        delete_pic(instance)
         self.session.delete(instance)
         self.session.commit()
 
@@ -53,6 +52,14 @@ class BaseDAO:
     # get all
     def get_all(self, **filters) -> list[ModelType]:
         return self.session.query(self.model).filter_by(**filters).all()
+
+# delete the updated pictures
+def delete_pic(instance):
+    if hasattr(instance, 'pic_url') and instance.pic_url:
+        file_path = os.path.join(app.config['FILE_UPLOAD_DIR'], instance.pic_url.replace("/uploaded_Pic/", ""))
+        if os.path.exists(file_path):
+            # delete file
+            os.remove(file_path)
 
 class UserDAO(BaseDAO):
     def __init__(self):
