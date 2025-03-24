@@ -1,15 +1,14 @@
 import os
-from backend import Config  # 替换为你的 Config 类的实际导入路径
+from backend import Config
 
 def write_file_to_upload_dir(filename, content):
-    # 获取文件上传目录
+    # Get the file upload directory
     upload_dir = Config.FILE_UPLOAD_DIR
 
-
-    # 构造文件完整路径
+    # Construct the full file path
     file_path = os.path.join(upload_dir, filename)
 
-    # 写入文件
+    # Write the file
     try:
         with open(file_path, 'wb') as f:
             f.write(content)
@@ -19,15 +18,15 @@ def write_file_to_upload_dir(filename, content):
         print(f"Error writing file: {e}")
         return False
 
-# 示例：写入一个文件
+# Example: Write a file
 if __name__ == '__main__':
-    # 示例内容（可以是任何你想要写入的数据）
+    # Example content (can be any data you want to write)
     file_content = b"Hello, this is a test file content."
 
-    # 示例文件名
+    # Example filename
     file_name = "example.txt"
 
-    # 调用函数写入文件
+    # Call the function to write the file
     success = write_file_to_upload_dir(file_name, file_content)
     if success:
         print("File written successfully!")
