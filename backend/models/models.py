@@ -22,12 +22,13 @@ class BaseModel(db.Model):
         result = {}
         for column in columns:
             value = getattr(self, column)
-            if isinstance(value, datetime):
-                result[column] = value.isoformat()
-            elif isinstance(value, date):
-                result[column] = value.isoformat()
-            else:
-                result[column] = value
+            if value:
+                if isinstance(value, datetime):
+                    result[column] = value.isoformat()
+                elif isinstance(value, date):
+                    result[column] = value.isoformat()
+                else:
+                    result[column] = value
         return result
 
 class BasePicModel(BaseModel):
