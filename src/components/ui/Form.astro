@@ -63,7 +63,7 @@ import decorForm from "../../assets/pics/contact-pic.png";
       ></input>
     </div>
 
-    <button type="submit" name="submit" class="btn-primary w-full">Send</button>
+    <button id="submit-button" type="submit" name="submit" class="btn-primary w-full">Login</button>
   </form>
   <picture class="absolute right-[-25%] top-[2%] bottom-[2%] hidden lg:block">
     <Image src={decorForm} alt="decor" />
@@ -104,6 +104,7 @@ import decorForm from "../../assets/pics/contact-pic.png";
     var cb1 = document.getElementById("checkbox1") as HTMLInputElement;
     var cb2 = document.getElementById("checkbox2") as HTMLInputElement;
     var confirmPasswordContainer = document.getElementById("confirm-password-container") as HTMLDivElement;
+    var submitButton = document.getElementById("submit-button") as HTMLDivElement;
 
     if (cb1 && cb2) {
       cb1.checked = true;
@@ -112,9 +113,11 @@ import decorForm from "../../assets/pics/contact-pic.png";
         if (cb2.checked) {
           cb1.checked = false;
           confirmPasswordContainer.classList.remove("hidden");
+          submitButton.textContent = "Join";
         } else {
           confirmPasswordContainer.classList.add("hidden");
           cb1.checked = true;
+          submitButton.textContent = "Login";
         }
       });
 
@@ -122,9 +125,11 @@ import decorForm from "../../assets/pics/contact-pic.png";
         if (cb1.checked) {
           cb2.checked = false;
           confirmPasswordContainer.classList.add("hidden");
+          submitButton.textContent = "Login";
         } else {
           cb2.checked = true;
           confirmPasswordContainer.classList.remove("hidden");
+          submitButton.textContent = "Join";
         }
       });
     }

@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import Card from "./Card.astro";
 
-import gob from "../../assets/icon6.svg";
+import gob from "../../assets/icon8.svg";
 import wob from "../../assets/icon7.svg";
 
 /* 
@@ -14,7 +14,7 @@ import wob from "../../assets/icon7.svg";
 const { index, titleTop, titleBottom, img, alt, link } = Astro.props;
 ---
 
-<Card isUnderline={true}>
+<Card isUnderline={true} index={index}>
   <div
     class=`h-[300px] w-full sm:h-full lg:gap-[60px] grid custom-grid lg:grid-cols-2 lg:grid-rows-1 p-8 sm:p-[50px] rounded-[45px] ${index === 1 ? 'bg-gray' : index === 2 ? 'bg-green' : 'bg-dark text-gray'}`
   >
