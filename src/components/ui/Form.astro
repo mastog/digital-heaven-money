@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import decorForm from "../../assets/pics/contact-pic.png";
+import decorForm from "../../assets/pics/contact-pic.svg";
 ---
 
 <div
@@ -65,8 +65,8 @@ import decorForm from "../../assets/pics/contact-pic.png";
 
     <button type="submit" name="submit" class="btn-primary w-full">Send</button>
   </form>
-  <picture class="absolute right-[-25%] top-[2%] bottom-[2%] hidden lg:block">
-    <Image src={decorForm} alt="decor" />
+  <picture class="ml-auto hidden lg:block">
+    <Image src={decorForm} alt="decor" class="h-auto max-h-full w-auto object-contain" />
   </picture>
 </div>
 <style>
