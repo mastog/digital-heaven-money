@@ -6,7 +6,7 @@ import string
 import random
 
 from flask import request, jsonify
-from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
+from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity, create_refresh_token
 from werkzeug.utils import secure_filename
 
 from backend import app
@@ -38,7 +38,15 @@ def login():
     if not user or not user.check_password(data.get('password')):
         return jsonify({'error': 'Invalid credentials'}), 401
     access_token = create_access_token(identity=str(user.id))
-    return jsonify({'access_token': access_token}), 200
+    refresh_token = create_refresh_token(identity=str(user.id))
+    return jsonify({'access_token': access_token,'refresh_token': refresh_token}),200
+
+@app.route("/refresh", methods=["POST"])
+@jwt_required(refresh=True)  # A valid refresh token is required
+def refresh():
+    current_user = get_jwt_identity()
+    new_access_token = create_access_token(identity=current_user)
+    return jsonify(access_token=new_access_token),200
 
 @app.route('/profile', methods=['GET', 'PUT'])
 @jwt_required()

@@ -45,7 +45,7 @@ import FormComponent from '../FormComponents.jsx';
            { name: 'password', label: 'Password*', type: 'password', placeholder: 'Password', required: true }
          ]}
          submitText="Login"
-         onSuccess={(data) => console.log('Form submission successful:', data)}
+         onSuccess: handleLoginSuccess
        />
     </div>
   </div>
@@ -89,6 +89,21 @@ import FormComponent from '../FormComponents.jsx';
   import { createRoot } from 'react-dom/client';
   import FormComponent from '../FormComponents.jsx';
 
+  function handleLoginSuccess(data) {
+    // Store tokens in localStorage
+    if (data.access_token && data.refresh_token) {
+      localStorage.setItem('accessToken', data.access_token);
+      localStorage.setItem('refreshToken', data.refresh_token);
+      alert('Login successful!');
+      window.location.href = '/';
+    }
+  }
+
+  function handleRegisterSuccess(data) {
+    alert('Registration successful!');
+    window.location.reload(); // Refresh the page
+  }
+
   function toggleForm(isSignUp) {
     var cb1 = document.getElementById("checkbox1") as HTMLInputElement;
     var cb2 = document.getElementById("checkbox2") as HTMLInputElement;
@@ -108,7 +123,8 @@ import FormComponent from '../FormComponents.jsx';
             { name: 'password', label: 'Password*', type: 'password', placeholder: 'Password', required: true },
             { name: 'confirm_password', label: 'Confirm Password*', type: 'password', placeholder: 'Confirm Password', required: true }
           ],
-          submitText: 'Join'
+          submitText: 'Join',
+          onSuccess: handleRegisterSuccess
         }
       : {
           apiUrl: '/login',
@@ -117,13 +133,11 @@ import FormComponent from '../FormComponents.jsx';
             { name: 'username', label: 'Username*', type: 'text', placeholder: 'Username', required: true },
             { name: 'password', label: 'Password*', type: 'password', placeholder: 'Password', required: true }
           ],
-          submitText: 'Login'
+          submitText: 'Login',
+          onSuccess: handleLoginSuccess
         };
     const root = createRoot(formComponent);
-    root.render(createElement(FormComponent, {
-      ...formProps,
-      onSuccess: (data) => console.log('Form submission successful:', data)
-    }));
+    root.render(createElement(FormComponent, formProps));
   }
   document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('checkbox1').addEventListener('change', () => toggleForm(false));

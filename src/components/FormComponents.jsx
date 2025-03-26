@@ -33,6 +33,7 @@
  */
 
 import { useRef } from 'react';
+import { apiRequest } from '../utils/api';
 
 const FormComponent = ({
   apiUrl,
@@ -40,7 +41,7 @@ const FormComponent = ({
   fields,
   isFileUpload = false,
   submitText = "Submit",
-  onSuccess // Add the onSuccess callback function
+  onSuccess
 }) => {
   const formRef = useRef(null);
 
@@ -48,42 +49,35 @@ const FormComponent = ({
     e.preventDefault();
     const formData = new FormData(formRef.current);
 
-    // Verify that the two passwords are the same (if there is a confirm_password field)
+
     const password = formData.get('password');
     const confirmPassword = formData.get('confirm_password');
-
     if (password && confirmPassword && password !== confirmPassword) {
       alert('Passwords do not match!');
       return;
     }
 
-    let config = {
-      method: method,
-      headers: {
-        'Content-Type': isFileUpload ? 'multipart/form-data' : 'application/json',
-      },
-      body: isFileUpload ? formData : JSON.stringify(Object.fromEntries(formData)),
-    };
-
     try {
-      const response = await fetch('http://127.0.0.1:5000'+apiUrl, config);
-      const data = await response.json();
+      // Ready request data
+      const requestData = isFileUpload ? formData : Object.fromEntries(formData);
 
-      if (!response.ok) {
-        throw new Error(data.error || `HTTP error! status: ${response.status}`);
-      }
+      // Request functions using the generic API
+      const responseData = await apiRequest(
+        apiUrl,
+        method,
+        requestData,
+        isFileUpload
+      );
 
-      console.log('Response:', data);
+      console.log('Registration successful:', responseData);
       alert('Success!');
 
-      // Call the onSuccess callback, passing the data to the parent component
       if (onSuccess) {
-        onSuccess(data);
+        onSuccess(responseData);
       }
 
       formRef.current.reset();
     } catch (error) {
-      console.error('Error:', error);
       alert(`Error! ${error.message}`);
     }
   };
