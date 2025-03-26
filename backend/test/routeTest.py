@@ -55,8 +55,8 @@ def test_crud(access_token):
     print("Response (POST):", response.status_code, response.json())
 
     #  POST creat memorial hall
-    payload = {"name": 'testMemorialHall', "creator_id": "1"}
-    response = requests.post(f"{BASE_URL}/crud/Memorial", headers=headers, json=payload)
+    payload = {"name": 'testDeceased', "creator_id": "1"}
+    response = requests.post(f"{BASE_URL}/crud/Deceased", headers=headers, json=payload)
     print("Response (POST):", response.status_code, response.json())
 
     #  GET
