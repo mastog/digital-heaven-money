@@ -4,7 +4,15 @@ import decorForm from "../../assets/pics/contact-pic.svg";
 import { createRoot } from 'react-dom/client';
 import FormComponent from '../FormComponents.jsx';
 ---
-
+<head>
+  <script type="module">
+    import RefreshRuntime from 'http://localhost:4321/@react-refresh';
+    RefreshRuntime.injectIntoGlobalHook(window);
+    window.$RefreshReg$ = () => {};
+    window.$RefreshSig$ = () => (type) => type;
+    window.__vite_plugin_react_preamble_installed__ = true;
+  </script>
+</head>
 <div
   class="flex relative justify-start items-center p-[60px] bg-[#F3F3F3] rounded-[45px] overflow-hidden"
 >
