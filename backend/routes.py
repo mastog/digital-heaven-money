@@ -89,7 +89,7 @@ def invite_users(id):  # memorial id
     alphabet = string.ascii_letters + string.digits  # Contains letters and numbers
     invite_key = ''.join(secrets.choice(alphabet) for _ in range(16))  # Generates a 16-bit random invitation code
     data = {'user_id': current_user_id,
-            'memorial_id': id,
+            'deceased_id': id,
             'key': invite_key}
     dao_factory.get_dao("InviteKey").create(**data)
     return jsonify({'invite_key': invite_key}), 201

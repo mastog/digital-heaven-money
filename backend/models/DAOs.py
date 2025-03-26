@@ -72,13 +72,10 @@ class UserDAO(BaseDAO):
             data['password_hash'] = generate_password_hash(password)
         return super().create(**data)
 
-class MemorialDAO(BaseDAO):
-    def __init__(self):
-        super().__init__(Memorial)
 
-class MemorialUserDAO(BaseDAO):
+class DeceasedUserDAO(BaseDAO):
     def __init__(self):
-        super().__init__(MemorialUser)
+        super().__init__(DeceasedUser)
 
 class InviteKeyDAO(BaseDAO):
     def __init__(self):
@@ -91,9 +88,9 @@ class InviteKeyDAO(BaseDAO):
             data['key_hash'] = generate_password_hash(key)
         return super().create(**data)
 
-class MemorialPhotoDAO(BaseDAO):
+class DeceasedPhotoDAO(BaseDAO):
     def __init__(self):
-        super().__init__(MemorialPhoto)
+        super().__init__(DeceasedPhoto)
 
 class DeceasedDAO(BaseDAO):
     def __init__(self):
@@ -115,13 +112,13 @@ class UserOfferingDAO(BaseDAO):
     def __init__(self):
         super().__init__(UserOffering)
 
-class MemorialOfferingDAO(BaseDAO):
+class DeceasedOfferingDAO(BaseDAO):
     def __init__(self):
-        super().__init__(MemorialOffering)
+        super().__init__(DeceasedOffering)
 
-class MemorialMessageDAO(BaseDAO):
+class DeceasedMessageDAO(BaseDAO):
     def __init__(self):
-        super().__init__(MemorialMessage)
+        super().__init__(DeceasedMessage)
 
 class RemembranceMessageDAO(BaseDAO):
     def __init__(self):
@@ -140,17 +137,16 @@ class DAOFactory:
         # Initialize all DAO instances
         self.dao_map = {
             "User": UserDAO(),
-            "Memorial": MemorialDAO(),
-            "MemorialUser": MemorialUserDAO(),
+            "DeceasedUser": DeceasedUserDAO(),
             "InviteKey": InviteKeyDAO(),
-            "MemorialPhoto": MemorialPhotoDAO(),
+            "DeceasedPhoto": DeceasedPhotoDAO(),
             "Deceased": DeceasedDAO(),
             "FamilyTree": FamilyTreeDAO(),
             "Offering": OfferingDAO(),
             "SpecialOffering": SpecialOfferingDAO(),
             "UserOffering": UserOfferingDAO(),
-            "MemorialOffering": MemorialOfferingDAO(),
-            "MemorialMessage": MemorialMessageDAO(),
+            "DeceasedOffering": DeceasedOfferingDAO(),
+            "DeceasedMessage": DeceasedMessageDAO(),
             "RemembranceMessage": RemembranceMessageDAO(),
             "DailyQuestion": DailyQuestionDAO(),
             "History": HistoryDAO()
