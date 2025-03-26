@@ -37,6 +37,7 @@ import FormComponent from '../FormComponents.jsx';
           id="checkbox2"
           name="checkbox2"
           class="form-checkbox text-black"
+        />
         <label for="checkbox2" class="flex items-center text-black">
           Sign Up
         </label>
@@ -45,16 +46,6 @@ import FormComponent from '../FormComponents.jsx';
     
     <!-- Form Component -->
     <div id="formComponent">
-       <FormComponent
-         apiUrl="/login"
-         method="POST"
-         fields={[
-           { name: 'username', label: 'Username*', placeholder: 'Username',type: 'text', required: true },
-           { name: 'password', label: 'Password*', type: 'password', placeholder: 'Password', required: true }
-         ]}
-         submitText="Login"
-         onSuccess: handleLoginSuccess
-       />
     </div>
   </div>
   <!-- Image Decoration -->
@@ -150,5 +141,6 @@ import FormComponent from '../FormComponents.jsx';
   document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('checkbox1').addEventListener('change', () => toggleForm(false));
     document.getElementById('checkbox2').addEventListener('change', () => toggleForm(true));
+    toggleForm(false)
   });
 </script>

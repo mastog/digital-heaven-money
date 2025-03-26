@@ -56,8 +56,7 @@ export const apiRequest = async (
     let response = await fetch(url, {
       method,
       headers,
-      body,
-      credentials: 'include' // Include cookies for session management
+      body
     });
 
     // Handle token expiration (401 Unauthorized)

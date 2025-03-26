@@ -21,6 +21,7 @@
  *     { name: 'confirm_password', label: 'Confirm Password', type: 'password', required: true },
  *   ]}
  *   onSuccess={(data) => console.log('Registration successful:', data)}
+ *   client:load
  * />
  *
  * Notes:
@@ -70,7 +71,6 @@ const FormComponent = ({
       );
 
       console.log('Registration successful:', responseData);
-      alert('Success!');
 
       if (onSuccess) {
         onSuccess(responseData);
