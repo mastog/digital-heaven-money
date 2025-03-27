@@ -41,6 +41,7 @@ const FormComponent = ({
   method,
   fields,
   isFileUpload = false,
+  requiresAuth = false,
   submitText = "Submit",
   onSuccess
 }) => {
@@ -67,7 +68,8 @@ const FormComponent = ({
         apiUrl,
         method,
         requestData,
-        isFileUpload
+        isFileUpload,
+        requiresAuth
       );
 
       console.log('Registration successful:', responseData);
