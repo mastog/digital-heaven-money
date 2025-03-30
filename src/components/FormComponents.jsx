@@ -1,16 +1,25 @@
 /**
  * Example code for creating a registration form using the FormComponent:
  *
- * @param {string} apiUrl - Set the API request URL for a registration form
- * @param {string} method - Set the HTTP request method for a registration form
- * @param {Array} fields - Array defining form fields, each field object includes:
- * @param {string} fields[].name - Field name, matching the backend API field name
- * @param {string} fields[].label - Field label displayed in the form
- * @param {string} fields[].type - Field type, such as "text", "email", "password", etc.
+* @param {string} apiUrl - The API request URL for the registration form
+ * @param {string} method - The HTTP request method for the registration form
+ * @param {Array} fields - An array defining form fields, where each field object includes:
+ * @param {string} fields[].name - The field name, corresponding to the backend API field name
+ * @param {string} fields[].label - The field label displayed in the form
+ * @param {string} fields[].type - The field type, such as "text", "email", "password", etc.
  * @param {boolean} fields[].required - Whether the field is required
- * @param {Function} onSuccess - Optional callback to handle successful form submission data
+ * @param {Function} onSuccess - Optional callback function to handle successful form submission data
+ * @param {boolean} isFileUpload - Determines whether the form handles file uploads (default: false)
+ * @param {boolean} requiresAuth - Indicates whether authentication is required for submission (default: false)
+ * @param {string} submitText - The text displayed on the submit button (default: "Submit")
+ * @param {Object} classConfig - An object containing class names for styling form elements
+ * @param {string} classConfig.form - The CSS class for the form element
+ * @param {string} classConfig.label - The CSS class for the label elements
+ * @param {string} classConfig.input - The CSS class for the input elements
+ * @param {string} classConfig.button - The CSS class for the submit button
  *
  * Example usage:
+ * import login from '../../utils/formConfigs/login';
  * <FormComponent
  *   apiUrl="/register"
  *   method="POST"
@@ -20,6 +29,7 @@
  *     { name: 'password', label: 'Password', type: 'password', required: true },
  *     { name: 'confirm_password', label: 'Confirm Password', type: 'password', required: true },
  *   ]}
+ *   classConfig: login,
  *   onSuccess={(data) => console.log('Registration successful:', data)}
  *   client:load
  * />
@@ -29,7 +39,6 @@
  * - password and confirm_password fields use "password" type to hide user input
  * - confirm_password field is used for front-end password confirmation
  * - pic_url field is optional (required: false)
- * - is_admin field uses "checkbox" type for boolean input
  * - onSuccess callback is invoked after successful form submission, receiving the API response data as a parameter
  */
 
