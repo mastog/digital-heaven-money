@@ -87,6 +87,7 @@ import FormComponent from '../FormComponents.jsx';
   import { createElement } from 'react';
   import { createRoot } from 'react-dom/client';
   import FormComponent from '../FormComponents.jsx';
+  import login from '../../utils/formConfigs/login'
 
   function handleLoginSuccess(data) {
     // Store tokens in localStorage
@@ -122,7 +123,9 @@ import FormComponent from '../FormComponents.jsx';
             { name: 'password', label: 'Password*', type: 'password', placeholder: 'Password', required: true },
             { name: 'confirm_password', label: 'Confirm Password*', type: 'password', placeholder: 'Confirm Password', required: true }
           ],
+          classConfig: login,
           submitText: 'Join',
+
           onSuccess: handleRegisterSuccess
         }
       : {
@@ -133,6 +136,7 @@ import FormComponent from '../FormComponents.jsx';
             { name: 'password', label: 'Password*', type: 'password', placeholder: 'Password', required: true }
           ],
           submitText: 'Login',
+          classConfig: login,
           onSuccess: handleLoginSuccess
         };
     const root = createRoot(formComponent);

@@ -43,6 +43,7 @@ const FormComponent = ({
   isFileUpload = false,
   requiresAuth = false,
   submitText = "Submit",
+  classConfig = {}, // classConfig is accepted here as props
   onSuccess
 }) => {
   const formRef = useRef(null);
@@ -85,17 +86,17 @@ const FormComponent = ({
   };
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit} className="bg-gray sm:p-6 h-full w-full lg:max-w-lg">
+    <form ref={formRef} onSubmit={handleSubmit} className={classConfig.form || ""}>
       {fields.map((field) => (
         <div key={field.name} className="mb-4">
-          <label htmlFor={field.name} className="block text-black mb-2">{field.label}</label>
+          <label htmlFor={field.name} className={classConfig.label || ""}>{field.label}</label>
           {field.type === 'file' ? (
             <input
               type={field.type}
               id={field.name}
               name={field.name}
               required={field.required}
-              className="w-full px-[30px] py-[18px] border border-black rounded-[14px] text-black outline-none"
+              className={classConfig.input || ""}
             />
           ) : (
             <input
@@ -104,12 +105,12 @@ const FormComponent = ({
               name={field.name}
               placeholder={field.placeholder}
               required={field.required}
-              className="w-full px-[30px] py-[18px] border border-black rounded-[14px] text-black outline-none"
+              className={classConfig.input || ""}
             />
           )}
         </div>
       ))}
-      <button type="submit" className="btn-primary w-full">
+      <button type="submit" className={classConfig.button || ""}>
         {submitText}
       </button>
     </form>
