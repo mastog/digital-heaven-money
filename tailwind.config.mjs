@@ -19,6 +19,7 @@ export default {
       },
       colors: {
         green: "var(--green)",
+        realgreen: "var(--realgreen)",
         black: "var(--black)",
         dark: "var(--dark)",
         darkgray: "var(--darkgray)",

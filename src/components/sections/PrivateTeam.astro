@@ -1,6 +1,7 @@
 ---
 import SectionTitle from "../ui/SectionTitle.astro";
 import TeamCard from "../ui/TeamCard.astro";
+import AddTeamCard from "../ui/AddTeamCard.astro";
 import Section from "./Section.astro";
 
 const description =
@@ -117,6 +118,7 @@ const team = [
     <div
       class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 grid-rows-2 gap-10"
     >
+      <AddTeamCard />
       {
         team.map((member, index) => (
           <TeamCard
