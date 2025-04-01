@@ -14,6 +14,21 @@ const {
 ---
 
 <style>
+    .description {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 5;
+        overflow: hidden;
+        position: relative;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        transition: max-height 0.3s ease-in-out;
+    }
+
+    .description.expanded {
+        -webkit-line-clamp: unset; 
+        overflow: visible;
+    }
     article.enlarged{
         margin-bottom: 300px;
         transition: margin-bottom 0.3s ease-in-out;
@@ -86,11 +101,14 @@ const {
             </span>
         </div>
         <p
-            class="text-[1.1rem] sm:text-base text-light-texto-secondary dark:text-dark-texto-secondary"
+            class="description text-[1.1rem] sm:text-base text-light-texto-secondary dark:text-dark-texto-secondary w-full"
+            id={`accordion-${id}`}
         >
             {description}
         </p>
-        <AccordionButton dataTarget={id} />
+        {description.length > 220 && (
+            <AccordionButton dataTarget={id} />
+        )}
     </div>
     <div
         class="relative job-picture top-0 p-2 flex flex-col justify-center items-center gap-4 sm:absolute h-[200px] w-[200px] object-contain rounded-3xl bg-white "
