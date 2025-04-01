@@ -64,10 +64,13 @@ const pics = [
                 // If the clicked image already has the .enlarged class, remove it
                 if (this.classList.contains('enlarged')) {
                     this.classList.remove('enlarged');
+                    this.parentElement.parentElement.classList.remove('enlarged');
                 } else {
                     images.forEach(image => image.classList.remove('enlarged'));
+                    images.forEach(image => image.parentElement.parentElement.classList.remove('enlarged'));
                     // Otherwise, toggle the .enlarged class to enlarge it
                     this.classList.add('enlarged');
+                    this.parentElement.parentElement.classList.add('enlarged');
                 }
             });
         });
