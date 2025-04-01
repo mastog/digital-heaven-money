@@ -21,7 +21,7 @@ const {
         overflow: hidden;
         position: relative;
         word-wrap: break-word;
-        overflow-wrap: break-word;
+        overflow-wrap: anywhere;
         transition: max-height 0.3s ease-in-out;
     }
 
@@ -101,7 +101,7 @@ const {
             </span>
         </div>
         <p
-            class="description text-[1.1rem] sm:text-base text-light-texto-secondary dark:text-dark-texto-secondary w-full"
+            class="description text-[1.1rem] sm:text-base text-light-texto-secondary dark:text-dark-texto-secondary min-h-[120px] w-full"
             id={`accordion-${id}`}
         >
             {description}
