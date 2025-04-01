@@ -1,0 +1,90 @@
+---
+import { Image } from "astro:assets";
+import AccordionButton from "./AccordionButton.astro";
+import TechItem from "./TechItem.astro";
+
+const {
+    id,
+    name,
+    picture,
+    time,
+    title,
+    description
+} = Astro.props;
+---
+
+<style>
+    .enlarged {
+    transform: scale(3);
+    transform-origin: top left; /* 可选: 设置缩放的起点 */
+    transition: transform 0.3s ease-in-out;
+    z-index: 100;
+    }
+    .job-card img {
+        cursor: pointer;
+        border-radius: 10px;
+    }
+    @media screen and (min-width: 640px) {
+        .job-card:nth-child(2n) {
+            transform: translateX(100%);
+            padding-right: 0;
+        }
+
+        .job-card:nth-child(2n + 1) {
+            padding-left: 0;
+            text-align: right;
+            padding-right: 1.5rem;
+        }
+
+        .job-card:nth-child(2n + 1) .job-picture {
+            left: calc(100% + 2rem);
+        }
+
+        .job-card:nth-child(2n) .job-picture {
+            left: calc(-120px - 7rem);
+        }
+
+        .job-card:nth-child(2n + 1) .dot {
+            transform: rotate(180deg);
+            left: calc(100% - 0.75rem);
+        }
+
+    }
+</style>
+<article
+    class="job-card group relative flex flex-col pl-6 gap-4 sm:w-[50%] sm:even:translate-x-full pr-0 sm:odd:pl-0 odd:pr-6"
+>
+
+    <img src="/dot.svg" alt="dot" class="dot absolute top-0 left-[-10px] h-[24px] w-[24px] rounded-full z-[1]" />
+
+    <div
+        class="job-picture top-0 p-2 flex flex-col justify-center items-center gap-4 sm:absolute h-[200px] w-[200px] object-contain rounded-3xl bg-white"
+    >
+        <Image
+            class="w-full h-auto transition hover:scale-110"
+            src={picture}
+            alt={`Picture of ${name} on ${time}`}
+            loading="lazy"
+        />
+    </div>
+    <div class="flex flex-col">
+        <div class="flex flex-col mb-4">
+            <h1
+                class="text-light-texto-primary dark:text-dark-texto-primary font-black text-xl"
+            >
+                {title}
+            </h1>
+            <span
+                class="text-light-gray-primary dark:text-dark-gray-primary font-bold text-base"
+            >
+                {time}
+            </span>
+        </div>
+        <p
+            class="text-[1.1rem] sm:text-base text-light-texto-secondary dark:text-dark-texto-secondary"
+        >
+            {description}
+        </p>
+        <AccordionButton dataTarget={id} />
+    </div>
+</article>

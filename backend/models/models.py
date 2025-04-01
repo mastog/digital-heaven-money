@@ -134,6 +134,7 @@ class DeceasedPhoto(BasePicModel):
     __tablename__ = 'deceased_photos'
     id = Column(Integer, primary_key=True, autoincrement=True)
     deceased_id = Column(Integer, ForeignKey('deceased.id', ondelete='CASCADE'), nullable=False)
+    title = Column(Text)
     description = Column(Text)
     photo_date = Column(Date)
     uploaded_at = Column(DateTime, server_default=db.func.current_timestamp())
