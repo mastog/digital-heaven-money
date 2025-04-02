@@ -1,12 +1,26 @@
 ---
 import Card from "../ui/Card.astro";
+// 添加客户端交互逻辑
+const enableClientScript = true;
 ---
+
 <Card>
     <!-- Profile Header -->
-    <header class="w-full max-w-2xl bg-green rounded-lg p-6 flex flex-col items-center mx-auto">
+    <header class="w-full max-w-2xl bg-green rounded-lg p-6 flex flex-col items-center mx-auto relative">
         <img src="/public/images/profile.jpg" alt="Profile Picture" class="w-24 h-24 rounded-full">
         <h1 class="text-2xl font-bold mt-3">John Doe</h1>
-        <h5 class="text-sm text-gray-500">San Francisco, CA</h5>
+        <h5 class="text-sm text-gray-500 mb-4">San Francisco, CA</h5>
+        
+        <!-- 新增编辑开关 -->
+        <div class="edit-switch">
+            <label class="switch">
+                <input type="checkbox" id="editToggle">
+                <span class="slider">
+                    <span class="edit-text">Edit</span>
+                    <span class="view-text">View</span>
+                </span>
+            </label>
+        </div>
     </header>
 
     <!-- Main Content -->
@@ -15,54 +29,44 @@ import Card from "../ui/Card.astro";
             <!-- About Section -->
             <section class="bg-green rounded-lg p-5">
                 <h2 class="text-xl font-semibold mb-2">About</h2>
-                <p class="text-gray-700">A passionate software engineer with experience in building scalable applications and modern web technologies.</p>
+                <p class="text-gray-700 editable">A passionate software engineer with experience in building scalable applications and modern web technologies.</p>
             </section>
         </Card>
 
         <!-- Personal Details Section -->
         <section class="bg-green rounded-lg p-5 mb-[30px]">
             <h2 class="text-xl font-semibold mb-4">Personal Details</h2>
-            <div class="card-info">
-                <div>
-                    <h4 class="font-semibold flex items-center">
-                        <img src="/" alt="User Icon" class="w-5 h-5 mr-2"> Full Name
-                    </h4>
+            <div class="card-info grid grid-cols-2 gap-4">
+                <!-- 为每个可编辑项添加editable类 -->
+                <!-- 姓名 -->
+                <div class="font-semibold flex items-center">
+                    <img src="/" alt="User Icon" class="w-5 h-5 mr-2"> Full Name
                 </div>
-                <div>
-                    <p>John Doe</p>
+                <p class="editable">John Doe</p>
+
+                <!-- 出生日期 -->
+                <div class="font-semibold flex items-center">
+                    <img src="/" alt="Calendar Icon" class="w-5 h-5 mr-2"> Date of Birth
                 </div>
-                <div>
-                    <h4 class="font-semibold flex items-center">
-                        <img src="/" alt="Calendar Icon" class="w-5 h-5 mr-2"> Date of Birth
-                    </h4>
+                <p class="editable">January 1, 1990</p>
+
+                <!-- 性别 -->
+                <div class="font-semibold flex items-center">
+                    <img src="/" alt="Gender Icon" class="w-5 h-5 mr-2"> Gender
                 </div>
-                <div>
-                    <p>January 1, 1990</p>
+                <p class="editable">Femboy</p>
+
+                <!-- 邮箱 -->
+                <div class="font-semibold flex items-center">
+                    <img src="/" alt="Email Icon" class="w-5 h-5 mr-2"> Email
                 </div>
-                <div>
-                    <h4 class="font-semibold flex items-center">
-                        <img src="/" alt="Gender Icon" class="w-5 h-5 mr-2"> Gender
-                    </h4>
+                <p class="editable">johndoe@example.com</p>
+
+                <!-- 地址 -->
+                <div class="font-semibold flex items-center">
+                    <img src="/" alt="Location Icon" class="w-5 h-5 mr-2"> Location
                 </div>
-                <div>
-                    <p>Femboy</p>
-                </div>
-                <div>
-                    <h4 class="font-semibold flex items-center">
-                        <img src="/" alt="Email Icon" class="w-5 h-5 mr-2"> Email
-                    </h4>
-                </div>
-                <div>
-                    <p>johndoe@example.com</p>
-                </div>
-                <div>
-                    <h4 class="font-semibold flex items-center">
-                        <img src="/" alt="Location Icon" class="w-5 h-5 mr-2"> Location
-                    </h4>
-                </div>
-                <div>
-                    <p>San Francisco, CA</p>
-                </div>
+                <p class="editable">San Francisco, CA</p>
             </div>
         </section>
     </main>
@@ -75,7 +79,9 @@ import Card from "../ui/Card.astro";
         }
 
         .card-info > div {
-            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            height: 100%;
         }
 
         .card-info h4 {
@@ -104,7 +110,122 @@ import Card from "../ui/Card.astro";
             height: 20px;
             margin-right: 8px;
         }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 120px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(86px);
+        }
+
+        .edit-text, .view-text {
+            color: white;
+            font-size: 0.8rem;
+            z-index: 1;
+            transition: opacity 0.4s;
+        }
+
+        .view-text { opacity: 1; }
+        .edit-text { opacity: 0; }
+
+        input:checked + .slider .view-text { opacity: 0; }
+        input:checked + .slider .edit-text { opacity: 1; }
+
+        .editable {
+            margin: 0px 5px;
+            border: 2px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        /* 可编辑状态样式 */
+        .editable[contenteditable="true"] {
+            background: #f8f8f8;
+            border: 2px solid #e0e0e0;
+            display: inline-flex;
+            align-items: center;
+            min-height: calc(1em + 4px);
+            line-height: 1.5;
+            margin: 0px 2px;
+            vertical-align: baseline;
+            padding: 0 3px;
+            box-sizing: content-box;
+        }
+
+        .editable[contenteditable="true"]:focus {
+            background: #fff;
+            border-color: #90caf9;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(144, 202, 249, 0.3);
+        }
     </style>
 
+    {enableClientScript && (
+        <script>
+            // 切换编辑状态
+            const toggleEdit = document.getElementById('editToggle');
+            const editables = document.querySelectorAll('.editable');
+
+            toggleEdit.addEventListener('change', function() {
+                const isEdit = this.checked;
+                editables.forEach(element => {
+                    element.contentEditable = isEdit;
+                    // 动态添加/移除类名而不是直接修改样式
+                    element.classList.toggle('editing-mode', isEdit);
+                    
+                    // 保持原有光标位置
+                    if(isEdit) {
+                        const range = document.createRange();
+                        const sel = window.getSelection();
+                        range.selectNodeContents(element);
+                        range.collapse(true);
+                        sel.removeAllRanges();
+                        sel.addRange(range);
+                    }
+                });
+            });
+        </script>
+    )}
 </Card>
 
