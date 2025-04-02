@@ -1,39 +1,30 @@
 ---
 import Card from "../ui/Card.astro";
 ---
-<head>
-
-</head>
-
-<body class="bg-gray-200 text-gray-900 flex flex-col items-center justify-center min-h-screen p-5">
-
 <Card>
     <!-- Profile Header -->
-    <header class="w-full max-w-2xl bg-gray-300 rounded-lg p-6 flex flex-col items-center mx-auto">
+    <header class="w-full max-w-2xl bg-green rounded-lg p-6 flex flex-col items-center mx-auto">
         <img src="/public/images/profile.jpg" alt="Profile Picture" class="w-24 h-24 rounded-full">
         <h1 class="text-2xl font-bold mt-3">John Doe</h1>
-        <h3 class="text-lg text-gray-600">Software Engineer</h3>
         <h5 class="text-sm text-gray-500">San Francisco, CA</h5>
-        <a href="https://johndoe.dev" target="_blank" class="text-blue-500 hover:underline mt-2">johndoe.dev</a>
     </header>
 
     <!-- Main Content -->
     <main class="w-full max-w-2xl grid gap-6 mt-6 mx-auto">
         <Card>
             <!-- About Section -->
-            <section class="bg-gray-300 rounded-lg p-5">
+            <section class="bg-green rounded-lg p-5">
                 <h2 class="text-xl font-semibold mb-2">About</h2>
                 <p class="text-gray-700">A passionate software engineer with experience in building scalable applications and modern web technologies.</p>
             </section>
         </Card>
 
         <!-- Personal Details Section -->
-        <section class="bg-gray-300 rounded-lg p-5">
+        <section class="bg-green rounded-lg p-5 mb-[30px]">
             <h2 class="text-xl font-semibold mb-4">Personal Details</h2>
             <div class="card-info">
                 <div>
                     <h4 class="font-semibold flex items-center">
-
                         <img src="/" alt="User Icon" class="w-5 h-5 mr-2"> Full Name
                     </h4>
                 </div>
@@ -50,20 +41,19 @@ import Card from "../ui/Card.astro";
                 </div>
                 <div>
                     <h4 class="font-semibold flex items-center">
+                        <img src="/" alt="Gender Icon" class="w-5 h-5 mr-2"> Gender
+                    </h4>
+                </div>
+                <div>
+                    <p>Femboy</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold flex items-center">
                         <img src="/" alt="Email Icon" class="w-5 h-5 mr-2"> Email
                     </h4>
                 </div>
                 <div>
-                    <p><a href="mailto:johndoe@example.com">johndoe@example.com</a></p>
-                </div>
-                <div>
-                    <h4 class="font-semibold flex items-center">
-
-                        <img src="/" alt="Phone Icon" class="w-5 h-5 mr-2"> Phone
-                    </h4>
-                </div>
-                <div>
-                    <p>(123) 456-7890</p>
+                    <p>johndoe@example.com</p>
                 </div>
                 <div>
                     <h4 class="font-semibold flex items-center">
@@ -72,59 +62,6 @@ import Card from "../ui/Card.astro";
                 </div>
                 <div>
                     <p>San Francisco, CA</p>
-                </div>
-                <div>
-                    <h4 class="font-semibold flex items-center">
-                        <img src="/" alt="LinkedIn Icon" class="w-5 h-5 mr-2"> LinkedIn
-                    </h4>
-                </div>
-                <div>
-                    <p><a href="https://linkedin.com/in/johndoe" target="_blank">linkedin.com/in/johndoe</a></p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Work Experience Section -->
-        <section class="bg-gray-300 rounded-lg p-5">
-            <h2 class="text-xl font-semibold mb-4">Work Experience</h2>
-            <div class="card-info">
-                <div>
-                    <h4 class="font-semibold">Senior Developer</h4>
-                </div>
-                <div>
-                    <p>2021 - Present</p>
-                </div>
-                <div>
-                    <h4 class="font-semibold">Company</h4>
-                </div>
-                <div>
-                    <p>TechCorp</p>
-                </div>
-                <div>
-                    <h4 class="font-semibold">Description</h4>
-                </div>
-                <div>
-                    <p>Working on innovative projects at TechCorp.</p>
-                </div>
-            </div>
-            <div class="card-info">
-                <div>
-                    <h4 class="font-semibold">Software Engineer</h4>
-                </div>
-                <div>
-                    <p>2018 - 2021</p>
-                </div>
-                <div>
-                    <h4 class="font-semibold">Company</h4>
-                </div>
-                <div>
-                    <p>DevStudio</p>
-                </div>
-                <div>
-                    <h4 class="font-semibold">Description</h4>
-                </div>
-                <div>
-                    <p>Developed modern web applications at DevStudio.</p>
                 </div>
             </div>
         </section>
@@ -170,5 +107,4 @@ import Card from "../ui/Card.astro";
     </style>
 
 </Card>
-</body>
 
