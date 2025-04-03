@@ -32,8 +32,8 @@ export function getYiJiData(date) {
     }
     return shuffled;
   }
-  const minCount = 1;
-  const maxCount = 1;
+  const minCount = 3;
+  const maxCount = 6;
   const yiCount = Math.floor(seededRandom(seed) * (maxCount - minCount + 1)) + minCount;
   const jiCount = Math.floor(seededRandom(seed + 1) * (maxCount - minCount + 1)) + minCount;
 

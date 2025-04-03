@@ -1,6 +1,7 @@
 ---
 import { getYiJiData } from "../../utils/huangli.js";
 import Card from "../ui/Card.astro";
+import FlipCard from "../FlipCard.jsx";
 
 const today = new Date();
 const dateNumber = today.getDate(); // date
@@ -12,19 +13,27 @@ const year = today.getFullYear();
 // dynamically generated based on dates or solar terms
 const { yi, ji } = getYiJiData(today);
 ---
+<style>
+  @media (max-width: 800px) {
+  .flex.flex-wrap {
+    flex-direction: column;
+  }
+}
+</style>
 <section id="huangli" class="py-10 px-6 mb-20 flex justify-center items-center">
 
   <Card>
     <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6 w-full">Traditional Chinese Almanac</h2>
 
     <!-- Inner Flexbox container -->
-    <div class="flex justify-center items-center gap-3 w-full">
+    <div class="flex flex-wrap justify-center items-center gap-3 w-full">
 
-      <div class="flex justify-center items-center gap-3">
+      <div class="flex flex-wrap justify-center items-center gap-3">
         <!-- Suitable Card -->
         <div class="bg-white shadow-md rounded-[20px] border border-gray-200 hover:shadow-lg transition w-60 h-60 p-2 flex flex-col justify-center items-center">
           <h3 class="text-lg font-semibold text-realgreen">Suitable</h3>
-          <p class="text-gray-700 text-center mt-2 ">{yi}</p>
+          <FlipCard items={yi} client:load/>
+
         </div>
 
         <!-- Date and Weekday Card -->
@@ -44,7 +53,7 @@ const { yi, ji } = getYiJiData(today);
         <!-- Avoid Card -->
         <div class="bg-white shadow-md rounded-[20px] border border-gray-200 hover:shadow-lg transition w-60 h-60 p-2 flex flex-col justify-center items-center">
           <h3 class="text-lg font-semibold text-red-600">Avoid</h3>
-          <p class="text-gray-700 text-center mt-2">{ji}</p>
+          <FlipCard items={ji} client:load/>
         </div>
       </div>
     </div>
