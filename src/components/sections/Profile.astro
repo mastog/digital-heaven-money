@@ -35,36 +35,30 @@ const enableClientScript = true;
 
         <!-- Personal Details Section -->
         <section class="bg-green rounded-lg p-5 mb-[30px]">
-            <h2 class="text-xl font-semibold mb-4">Personal Details</h2>
+            <h2 class="text-xl font-semibold mb-4">Personal Details</h2>            
             <div class="card-info grid grid-cols-2 gap-4">
-                <!-- 为每个可编辑项添加editable类 -->
-                <!-- 姓名 -->
                 <div class="font-semibold flex items-center">
-                    <img src="/" alt="User Icon" class="w-5 h-5 mr-2"> Full Name
+                    <img src="/images/profile1.svg" alt="User Icon" class="w-5 h-5 mr-2"> Full Name
                 </div>
                 <p class="editable">John Doe</p>
 
-                <!-- 出生日期 -->
                 <div class="font-semibold flex items-center">
-                    <img src="/" alt="Calendar Icon" class="w-5 h-5 mr-2"> Date of Birth
+                    <img src="/images/profile2.svg" alt="Calendar Icon" class="w-5 h-5 mr-2"> Date of Birth
                 </div>
                 <p class="editable">January 1, 1990</p>
 
-                <!-- 性别 -->
                 <div class="font-semibold flex items-center">
-                    <img src="/" alt="Gender Icon" class="w-5 h-5 mr-2"> Gender
+                    <img src="/images/profile3.svg" alt="Gender Icon" class="w-5 h-5 mr-2"> Gender
                 </div>
                 <p class="editable">Femboy</p>
 
-                <!-- 邮箱 -->
                 <div class="font-semibold flex items-center">
-                    <img src="/" alt="Email Icon" class="w-5 h-5 mr-2"> Email
+                    <img src="/images/profile4.svg" alt="Email Icon" class="w-5 h-5 mr-2"> Email
                 </div>
                 <p class="editable">johndoe@example.com</p>
 
-                <!-- 地址 -->
                 <div class="font-semibold flex items-center">
-                    <img src="/" alt="Location Icon" class="w-5 h-5 mr-2"> Location
+                    <img src="/images/profile5.svg" alt="Location Icon" class="w-5 h-5 mr-2"> Location
                 </div>
                 <p class="editable">San Francisco, CA</p>
             </div>
@@ -76,12 +70,38 @@ const enableClientScript = true;
             display: grid;
             grid-template-columns: 1fr 2fr;
             gap: 1rem;
+            row-gap: 1.5rem;
         }
 
         .card-info > div {
             display: flex;
             align-items: center;
             height: 100%;
+            position: relative; /* 使伪元素相对于父元素定位 */
+        }
+
+        .card-info > div:not(:last-of-type)::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -13px; /* 调整分割线的位置，使其与上下行有相同的距离 */
+            height: 2px; /* 分割线的高度 */
+            background-color: rgba(0, 0, 0, 0.1); /* 分割线的颜色 */
+        }
+
+        .card-info > p {
+            position: relative; /* 使伪元素相对于 p 元素定位 */
+        }
+
+        .card-info > p:not(:last-of-type)::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -15px; /* 调整分割线的位置 */
+            height: 2px; /* 分割线的高度 */
+            background-color: rgba(0, 0, 0, 0.1); /* 分割线的颜色 */
         }
 
         .card-info h4 {
@@ -89,12 +109,7 @@ const enableClientScript = true;
         }
 
         .card-info p {
-            color: gray;
-        }
-
-        .card-info a {
-            color: blue;
-            text-decoration: underline;
+            color: #000;
         }
 
         body {
@@ -153,7 +168,7 @@ const enableClientScript = true;
         }
 
         input:checked + .slider {
-            background-color: #2196F3;
+            background-color: #8d8d8d;
         }
 
         input:checked + .slider:before {
@@ -161,8 +176,9 @@ const enableClientScript = true;
         }
 
         .edit-text, .view-text {
-            color: white;
-            font-size: 0.8rem;
+            color: black;
+            font-size: 0.9rem;
+            margin: 0 5px;
             z-index: 1;
             transition: opacity 0.4s;
         }
@@ -174,7 +190,7 @@ const enableClientScript = true;
         input:checked + .slider .edit-text { opacity: 1; }
 
         .editable {
-            margin: 0px 5px;
+            padding: 5px 10px;
             border: 2px solid transparent;
             transition: border-color 0.2s;
         }
@@ -183,19 +199,19 @@ const enableClientScript = true;
         .editable[contenteditable="true"] {
             background: #f8f8f8;
             border: 2px solid #e0e0e0;
+            border-radius: 10px;
             display: inline-flex;
             align-items: center;
             min-height: calc(1em + 4px);
             line-height: 1.5;
-            margin: 0px 2px;
+            padding: 5px 10px;
             vertical-align: baseline;
-            padding: 0 3px;
             box-sizing: content-box;
         }
 
         .editable[contenteditable="true"]:focus {
             background: #fff;
-            border-color: #90caf9;
+            border-color: #8d8d8d;
             outline: none;
             box-shadow: 0 0 0 2px rgba(144, 202, 249, 0.3);
         }
