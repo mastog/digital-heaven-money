@@ -21,8 +21,8 @@ const FlipCard = ({ items }) => {
       {items.map((item, index) => (
         <span
           key={index}
-          className={`flip-card-item absolute w-full h-full flex items-center justify-center text-gray-700 text-center mt-2 transition-all duration-500 ${
-            index === currentIndex ? 'active' : 'opacity-0'
+          className={`flip-card-item absolute w-full h-full flex items-center justify-center text-gray-700 text-center mt-2 transition-all duration-500 transform ${
+            index === currentIndex ? 'active' : 'translate-y-full opacity-0'
           }`}
           data-index={index}
         >
