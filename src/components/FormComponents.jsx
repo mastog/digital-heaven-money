@@ -52,15 +52,17 @@ const FormComponent = ({
   isFileUpload = false,
   requiresAuth = false,
   submitText = "Submit",
+  cancelText = "Cancel",
   classConfig = {}, // classConfig is accepted here as props
-  onSuccess
+  onSuccess,
+  onClose,
+  showCancelButton = false
 }) => {
   const formRef = useRef(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(formRef.current);
-
 
     const password = formData.get('password');
     const confirmPassword = formData.get('confirm_password');
@@ -119,9 +121,16 @@ const FormComponent = ({
           )}
         </div>
       ))}
-      <button type="submit" className={classConfig.button || ""}>
-        {submitText}
-      </button>
+      <div className="flex justify-between gap-6 mt-10">
+        {showCancelButton && (
+          <button type="button" onClick={onClose} className={classConfig.button || ""}>
+            {cancelText}
+          </button>
+        )}
+        <button type="submit" className={classConfig.button || ""}>
+          {submitText}
+        </button>
+      </div>
     </form>
   );
 };

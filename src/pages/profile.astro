@@ -1,13 +1,37 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
 import Profile from "../components/sections/Profile.astro";
-import Sponsors from "../components/sections/Sponsors.astro";
-import Services from "../components/sections/Services.astro";
+
+import ModalForm from '../components/ModalForm';
+import modalStyles from '../utils/formConfigs/modal';
+
+const formFields = [
+  { name: 'username', label: 'Username', type: 'text' },
+  { name: 'email', label: 'Email', type: 'email' },
+  { name: 'bio', label: 'Bio', type: 'textarea' }
+];
 ---
 
 <MainLayout title="About us">
 	<main class="space-y-20">
         <div class="py-0.5" />
         <Profile />
+        <ModalForm
+            apiUrl="/api/submit"
+            method="POST"
+            fields={formFields}
+            submitText="Submit"
+            cancelText="Cancel"
+            classConfig={modalStyles}
+            onSuccess={(data) => console.log('表单提交成功:', data)}
+            client:load
+            >
+            <div class="p-4 border rounded-lg cursor-pointer hover:bg-gray-50 max-w-4xl mb-[30px] mx-auto">
+                <p>点击这里或下方按钮打开表单</p>
+                <button class="mt-2 px-4 py-2 bg-blue-500 text-white rounded">
+                打开设置表单
+                </button>
+            </div>
+        </ModalForm>
 	</main>
 </MainLayout>
