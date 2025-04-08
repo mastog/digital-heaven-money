@@ -123,11 +123,20 @@ const FormComponent = ({
       ))}
       <div className="flex justify-between gap-6 mt-10">
         {showCancelButton && (
-          <button type="button" onClick={onClose} className={classConfig.button || ""}>
+          <button
+            type="button"
+            onClick={onClose}
+            className={`${classConfig.button || ""} flex-grow`}
+            style={{ flex: '1 1 0%' }}
+          >
             {cancelText}
           </button>
         )}
-        <button type="submit" className={classConfig.button || ""}>
+        <button
+          type="submit"
+          className={`${classConfig.button || ""} flex-grow`}
+          style={{ flex: '3 1 0%' }}
+        >
           {submitText}
         </button>
       </div>
