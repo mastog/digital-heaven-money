@@ -89,12 +89,16 @@ const pics = [
                 if (this.classList.contains('enlarged')) {
                     this.classList.remove('enlarged');
                     this.parentElement.parentElement.classList.remove('enlarged');
+                    this.parentElement.parentElement.style.marginBottom='';
                 } else {
                     images.forEach(image => image.classList.remove('enlarged'));
                     images.forEach(image => image.parentElement.parentElement.classList.remove('enlarged'));
+                    images.forEach(image => image.parentElement.parentElement.style.marginBottom='');
                     // Otherwise, toggle the .enlarged class to enlarge it
                     this.classList.add('enlarged');
                     this.parentElement.parentElement.classList.add('enlarged');
+                    const calculatedHeight = this.parentElement.parentElement.getAttribute('data-calculated-height');
+                    this.parentElement.parentElement.style.marginBottom=`${calculatedHeight}px`;
                 }
             });
         });
