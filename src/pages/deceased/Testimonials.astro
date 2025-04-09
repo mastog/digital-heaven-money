@@ -1,0 +1,61 @@
+---
+import SectionTitle from "../../components/ui/SectionTitle.astro";
+import SwiperSlider from "../../components/ui/SwiperSlider.astro";
+import Section from "../../components/sections/Section.astro";
+import TimeLine from "../../components/sections/TimeLine.astro";
+import ModalForm from '../../components/ModalForm';
+import modalStyles from '../../utils/formConfigs/modal';
+
+const formFieldsTime = [
+    { name: 'Picture', label: 'Picture', type: 'file' },
+    { name: 'Title', label: 'Title', type: 'text' },
+    { name: 'Time', label: 'Time', type: 'month' },
+    { name: 'Description', label: 'Description', type: 'textarea' }
+];
+const formFields = [
+    { name: 'Content', label: 'Content', type: 'textarea' }
+];
+---
+
+<Section id="testimonials">
+  <div>
+    <SectionTitle
+      sectionTitle="TimeLine"
+      description="In Loving Memory: Relive the Milestones and Precious Sequences that Shaped a Treasured Existence"
+    />
+    <ModalForm
+            apiUrl="/api/submit"
+            method="POST"
+            fields={formFieldsTime}
+            submitText="Submit"
+            cancelText="Cancel"
+            classConfig={modalStyles}
+            onSuccess={(data) => console.log('表单提交成功:', data)}
+            client:load
+            >
+            <button class="btn-primary items-center mb-10">
+                Add Timeline
+                </button>
+        </ModalForm>
+    <SectionTitle
+      sectionTitle="Message Wall"
+      description="In Loving Memory: Share Your Heartfelt Tributes and Cherished Moments to Honor a Precious Life"
+    />
+    <div class="rounded-[45px] bg-dark mb-[50px] text-gray">
+    </div>
+    <ModalForm
+            apiUrl="/api/submit"
+            method="POST"
+            fields={formFields}
+            submitText="Submit"
+            cancelText="Cancel"
+            classConfig={modalStyles}
+            onSuccess={(data) => console.log('表单提交成功:', data)}
+            client:load
+            >
+            <button class="btn-primary items-center mb-10">
+                Add Timeline
+                </button>
+        </ModalForm>
+  </div>
+</Section>

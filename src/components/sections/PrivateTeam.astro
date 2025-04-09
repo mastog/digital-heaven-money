@@ -18,19 +18,6 @@ const formFields = [
 const description =
   "Meet the skilled and experienced team behind our successful digital marketing strategies";
 
-// Team images
-import p1 from "../../assets/team/d1.png";
-import p2 from "../../assets/team/d2.png";
-import p3 from "../../assets/team/d3.png";
-import p4 from "../../assets/team/d4.png";
-import p5 from "../../assets/team/d5.png";
-import p6 from "../../assets/team/d6.png";
-import p7 from "../../assets/team/d7.png";
-import p8 from "../../assets/team/d8.png";
-import p9 from "../../assets/team/d9.png";
-import p10 from "../../assets/team/d10.png";
-import p11 from "../../assets/team/d11.png";
-
 const team = await apiRequest(
         "/crud/Deceased/get",
         "POST",
@@ -70,7 +57,7 @@ const team = await apiRequest(
             birth_date={member.birth_date}
             death_date={member.death_date}
             description={member.biography}
-            link=""
+            link=`/deceased/${member.id}`
           />
         ))
       }

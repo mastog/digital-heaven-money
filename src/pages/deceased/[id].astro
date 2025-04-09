@@ -1,0 +1,56 @@
+---
+
+
+import MainLayout from "../../layouts/MainLayout.astro";
+import AboutCard from "./AboutCard.astro";
+import Oblation from "../../components/sections/Oblation.astro";
+import Testimonials from "./Testimonials.astro";
+import { apiRequest } from '../../utils/api';
+
+const { id } = Astro.params;
+const deceased = await apiRequest(
+        "/crud/Deceased/get",
+        "POST",
+        {"id":id},
+        false
+      ) || [];
+const testimonialContent = {
+  enable: true,
+  title: "## Client Experiences",
+  description: "_Voices from our community_",
+  testimonials: [
+    {
+      avatar: "/images/oblation1.png",
+      name: "Wreath"
+    },
+    {
+      avatar: "/images/oblation2.png",
+      name: "Heaven Money"
+    },
+    {
+      avatar: "/images/oblation3.png",
+      name: "Incense"
+    },
+    {
+      avatar: "/images/oblation4.png",
+      name: "Dessert"
+    },
+    {
+      avatar: "/images/oblation5.png",
+      name: "Tribute Meat"
+    },
+    {
+      avatar: "/images/oblation6.png",
+      name: "Liquor"
+    }
+  ]
+}
+---
+<MainLayout title={`Service: ${id}`}>
+  <main class="space-y-20">
+    <div class="py-0.5"/>
+    <AboutCard PERSONAL_INFO={deceased}/>
+    <Oblation testimonialData={testimonialContent} />
+    <Testimonials/>
+  </main>
+</MainLayout>
