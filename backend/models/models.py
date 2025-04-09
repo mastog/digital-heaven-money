@@ -80,10 +80,10 @@ class User(BasePicModel):
 class Deceased(BasePicModel):
     __tablename__ = 'deceased'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    creator_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    creator_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'))
     name = Column(String(100), nullable=False)
-    birth_date = Column(Date)
-    death_date = Column(Date)
+    birth_date = Column(Text)
+    death_date = Column(Text)
     biography = Column(Text)
     is_private = Column(Boolean, default=False)
     created_at = Column(DateTime, server_default=db.func.current_timestamp())
@@ -136,7 +136,7 @@ class DeceasedPhoto(BasePicModel):
     deceased_id = Column(Integer, ForeignKey('deceased.id', ondelete='CASCADE'), nullable=False)
     title = Column(Text)
     description = Column(Text)
-    photo_date = Column(Date)
+    photo_date = Column(Text)
     uploaded_at = Column(DateTime, server_default=db.func.current_timestamp())
 
     # Relationships

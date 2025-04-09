@@ -8,10 +8,11 @@ import ModalForm from '../ModalForm';
 import modalStyles from '../../utils/formConfigs/modal';
 
 const formFields = [
-    { name: 'Picture', label: 'Picture', type: 'file' },
-    { name: 'Title', label: 'Title', type: 'text' },
-    { name: 'Time', label: 'Time', type: 'month' },
-    { name: 'Description', label: 'Description', type: 'textarea' }
+    { name: 'pic', label: 'Picture', type: 'file' },
+    { name: 'name', label: 'Name', type: 'text' },
+    { name: 'birth_date', label: 'Birth Date', type: 'date' },
+    { name: 'death_date', label: 'Death Date', type: 'date' },
+    { name: 'biography', label: 'Description', type: 'textarea' }
 ];
 
 const description =
@@ -31,8 +32,8 @@ import p10 from "../../assets/team/d10.png";
 import p11 from "../../assets/team/d11.png";
 
 const team = await apiRequest(
-        "/CRUD/Deceased",
-        "GET",
+        "/crud/Deceased/get",
+        "POST",
         {},
         false
       )|| [];
@@ -46,7 +47,7 @@ const team = await apiRequest(
       class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 grid-rows-2 gap-10"
     >
         <ModalForm
-            apiUrl="/CRUD/Deceased"
+            apiUrl="/crud/Deceased/create"
             method="POST"
             fields={formFields}
             submitText="Submit"
@@ -64,11 +65,12 @@ const team = await apiRequest(
         team.map((member, index) => (
           <TeamCard
             key={index}
-            pic={member.pic}
+            pic={member.pic_url}
             name={member.name}
-            role={member.role}
-            description={member.description}
-            link={member.link}
+            birth_date={member.birth_date}
+            death_date={member.death_date}
+            description={member.biography}
+            link=""
           />
         ))
       }

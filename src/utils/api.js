@@ -40,7 +40,9 @@ export const apiRequest = async (
   }
 
   let body;
-  body = data;
+  if (method!="GET"){
+    body = data;
+  }
   try {
     let response = await fetch(url, {
       method,

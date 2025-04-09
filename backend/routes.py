@@ -63,35 +63,45 @@ def profile():
         updated_user = dao_factory.get_dao("User").update(user, **data)
         return jsonify(updated_user.to_dict()), 200
 
-# Data Management (CRUD)
-@app.route('/crud/<resource>', methods=['POST', 'GET', 'PUT', 'DELETE'])
-@jwt_required()
-def data_management(resource):
-    dao=dao_factory.get_dao(resource)
+@app.route('/crud/<resource>/<action>', methods=['POST'])
+# @jwt_required()
+def data_management(resource, action):
+    dao = dao_factory.get_dao(resource)
     if not dao:
         return jsonify({'error': 'Resource not found'}), 404
+
     data = request.form.to_dict()
-    if not data:
-        return jsonify({'error': 'No data provided'}), 400
     if 'pic' in request.files:
-        filename=picUpdate(request)
-        data['pic_url']=filename
-    if request.method == 'POST':
-        return jsonify(dao.create(**data).to_dict()),200
+        filename = picUpdate(request)
+        data['pic_url'] = filename
 
-    elif request.method == 'PUT':
-        if not data.get('id') or not dao.get(id=data.get('id')):
-            return jsonify({'error': 'item not found'}), 400
-        return jsonify(dao.update(dao.get(id=data.get('id')),**data).to_dict()),200
+    if 'id' in data:
+        try:
+            data['id'] = int(data['id'])
+        except ValueError:
+            return jsonify({'error': 'Invalid id format'}), 400
 
-    elif request.method == 'GET':
-        return jsonify([obj.to_dict() for obj in dao.get_all(**data)]),200
+    if action == 'create':
+        return jsonify(dao.create(**data).to_dict()), 200
+
+    elif action == 'update':
+        obj = dao.get(id=data.get('id'))
+        if not obj:
+            return jsonify({'error': 'Item not found'}), 400
+        return jsonify(dao.update(obj, **data).to_dict()), 200
+
+    elif action == 'get':
+        return jsonify([obj.to_dict() for obj in dao.get_all(**data)]), 200
+
+    elif action == 'delete':
+        obj = dao.get(id=data.get('id'))
+        if not obj:
+            return jsonify({'error': 'Item not found'}), 400
+        dao.delete(obj)
+        return jsonify({'success': True}), 200
 
     else:
-        if not data.get('id') or not dao.get(id=data.get('id')):
-            return jsonify({'error': 'item not found'}), 400
-        dao.delete(dao.get(id=data.get('id')))
-        return jsonify({'success': True}), 200
+        return jsonify({'error': f'Unknown action "{action}"'}), 400
 
 
 # Invite Users to Memorial Hall
