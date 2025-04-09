@@ -18,7 +18,6 @@ const onRefreshed = (newToken) => {
  * @param {string} endpoint - API endpoint
  * @param {string} method - HTTP method
  * @param {object} data - Request payload
- * @param {boolean} isFileUpload - Flag for file upload requests
  * @param {boolean} requiresAuth - Flag for authenticated requests
  * @returns {Promise} - Promise resolving to API response
  *
@@ -27,7 +26,6 @@ export const apiRequest = async (
   endpoint,
   method,
   data,
-  isFileUpload = false,
   requiresAuth = false
 ) => {
   const url = 'http://127.0.0.1:5000' + endpoint;
@@ -42,16 +40,7 @@ export const apiRequest = async (
   }
 
   let body;
-
-  // Handle different content types
-  if (isFileUpload) {
-    // FormData doesn't need Content-Type header
-    body = data;
-  } else {
-    headers['Content-Type'] = 'application/json';
-    body = data ? JSON.stringify(data) : undefined;
-  }
-
+  body = data;
   try {
     let response = await fetch(url, {
       method,
@@ -97,7 +86,11 @@ export const apiRequest = async (
     return await processResponse(response);
   } catch (error) {
     console.error('API request failed:', error);
-    throw error; // Re-throw for error handling in calling code
+    try {
+      alert('API request failed: ' + error)
+    }catch(error){
+
+    }
   }
 };
 

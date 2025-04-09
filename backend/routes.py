@@ -15,12 +15,12 @@ from backend.models.DAOs import dao_factory
 # User Management
 from backend.services import aiService
 from backend.services.lunarCalendarService import get_lunarCalendar
-from backend.services.utils import allowed_file
+from backend.services.utils import allowed_file, picUpdate
 
 
 @app.route('/register', methods=['POST'])
 def register():
-    data = request.get_json()
+    data = request.form.to_dict()
     if not data:
         return jsonify({'error': 'No data provided'}), 400
     user = dao_factory.get_dao("User").get(username=data.get('username'))
@@ -31,7 +31,7 @@ def register():
 
 @app.route('/login', methods=['POST'])
 def login():
-    data = request.get_json()
+    data = request.form.to_dict()
     if not data:
         return jsonify({'error': 'No data provided'}), 400
     user = dao_factory.get_dao("User").get(username=data.get('username'))
@@ -56,7 +56,10 @@ def profile():
     if request.method == 'GET':
         return jsonify(user.to_dict()), 200
     elif request.method == 'PUT':
-        data = request.get_json()
+        data = request.form.to_dict()
+        if 'pic' in request.files:
+            filename = picUpdate(request)
+            data['pic_url'] = filename
         updated_user = dao_factory.get_dao("User").update(user, **data)
         return jsonify(updated_user.to_dict()), 200
 
@@ -67,10 +70,12 @@ def data_management(resource):
     dao=dao_factory.get_dao(resource)
     if not dao:
         return jsonify({'error': 'Resource not found'}), 404
-    data = request.get_json()
+    data = request.form.to_dict()
     if not data:
         return jsonify({'error': 'No data provided'}), 400
-
+    if 'pic' in request.files:
+        filename=picUpdate(request)
+        data['pic_url']=filename
     if request.method == 'POST':
         return jsonify(dao.create(**data).to_dict()),200
 
@@ -105,7 +110,7 @@ def invite_users(id):  # memorial id
 @app.route('/ai', methods=['POST'])
 @jwt_required()
 def ai_request():
-    data = request.get_json()
+    data = request.form.to_dict()
     if not data:
         return jsonify({'error': 'No data provided'}), 400
     response=aiService.connect(data.get('text'))

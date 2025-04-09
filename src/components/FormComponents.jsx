@@ -9,7 +9,6 @@
  * @param {string} fields[].type - The field type, such as "text", "email", "password", etc.
  * @param {boolean} fields[].required - Whether the field is required
  * @param {Function} onSuccess - Optional callback function to handle successful form submission data
- * @param {boolean} isFileUpload - Determines whether the form handles file uploads (default: false)
  * @param {boolean} requiresAuth - Indicates whether authentication is required for submission (default: false)
  * @param {string} submitText - The text displayed on the submit button (default: "Submit")
  * @param {Object} classConfig - An object containing class names for styling form elements
@@ -49,7 +48,6 @@ const FormComponent = ({
   apiUrl,
   method,
   fields,
-  isFileUpload = false,
   requiresAuth = false,
   submitText = "Submit",
   cancelText = "Cancel",
@@ -71,16 +69,26 @@ const FormComponent = ({
       return;
     }
 
+    // Check file type
+    const fileInput = formRef.current.querySelector('input[type="file"]');
+    if (fileInput && fileInput.files.length > 0) {
+      const file = fileInput.files[0];
+      const allowedExtensions = ['png', 'jpg', 'jpeg'];
+      const fileExtension = file.name.split('.').pop().toLowerCase();
+      if (!allowedExtensions.includes(fileExtension)) {
+        alert('Invalid file type. Only PNG, JPG, and JPEG files are allowed.');
+        return;
+      }
+    }
+
     try {
       // Ready request data
-      const requestData = isFileUpload ? formData : Object.fromEntries(formData);
-
+      const requestData = formData
       // Request functions using the generic API
       const responseData = await apiRequest(
         apiUrl,
         method,
         requestData,
-        isFileUpload,
         requiresAuth
       );
 
