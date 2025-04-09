@@ -3,6 +3,16 @@ import SectionTitle from "../ui/SectionTitle.astro";
 import TeamCard from "../ui/TeamCard.astro";
 import AddTeamCard from "../ui/AddTeamCard.astro";
 import Section from "./Section.astro";
+import { apiRequest } from '../../utils/api';
+import ModalForm from '../ModalForm';
+import modalStyles from '../../utils/formConfigs/modal';
+
+const formFields = [
+    { name: 'Picture', label: 'Picture', type: 'file' },
+    { name: 'Title', label: 'Title', type: 'text' },
+    { name: 'Time', label: 'Time', type: 'month' },
+    { name: 'Description', label: 'Description', type: 'textarea' }
+];
 
 const description =
   "Meet the skilled and experienced team behind our successful digital marketing strategies";
@@ -20,96 +30,13 @@ import p9 from "../../assets/team/d9.png";
 import p10 from "../../assets/team/d10.png";
 import p11 from "../../assets/team/d11.png";
 
-const team = [
-  {
-    pic: p1,
-    name: "Khalil Fong",
-    role: "Singer",
-    description:
-      "Khalil Fong, a talented Hong Kong singer-songwriter, was born in 1983. Blending R&B with Chinese elements, his hits like ‘Love Song’ made him popular. He left a mark on the music scene.",
-    link: "/cemetery",
-  },
-  {
-    pic: p2,
-    name: "Marie Curie",
-    role: "Scientist",
-    description:
-      "Marie Curie, a Polish - French scientist, was born in 1867. She discovered radium and polonium, and was the first to win two Nobel Prizes. Her work advanced nuclear science before her death in 1934. ",
-    link: "https://linkedin.com",
-  },
-  {
-    pic: p3,
-    name: "Diego Maradona",
-    role: "Athletes",
-    description:
-      "Diego Maradona, born on Oct 30, 1960, in Argentina, was a football legend. He led Argentina to win the 1986 World Cup, scoring the iconic ‘Hand of God’ and ‘Goal of the Century’. He shone at clubs like Napoli too.",
-    link: "https://linkedin.com",
-  },
-  {
-    pic: p4,
-    name: "Albert Einstein",
-    role: "Scientist",
-    description:
-      "Albert Einstein, born in Germany in 1879, was a physics giant. In 1905, his theories like special relativity revolutionized physics. He won the 1921 Nobel Prize for the photoelectric effect. Forced to flee Nazi Germany, he settled in the US. Einstein passed away in 1955, leaving a profound impact on science. ",
-    link: "https://linkedin.com",
-  },
-  {
-    pic: p5,
-    name: "Ayrton Senna",
-    role: "Athletes",
-    description:
-      "Ayrton Senna, born in Brazil in 1960, was a F1 racing legend. Starting karting at 4, he turned pro in 1984. With McLaren, he won 3 world titles. Despite fierce rivalries, his skills shone. Senna died in a 1994 crash, leaving an indelible mark on motorsport.",
-    link: "https://linkedin.com",
-  },
-  {
-    pic: p6,
-    name: "Max Planck",
-    role: "Scientist",
-    description:
-      "Max Planck, born in Germany in 1858, was a brilliant physicist. He studied at Munich and Berlin Universities. In 1900, Planck proposed the quantum theory, introducing Planck's constant. This groundbreaking idea won him the 1918 Nobel Prize in Physics. He passed away in 1947, leaving a lasting mark on science. ",
-    link: "https://linkedin.com",
-  },
-  {
-    pic: p7,
-    name: "Martin Luther King, Jr.",
-    role: "Social activist",
-    description:
-      " Martin Luther King, Jr., born in 1929 in Atlanta, was an African - American civil rights leader. Using non - violence, he led the Montgomery Bus Boycott. In 1963, he delivered the famous ‘I Have a Dream’ speech. Awarded the Nobel Peace Prize in 1964, he was assassinated in 1968, leaving a remarkable mark on the fight for equality.  ",
-    link: "https://linkedin.com",
-  },
-  {
-    pic: p8,
-    name: "Florence Nightingale",
-    role: "Nurse",
-    description:
-      " Florence Nightingale, born in 1820 in Italy, was a pioneer in nursing. Against family wishes, she pursued nursing. During the Crimean War, she improved hospital conditions. Her work led to modern nursing practices. Nightingale passed away in 1910, leaving a lasting legacy. ",
-    link: "https://linkedin.com",
-  },
-  {
-    pic: p9,
-    name: "Helen Keller",
-    role: "Writer",
-    description:
-      " Helen Keller was born in 1880. Losing sight and hearing at 19 months, her life changed. In 1887, Anne Sullivan came as her teacher. With Sullivan's help, Keller learned to communicate, graduated from college, and became a famous writer and advocate for the disabled. She passed away in 1968.   ",
-    link: "https://linkedin.com",
-  },
-  {
-    pic: p10,
-    name: "Michael Jackson",
-    role: "Singer and Dancer",
-    description:
-      " Michael Jackson, born on August 29, 1958, in Gary, Indiana, was a music legend. Starting in the Jackson 5, he went solo in 1971. His ‘Thriller’ album in 1982 was a huge hit. Known for moonwalk and hits like ‘Billie Jean’, he won many awards. Jackson passed away on June 25, 2009, leaving a lasting musical legacy. ",
-    link: "https://linkedin.com",
-  },
-  {
-    pic: p11,
-    name: "Leslie Zhang",
-    role: "Singer and Actor",
-    description:
-      " Leslie was a Hong Kong singer, actor, and musician. In 1977, he debuted after placing second in a singing contest. Hits like “Monica” made him a music star. In films like “A Chinese Ghost Story” and “Farewell My Concubine,” his acting impressed audiences. He passed away in 2003, leaving a glorious legacy.  ",
-    link: "https://linkedin.com",
-  },
-];
+const team = await apiRequest(
+        "/CRUD/Deceased",
+        "GET",
+        {},
+        false
+      )|| [];
+
 ---
 
 <Section id="about">
@@ -118,7 +45,18 @@ const team = [
     <div
       class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 grid-rows-2 gap-10"
     >
-      <AddTeamCard />
+        <ModalForm
+            apiUrl="/api/submit"
+            method="POST"
+            fields={formFields}
+            submitText="Submit"
+            cancelText="Cancel"
+            classConfig={modalStyles}
+            onSuccess={(data) => console.log('表单提交成功:', data)}
+            client:load
+            >
+            <AddTeamCard />
+        </ModalForm>
       {
         team.map((member, index) => (
           <TeamCard
