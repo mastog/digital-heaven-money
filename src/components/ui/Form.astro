@@ -1,9 +1,10 @@
 ---
 import { Image } from "astro:assets";
 import decorForm from "../../assets/pics/contact-pic.svg";
-import { createRoot } from 'react-dom/client';
 import FormComponent from '../FormComponents.jsx';
+import login from '../../utils/formConfigs/login';
 ---
+
 <head>
   <script type="module">
     import RefreshRuntime from 'http://localhost:4321/@react-refresh';
@@ -13,19 +14,19 @@ import FormComponent from '../FormComponents.jsx';
     window.__vite_plugin_react_preamble_installed__ = true;
   </script>
 </head>
-<div
-  class="flex relative justify-start items-center p-[60px] bg-[#F3F3F3] rounded-[45px] overflow-hidden"
->
+
+<div class="flex relative justify-start items-center p-[60px] bg-[#F3F3F3] rounded-[45px] overflow-hidden">
   <div class="bg-gray sm:p-6 h-full w-full lg:max-w-lg">
     <!-- Sign In / Sign Up Toggle -->
     <div class="flex flex-col sm:flex-row gap-[35px] sm:items-center mb-10">
       <div class="flex items-center gap-[14px]">
         <input
-          type="checkbox"
+          type="radio"
+          name="formToggle"
           id="checkbox1"
-          name="checkbox1"
           class="form-checkbox text-black"
           checked
+          onchange="document.getElementById('signInForm').classList.remove('hidden'); document.getElementById('signUpForm').classList.add('hidden')"
         />
         <label for="checkbox1" class="text-black">
           Sign In
@@ -33,26 +34,72 @@ import FormComponent from '../FormComponents.jsx';
       </div>
       <div class="flex items-center gap-[14px]">
         <input
-          type="checkbox"
+          type="radio"
+          name="formToggle"
           id="checkbox2"
-          name="checkbox2"
           class="form-checkbox text-black"
+          onchange="document.getElementById('signUpForm').classList.remove('hidden'); document.getElementById('signInForm').classList.add('hidden')"
         />
         <label for="checkbox2" class="flex items-center text-black">
           Sign Up
         </label>
       </div>
     </div>
-    
-    <!-- Form Component -->
-    <div id="formComponent">
+
+    <!-- Forms Container -->
+    <div class="forms-container">
+      <!-- Sign In Form -->
+      <div id="signInForm">
+        <FormComponent
+          client:load
+          apiUrl="/login"
+          method="POST"
+          fields={[
+            { name: 'username', label: 'Username*', type: 'text', placeholder: 'Username', required: true },
+            { name: 'password', label: 'Password*', type: 'password', placeholder: 'Password', required: true }
+          ]}
+          submitText="Login"
+          classConfig={login}
+          onSuccess={(data) => {
+            if (data.access_token && data.refresh_token) {
+              localStorage.setItem('accessToken', data.access_token);
+              localStorage.setItem('refreshToken', data.refresh_token);
+              alert('Login successful!');
+              window.location.href = '/';
+            }
+          }}
+        />
+      </div>
+
+      <!-- Sign Up Form -->
+      <div id="signUpForm" class="hidden">
+        <FormComponent
+          client:load
+          apiUrl="/register"
+          method="POST"
+          fields={[
+            { name: 'username', label: 'Username*', type: 'text', placeholder: 'Username', required: true },
+            { name: 'email', label: 'Email*', type: 'email', placeholder: 'Email', required: true },
+            { name: 'password', label: 'Password*', type: 'password', placeholder: 'Password', required: true },
+            { name: 'confirm_password', label: 'Confirm Password*', type: 'password', placeholder: 'Confirm Password', required: true }
+          ]}
+          submitText="Join"
+          classConfig={login}
+          onSuccess={() => {
+            alert('Registration successful!');
+            window.location.reload();
+          }}
+        />
+      </div>
     </div>
   </div>
+
   <!-- Image Decoration -->
-  <picture class="ml-auto hidden lg:block">
+  <picture class="ml-auto lg:block">
     <Image src={decorForm} alt="decor" class="h-auto max-h-full w-auto object-contain" />
   </picture>
 </div>
+
 <style>
   .form-checkbox {
     appearance: none;
@@ -82,69 +129,8 @@ import FormComponent from '../FormComponents.jsx';
   .form-checkbox:checked:before {
     transform: scale(0.6);
   }
+
+  .hidden {
+    display: none;
+  }
 </style>
-<script>
-  import { createElement } from 'react';
-  import { createRoot } from 'react-dom/client';
-  import FormComponent from '../FormComponents.jsx';
-  import login from '../../utils/formConfigs/login';
-
-  function handleLoginSuccess(data) {
-    // Store tokens in localStorage
-    if (data.access_token && data.refresh_token) {
-      localStorage.setItem('accessToken', data.access_token);
-      localStorage.setItem('refreshToken', data.refresh_token);
-      alert('Login successful!');
-      window.location.href = '/';
-    }
-  }
-
-  function handleRegisterSuccess(data) {
-    alert('Registration successful!');
-    window.location.reload(); // Refresh the page
-  }
-
-  function toggleForm(isSignUp) {
-    var cb1 = document.getElementById("checkbox1") as HTMLInputElement;
-    var cb2 = document.getElementById("checkbox2") as HTMLInputElement;
-
-    cb1.checked = !isSignUp;
-    cb2.checked = isSignUp;
-
-    const formComponent = document.getElementById('formComponent');
-    formComponent.innerHTML = '';
-    const formProps = isSignUp
-      ? {
-          apiUrl: '/register',
-          method: 'POST',
-          fields: [
-            { name: 'username', label: 'Username*', type: 'text', placeholder: 'Username', required: true },
-            { name: 'email', label: 'Email*', type: 'email', placeholder: 'Email', required: true },
-            { name: 'password', label: 'Password*', type: 'password', placeholder: 'Password', required: true },
-            { name: 'confirm_password', label: 'Confirm Password*', type: 'password', placeholder: 'Confirm Password', required: true }
-          ],
-          classConfig: login,
-          submitText: 'Join',
-
-          onSuccess: handleRegisterSuccess
-        }
-      : {
-          apiUrl: '/login',
-          method: 'POST',
-          fields: [
-            { name: 'username', label: 'Username*', type: 'text', placeholder: 'Username', required: true },
-            { name: 'password', label: 'Password*', type: 'password', placeholder: 'Password', required: true }
-          ],
-          submitText: 'Login',
-          classConfig: login,
-          onSuccess: handleLoginSuccess
-        };
-    const root = createRoot(formComponent);
-    root.render(createElement(FormComponent, formProps));
-  }
-  document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('checkbox1').addEventListener('change', () => toggleForm(false));
-    document.getElementById('checkbox2').addEventListener('change', () => toggleForm(true));
-    toggleForm(false)
-  });
-</script>
