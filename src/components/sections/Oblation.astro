@@ -37,15 +37,15 @@ const { testimonialData } = Astro.props as Props;
                       }) => (
                         <div class="swiper-slide">
                           <div class="rounded-lg bg-green px-7 py-5 dark:bg-darkmode-light">
-                            <div class="text-text-dark dark:text-white">
+                            <div class="text-text-dark dark:text-white cursor-pointer" >
                                 <ImageMod
-                                  height={400}
-                                  width={400}
-                                  class="rounded-full w-full filter grayscale"
-                                  src={item.avatar}
-                                  alt={item.name}
-                                  format="webp"
-                                />
+                        height={400}
+                        width={400}
+                        class="rounded-full w-full filter grayscale transition hover:scale-110 original-image" // 添加标识类
+                        src={item.avatar}
+                        alt={item.name}
+                        format="webp"
+                      />
                               </div>
                             <div class="mt-5 flex items-center">
                               <div>
@@ -70,7 +70,25 @@ const { testimonialData } = Astro.props as Props;
     </section>
   )
 }
+<style is:global>
+  @keyframes float-up {
+    from {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(-100px);
+      opacity: 0;
+    }
+  }
 
+  .clone-animation {
+    animation: float-up 1s ease-out forwards;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+  }
+</style>
 <script>
   import { Swiper } from "swiper";
   import "swiper/css";
@@ -99,5 +117,32 @@ const { testimonialData } = Astro.props as Props;
         slidesPerView: 5,
       },
     },
+  });
+  // 添加点击事件处理
+  document.querySelectorAll('.original-image').forEach(img => {
+    img.addEventListener('click', function(e) {
+      // 创建克隆元素
+      const rect = this.getBoundingClientRect();
+      const clone = this.cloneNode(true);
+
+      // 设置克隆元素样式
+      clone.style.position = 'fixed';
+      clone.style.left = `${rect.left}px`;
+      clone.style.top = `${rect.top}px`;
+      clone.style.width = `${rect.width}px`;
+      clone.style.height = `${rect.height}px`;
+      clone.style.pointerEvents = 'none';
+
+      // 添加动画类
+      clone.classList.add('clone-animation');
+
+      // 插入到文档
+      document.body.appendChild(clone);
+
+      // 动画结束后移除元素
+      clone.addEventListener('animationend', () => {
+        clone.remove();
+      });
+    });
   });
 </script>

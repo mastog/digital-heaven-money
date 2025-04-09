@@ -3,7 +3,7 @@ import { Image } from "astro:assets";
 import linkd from "../../assets/pics/profile-in.svg";
 import Card from "./Card.astro";
 
-const { pic, name, role, description, link } = Astro.props;
+const { pic, name, birth_date, death_date, description, link } = Astro.props;
 ---
 
 <Card isUnderline={true}>
@@ -12,13 +12,13 @@ const { pic, name, role, description, link } = Astro.props;
       <picture class="w-[175px] h-[175px] shrink-0" ><Image src={pic} alt={name} /></picture>
       <div class="flex flex-col justify-end sm:ml-5">
         <h3 class="text-lg font-medium">{name}</h3>
-        <p class="text-sm font-normal">{role}</p>
       </div>
       <a href={link} class="absolute right-0 top-0"
         ><Image src={linkd} alt="Linkedin Logo" /></a
       >
     </div>
-    <div class="w-full h-[1px] bg-black my-7"></div>
+    <p class="text-sm font-normal my-4">{birth_date} ~ {death_date}</p>
+    <div class="w-full h-[1px] bg-black my-4"></div>
     <div>{description}</div>
   </div>
 </Card>

@@ -3,12 +3,13 @@ import p12 from "../../assets/team/d12.png";
 
 const PERSONAL_INFO = {
   name: "Kobe Bryant",
-  role: "Athletess",
+  birth_date: "1978-08-23",
+  death_date: "2020-01-26",
   avatar: p12.src,
   about: " Kobe Bryant, a basketball legend, was born in 1978. Drafted in 1996, he spent 20 seasons with the Lakers, winning 5 championships. His Mamba Mentality inspired many. ",
 } as const;
 
-const { role, name, avatar, about } = PERSONAL_INFO;
+const { birth_date,death_date, name, avatar, about } = PERSONAL_INFO;
 ---
 <div class="flex flex-col justify-between">
     <div class="flex flex-col items-center align-middle">
@@ -17,9 +18,8 @@ const { role, name, avatar, about } = PERSONAL_INFO;
                 <div class="grid items-center gap-8 sm:grid-cols-2">
                     <div class="flex flex-col items-center justify-center sm:items-start">
                         <p class="mb-4 text-sm font-semibold text-darkgray md:text-base">
-                            {role}
+                            {birth_date} ~ {death_date}
                         </p>
-
                         <h1 class="mb-4 text-center text-2xl font-bold text-black sm:text-left md:text-3xl">
                             {name}
                         </h1>

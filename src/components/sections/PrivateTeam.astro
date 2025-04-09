@@ -46,13 +46,16 @@ const team = await apiRequest(
       class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 grid-rows-2 gap-10"
     >
         <ModalForm
-            apiUrl="/api/submit"
+            apiUrl="/CRUD/Deceased"
             method="POST"
             fields={formFields}
             submitText="Submit"
             cancelText="Cancel"
             classConfig={modalStyles}
-            onSuccess={(data) => console.log('表单提交成功:', data)}
+            onSuccess={() => {
+                alert('Success');
+                window.location.reload();
+            }}
             client:load
             >
             <AddTeamCard />
