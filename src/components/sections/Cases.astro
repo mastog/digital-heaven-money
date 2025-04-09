@@ -6,41 +6,48 @@ import Section from "./Section.astro";
 const cards = [
   {
     index: 0,
-    description:
-      "Legendary NBA professional basketball player (born in 1978)",
-    name:
-      "Kobe",
-    status:
-      "",
-    date:
-      "1997",
-    link: "https://google.com",
+    description: "Emperor of the Eastern Roman Empire. (died in 450)",
+    name: "Theodosius II",
+    status: "2",
+    date: "401",
   },
   {
     index: 1,
-    description:
-      "Legendary NBA professional basketball player (born in 1978)",
-    name:
-      "Kobe",
-    status:
-      "",
-    date:
-      "1997",
-    link: "https://google.com",
+    description: "Taiwan province actor.",
+    name: "Huang Zhiwei",
+    status: "2",
+    date: "1981",
   },
   {
     index: 2,
-    description:
-      "Legendary NBA professional basketball player (born in 1978)",
-    name:
-      "Kobe",
-    status:
-      "Born",
-    date:
-      "1997",
-    link: "https://google.com",
+    description: "Somali-American actor.",
+    name: "Barkhad Abdi",
+    status: "2",
+    date: "1985",
+  },
+  {
+    index: 3,
+    description: 'Carolingian king of the West Franks, nicknamed "The Stutterer". (born in 846)',
+    name: "Louis II",
+    status: "3",
+    date: "879",
+  },
+  {
+    index: 4,
+    description: "King of Denmark and King of Norway. (born in 1471)",
+    name: "Frederick I",
+    status: "3",
+    date: "1533",
+  },
+  {
+    index: 5,
+    description: "Japanese amateur astronomer. (born in 1950)",
+    name: "Yuji Hyakutake",
+    status: "3",
+    date: "2002",
   },
 ];
+
 
 import larrow from "../../assets/icon3.svg";
 import SectionTitle from "../ui/SectionTitle.astro";
@@ -52,7 +59,7 @@ import { date } from "astro:schema";
     sectionTitle="Today in History"
     description="Journey through time with significant births and deaths that shaped history on this calendar date"
   />
-  <div class="flex flex-col lg:flex-row justify-between rounded-[45px] p-1 mb-[30px]">
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 grid-rows-2 gap-4 mb-10">
     {
       cards.map((card) => (
       <Card>
@@ -65,7 +72,7 @@ import { date } from "astro:schema";
           <div>
             <img
               src={
-                card.status === "Born"
+                card.status === "2"
                   ? "/images/sun.svg"
                   : "/images/skull.svg"
               }
@@ -78,7 +85,7 @@ import { date } from "astro:schema";
         <p class="text-sm text-gray-400">{card.date}</p>
         {/* middle font: description */}
         <p class="text-lg mt-4">{card.description}</p>
-        <a href={card.link} class="flex items-center gap-[15px] mt-4">
+        <a href=`https://en.wikipedia.org/wiki/${card.name}` target="_blank" class="flex items-center gap-[15px] mt-4">
           <span class="text-green">Wiki Info</span>
           <picture>
             <Image src={larrow} alt="Arrow pointing up right" />

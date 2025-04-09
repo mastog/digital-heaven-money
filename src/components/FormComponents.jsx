@@ -113,7 +113,7 @@ const FormComponent = ({
             <input
               type={field.type}
               id={field.name}
-              name={field.name}
+              name="pic"
               required={field.required}
               className={classConfig.input || ""}
             />

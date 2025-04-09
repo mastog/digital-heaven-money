@@ -130,10 +130,10 @@ def history():
     history_objects = dao_factory.get_dao("history").get_all(month=current_month, day=current_day)
     result=[]
     for obj in history_objects:
-        url="https://en.wikipedia.org/wiki/"+obj.name
+        #url="https://en.wikipedia.org/wiki/"+obj.name
         obj_dict = obj.to_dict()
         #  Add url key-value pairs
-        obj_dict["url"] = url
+        #obj_dict["url"] = url
         result.append(obj_dict)
 
     return jsonify(result), 200
