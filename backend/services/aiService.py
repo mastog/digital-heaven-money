@@ -46,7 +46,7 @@ def connect(request):
 
 def communicate(name, description, request):
     messages = [
-        {"role": "system", "content": f"You are {name}. {description}"},
+        {"role": "system", "content": f"You are {name}. {description} Answer no more than three sentences at a time."},
         {"role": "user", "content": f"{request}"}
     ]
     request_body = create_request_body("glm-4-flash", messages)

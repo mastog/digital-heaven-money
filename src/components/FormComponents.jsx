@@ -125,6 +125,7 @@ const FormComponent = ({
               name={field.name}
               placeholder={field.placeholder}
               required={field.required}
+              value={field.value}
               className={classConfig.input || ""}
             />
           )}

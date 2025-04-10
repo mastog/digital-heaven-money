@@ -118,12 +118,12 @@ def invite_users(id):  # memorial id
     return jsonify({'invite_key': invite_key}), 201
 
 @app.route('/ai', methods=['POST'])
-@jwt_required()
+#@jwt_required()
 def ai_request():
     data = request.form.to_dict()
     if not data:
         return jsonify({'error': 'No data provided'}), 400
-    response=aiService.connect(data.get('text'))
+    response=aiService.communicate(data.get('name'),data.get('description'),data.get('text'))
     return jsonify({'response': response}), 201
 
 @app.route('/dailyQuestion', methods=['GET'])

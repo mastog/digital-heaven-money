@@ -5,6 +5,8 @@ import Section from "./Section.astro";
 import TimeLine from "./TimeLine.astro";
 import ModalForm from '../ModalForm';
 import modalStyles from '../../utils/formConfigs/modal';
+import Communicate from "./Communicate.astro";
+import AiForm from '../jsx/AiForm.jsx';
 
 const formFieldsTime = [
     { name: 'Picture', label: 'Picture', type: 'file' },
@@ -38,12 +40,17 @@ const formFields = [
                 Add Timeline
                 </button>
         </ModalForm>
+      <AiForm
+            client:load
+            name="Kobe Bryant"
+            description="Kobe Bryant, a basketball legend, was born in 1978. Drafted in 1996, he spent 20 seasons with the Lakers, winning 5 championships. His Mamba Mentality inspired many."
+    />
     <SectionTitle
       sectionTitle="Message Wall"
       description="In Loving Memory: Share Your Heartfelt Tributes and Cherished Moments to Honor a Precious Life"
     />
     <div class="rounded-[45px] bg-dark mb-[50px] text-gray">
-      <SwiperSlider />
+      <SwiperSlider/>
     </div>
     <ModalForm
             apiUrl="/api/submit"
