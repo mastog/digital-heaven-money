@@ -11,9 +11,8 @@ const monthNumber = today.getMonth();
 const weekDay = ["Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"][today.getDay()];
 const year = today.getFullYear();
 
-// Obtain corresponding "Yi" and "Ji" data
-// dynamically generated based on dates or solar terms
-const { yi, ji } = getYiJiData(today);
+const yi=['sacrifice', 'banquet', 'bathe', 'acupuncture', 'bestow rewards'];
+const ji=['All things are permitted'];
 ---
 <style>
   @media (max-width: 900px) {
