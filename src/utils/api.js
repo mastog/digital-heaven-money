@@ -28,7 +28,7 @@ export const apiRequest = async (
   data,
   requiresAuth = false
 ) => {
-  const url = '/api' + endpoint; //http://127.0.0.1:5000 at local
+  const url = 'http://127.0.0.1:5000' + endpoint; //http://127.0.0.1:5000 at local
   const headers = {};
 
   // Add authorization header if required
