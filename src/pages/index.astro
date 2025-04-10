@@ -13,7 +13,9 @@ import MainLayout from "../layouts/MainLayout.astro";
 import PersonalizedHero from '../components/sections/PersonalizedHero.astro';
 import ChatWindow from "../components/sections/ChatWindow.astro";
 import Profile from "../components/sections/Profile.astro";
-
+const strings = [
+  "I don't know what this can do, so I'll just leave it here for now"
+];
 ---
 
 <MainLayout
@@ -26,6 +28,9 @@ import Profile from "../components/sections/Profile.astro";
 
   <Cases />
 
-  <PersonalizedHero />
+  <PersonalizedHero
+          backgroundImage="/images/kobe.jpg"
+          strings={strings}
+  />
 
 </MainLayout>

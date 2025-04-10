@@ -1,7 +1,13 @@
+---
+import Typed from '../Typed.jsx';
+
+const { backgroundImage, strings } = Astro.props;
+---
+
 <section class="w-full flex flex-col gap-8 mb-16 sm:mb-24">
-    <div class="hero hero__bg w-full max-w-[980px] mx-auto aspect-[16/9]">
+    <div class="hero hero__bg w-full max-w-[980px] mx-auto aspect-[16/9]" style={`--bg-url: url('${backgroundImage}')`}>
         <div class="hero__content h-full max-w-[800px] mx-auto flex flex-col justify-center items-center text-center">
-            <div id="typejs" class="text-4xl font-bold"/>
+            <Typed strings={strings} client:load />
         </div>
     </div>
 </section>
@@ -17,7 +23,7 @@
         width: 100%;
         height: 100%;
         position: absolute;
-        background-image: url('/images/kobe.jpg');
+        background-image: var(--bg-url);
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -26,20 +32,3 @@
         filter: grayscale(100%);
     }
 </style>
-
-<script>
-    import typedjs from 'typed.js';
-    const type = () => {
-       const options = {
-        strings: ['I don\'t know what this can do, so I\'ll just leave it here for now', 'syb'],
-        typeSpeed: 30,
-        startDelay: 300,
-        loop: true,
-        showCursor: false,
-        backSpeed:20
-        };
-        const typed = new typedjs('#typejs', options);
-        typed.start();
-    };
-    type();
-</script>
