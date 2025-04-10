@@ -29,14 +29,30 @@ const ModalForm = ({
 
   return (
     <div onClick={handleTriggerClick}>
+      <style>
+        {`
+          @keyframes fadeIn {
+            0% {
+              opacity: 0;
+            }
+            100% {
+              opacity: 1;
+            }
+          }
+
+          .animate-fadeIn {
+            animation: fadeIn 0.3s ease-out forwards;
+          }
+        `}
+      </style>
       {children}
-      
+
       {isOpen && (
-        <div 
-          className="fixed inset-0 bg-transparent flex items-center justify-center p-4 z-50" 
+        <div
+          className="fixed inset-0 bg-transparent flex items-center justify-center p-4 z-50 backdrop-blur-sm"
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="bg-transparent w-full max-w-md form-component-class">
+          <div className="bg-transparent w-full max-w-md form-component-class shadow-lg opacity-0 transition-opacity duration-300 animate-fadeIn">
               <FormComponent
                 {...formProps}
                 fields={fields}
