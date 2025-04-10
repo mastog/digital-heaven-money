@@ -12,7 +12,6 @@ export default defineConfig({
   output: 'server',
   adapter: vercel(),
   server: {
-    allowedHosts: ['csi6220-1-vm4.ucd.ie'],
-    hmr: false
+    allowedHosts: ['csi6220-1-vm4.ucd.ie']
   }
 });
