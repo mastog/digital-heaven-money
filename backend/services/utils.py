@@ -20,5 +20,6 @@ def picUpdate(request):
         timestamped_filename = f"{name}_{int(time.time())}{ext}"
 
         file_path = os.path.join(app.config['FILE_UPLOAD_DIR'], timestamped_filename)
+        os.makedirs(app.config['FILE_UPLOAD_DIR'], exist_ok=True)
         file.save(file_path)  # save the picture
     return timestamped_filename
