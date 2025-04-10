@@ -1,11 +1,10 @@
 ---
 import SectionTitle from "../ui/SectionTitle.astro";
 import TeamCard from "../ui/TeamCard.astro";
-import AddTeamCard from "../ui/AddTeamCard.astro";
 import Section from "./Section.astro";
 import { apiRequest } from '../../utils/api';
-import ModalForm from '../ModalForm';
-import modalStyles from '../../utils/formConfigs/modal';
+import PriTeamForm from '../jsx/PriTeamForm.jsx';
+import Card from "../ui/Card.astro";
 
 const formFields = [
     { name: 'pic', label: 'Picture', type: 'file' },
@@ -33,21 +32,9 @@ const team = await apiRequest(
     <div
       class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 grid-rows-2 gap-10"
     >
-        <ModalForm
-            apiUrl="/crud/Deceased/create"
-            method="POST"
-            fields={formFields}
-            submitText="Submit"
-            cancelText="Cancel"
-            classConfig={modalStyles}
-            onSuccess={() => {
-                alert('Success');
-                window.location.reload();
-            }}
-            client:load
-            >
-            <AddTeamCard />
-        </ModalForm>
+        <Card isUnderline={true}>
+        <PriTeamForm client:load />
+        </Card>
       {
         team.map((member, index) => (
           <TeamCard

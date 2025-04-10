@@ -92,9 +92,10 @@ const FormComponent = ({
         requiresAuth
       );
 
-      console.log('Registration successful:', responseData);
+      console.log('Successful:', responseData);
 
-      if (onSuccess) {
+      if (typeof onSuccess === 'function') {
+        console.log('Calling onSuccess');
         onSuccess(responseData);
       }
 

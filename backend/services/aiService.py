@@ -43,3 +43,12 @@ def connect(request):
     request_body = create_request_body("glm-4-flash", messages)
     response = send_post_request(request_body)
     return get_content(response)
+
+def communicate(name, description, request):
+    messages = [
+        {"role": "system", "content": f"You are {name}. {description}"},
+        {"role": "user", "content": f"{request}"}
+    ]
+    request_body = create_request_body("glm-4-flash", messages)
+    response = send_post_request(request_body)
+    return get_content(response)

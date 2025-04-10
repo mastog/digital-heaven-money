@@ -1,19 +1,9 @@
 ---
 import { Image } from "astro:assets";
 import decorForm from "../../assets/pics/contact-pic.svg";
-import FormComponent from '../FormComponents.jsx';
-import login from '../../utils/formConfigs/login';
+import LoginForm from '../jsx/LoginForm.jsx';
+import RegistrationForm from '../jsx/RegistrationForm.jsx';
 ---
-
-<head>
-  <script type="module">
-    import RefreshRuntime from 'http://localhost:4321/@react-refresh';
-    RefreshRuntime.injectIntoGlobalHook(window);
-    window.$RefreshReg$ = () => {};
-    window.$RefreshSig$ = () => (type) => type;
-    window.__vite_plugin_react_preamble_installed__ = true;
-  </script>
-</head>
 
 <div class="flex relative justify-start items-center p-[60px] bg-[#F3F3F3] rounded-[45px] overflow-hidden">
   <div class="bg-gray sm:p-6 h-full w-full lg:max-w-lg">
@@ -50,46 +40,12 @@ import login from '../../utils/formConfigs/login';
     <div class="forms-container">
       <!-- Sign In Form -->
       <div id="signInForm">
-        <FormComponent
-          client:load
-          apiUrl="/login"
-          method="POST"
-          fields={[
-            { name: 'username', label: 'Username*', type: 'text', placeholder: 'Username', required: true },
-            { name: 'password', label: 'Password*', type: 'password', placeholder: 'Password', required: true }
-          ]}
-          submitText="Login"
-          classConfig={login}
-          onSuccess={(data) => {
-            if (data.access_token && data.refresh_token) {
-              localStorage.setItem('accessToken', data.access_token);
-              localStorage.setItem('refreshToken', data.refresh_token);
-              alert('Login successful!');
-              window.location.href = '/';
-            }
-          }}
-        />
+        <LoginForm client:load />
       </div>
 
       <!-- Sign Up Form -->
       <div id="signUpForm" class="hidden">
-        <FormComponent
-          client:load
-          apiUrl="/register"
-          method="POST"
-          fields={[
-            { name: 'username', label: 'Username*', type: 'text', placeholder: 'Username', required: true },
-            { name: 'email', label: 'Email*', type: 'email', placeholder: 'Email', required: true },
-            { name: 'password', label: 'Password*', type: 'password', placeholder: 'Password', required: true },
-            { name: 'confirm_password', label: 'Confirm Password*', type: 'password', placeholder: 'Confirm Password', required: true }
-          ]}
-          submitText="Join"
-          classConfig={login}
-          onSuccess={() => {
-            alert('Registration successful!');
-            window.location.reload();
-          }}
-        />
+        <RegistrationForm client:load />
       </div>
     </div>
   </div>
