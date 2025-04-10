@@ -28,10 +28,16 @@ export const apiRequest = async (
   data,
   requiresAuth = false
 ) => {
-  const url = 'http://127.0.0.1:5000' + endpoint; //http://127.0.0.1:5000 at local
+  const isServer = typeof window === "undefined";
+
+  const baseUrl = isServer
+    ? import.meta.env.API_BASE_URL // 服务端使用
+    : import.meta.env.PUBLIC_API_BASE_URL; // 客户端使用
+
+  const url = baseUrl + endpoint;
+
   const headers = {};
 
-  // Add authorization header if required
   if (requiresAuth) {
     const token = localStorage.getItem('accessToken');
     if (token) {
@@ -39,10 +45,8 @@ export const apiRequest = async (
     }
   }
 
-  let body;
-  if (method!="GET"){
-    body = data;
-  }
+  let body = method !== "GET" ? data : undefined;
+
   try {
     let response = await fetch(url, {
       method,
@@ -50,36 +54,41 @@ export const apiRequest = async (
       body
     });
 
-    // Handle token expiration (401 Unauthorized)
     if (response.status === 401 && requiresAuth) {
       if (!isRefreshing) {
-        // First encounter of 401 - initiate token refresh
         isRefreshing = true;
 
         try {
           const newToken = await refreshToken();
           if (newToken) {
-            // Update stored token and retry original request
             localStorage.setItem('accessToken', newToken);
             headers['Authorization'] = `Bearer ${newToken}`;
-            response = await fetch(url, { method, headers, body, credentials: 'include' });
+            response = await fetch(url, {
+              method,
+              headers,
+              body,
+              credentials: 'include'
+            });
           } else {
-            // Refresh failed - clear tokens and throw error
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
-            alert("Login expired, need to log in again")
+            alert("Login expired, need to log in again");
             return Response.redirect("/login", 302);
           }
         } finally {
           isRefreshing = false;
-          onRefreshed(); // Process queued requests
+          onRefreshed();
         }
       } else {
-        // Token refresh already in progress - queue this request
         return new Promise((resolve) => {
           addRefreshSubscriber((newToken) => {
             headers['Authorization'] = `Bearer ${newToken}`;
-            resolve(fetch(url, { method, headers, body, credentials: 'include' }));
+            resolve(fetch(url, {
+              method,
+              headers,
+              body,
+              credentials: 'include'
+            }));
           });
         }).then(res => processResponse(res));
       }
@@ -89,10 +98,8 @@ export const apiRequest = async (
   } catch (error) {
     console.error('API request failed:', error);
     try {
-      alert('API request failed: ' + error)
-    }catch(error){
-
-    }
+      alert('API request failed: ' + error);
+    } catch (error) {}
   }
 };
 
