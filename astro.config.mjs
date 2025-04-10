@@ -7,16 +7,12 @@ import vercel from '@astrojs/vercel';
 
 // https://astro.build/config
 export default defineConfig({
-  vite: {
-    server: {
-      hmr: false
-    }
-  },
   site: "https://positivustheme.vercel.app",
   integrations: [tailwind(),react()],
   output: 'server',
   adapter: vercel(),
   server: {
-    allowedHosts: ['csi6220-1-vm4.ucd.ie']
+    allowedHosts: ['csi6220-1-vm4.ucd.ie'],
+    hmr: false
   }
 });
