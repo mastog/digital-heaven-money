@@ -174,7 +174,7 @@ const { items } = Astro.props;
     if (!isTouching) return;
 
     const deltaY = e.touches[0].clientY - lastY;
-    applyForceToAll(deltaY*0.2); // 反向施加力（下拉上推，上拉下推）
+    applyForceToAll(deltaY*0.6); // 反向施加力（下拉上推，上拉下推）
     lastY = e.touches[0].clientY;
   }, { passive: false });
 
