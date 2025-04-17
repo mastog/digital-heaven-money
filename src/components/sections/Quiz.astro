@@ -1,0 +1,181 @@
+---
+const { questionData } = Astro.props;
+---
+<style>
+  /* Custom animations */
+  @keyframes correct-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+      border-radius: 0.5rem;
+    }
+    70% {
+      box-shadow: 0 0 0 15px rgba(34, 197, 94, 0);
+      border-radius: 0.5rem;
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+      border-radius: 0.5rem;
+    }
+  }
+
+  @keyframes wrong-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5);
+      border-radius: 0.5rem;
+    }
+    70% {
+      box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);
+      border-radius: 0.5rem;
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+      border-radius: 0.5rem;
+    }
+  }
+
+  @keyframes hover-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(156, 163, 175, 0.5);
+      border-radius: 0.5rem;
+    }
+    70% {
+      box-shadow: 0 0 0 15px rgba(156, 163, 175, 0);
+      border-radius: 0.5rem;
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(156, 163, 175, 0);
+      border-radius: 0.5rem;
+    }
+  }
+
+  .correct-animation {
+    animation: correct-pulse 1s ease-out;
+  }
+
+  .wrong-animation {
+    animation: wrong-pulse 1s ease-out;
+  }
+
+  .option-item:not(.answered):hover .option-content {
+    animation: hover-pulse 1.5s infinite;
+  }
+
+  .explanation-enter {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  .explanation-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+</style>
+<div class="bg-gray-900 min-h-screen flex items-center justify-center p-4">
+  <main class="max-w-2xl w-full bg-gray-800 rounded-xl p-6 shadow-xl transition-all duration-300">
+    <!-- Question Section -->
+    <h1 class="text-2xl font-bold text-gray-100 mb-6">
+      {questionData.question}
+    </h1>
+
+    <!-- Options Container -->
+    <div class="space-y-4 mb-8" id="optionsContainer" data-correct-answer={questionData.correctAnswer}>
+      <!-- Dynamically generated options -->
+      {Object.entries(questionData.options).map(([key, value]) => (
+        <div
+          class="option-item relative group transition-all duration-200"
+          data-option={key}
+        >
+          <div class="option-content w-full p-4 bg-gray-700 rounded-lg border-2 border-gray-600 hover:border-gray-500 cursor-pointer transition-all duration-200">
+            <span class="text-gray-300 font-mono mr-3">{key.toUpperCase()}.</span>
+            <span class="text-gray-100">{value}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Explanation Section (Initially hidden) -->
+    <div
+      id="explanation"
+      class="opacity-0 transform translate-y-2 bg-gray-700 p-4 rounded-lg border-l-4 border-gray-600"
+    >
+      <p class="text-gray-300 font-medium mb-2">📖 Explanation:</p>
+      <p class="text-gray-100" id="explanationText">{questionData.explanation}</p>
+    </div>
+  </main>
+
+  <script is:inline>
+    // Get DOM elements
+    const optionsContainer = document.getElementById('optionsContainer');
+    const explanationElement = document.getElementById('explanation');
+    const explanationText = document.getElementById('explanationText');
+    const correctAnswer = optionsContainer.dataset.correctAnswer;
+    const optionItems = document.querySelectorAll('.option-item');
+
+    // Add event listeners to all options
+    optionItems.forEach(item => {
+      item.addEventListener('click', function(event) {
+        handleAnswer(event, this.getAttribute('data-option'));
+      });
+    });
+
+    // Handle answer selection
+    function handleAnswer(event, selectedOption) {
+      const optionItem = event.currentTarget;
+      const allOptions = document.querySelectorAll('.option-item');
+
+      // Prevent multiple selections
+      if (optionItem.classList.contains('answered')) return;
+
+      // Add answered state
+      allOptions.forEach(opt => {
+        opt.classList.add('answered');
+        opt.style.cursor = 'default';
+        const content = opt.querySelector('.option-content');
+        content.classList.remove('hover:border-gray-500', 'cursor-pointer');
+      });
+
+      // Determine if answer is correct
+      const isCorrect = selectedOption === correctAnswer;
+
+      // Visual feedback - first remove any existing border classes
+      const optionDiv = optionItem.querySelector('.option-content');
+      optionDiv.classList.remove('border-gray-600', 'border-red-500', 'border-realgreen');
+
+      // Then add the correct border class
+      optionDiv.classList.add(isCorrect ? 'border-realgreen' : 'border-red-500');
+
+      // Highlight correct answer if wrong was selected
+      if (!isCorrect) {
+        const correctOption = document.querySelector(`.option-item[data-option="${correctAnswer}"] .option-content`);
+        correctOption.classList.add('border-realgreen');
+      }
+
+      // Add animation class
+      optionItem.classList.add(isCorrect ? 'correct-animation' : 'wrong-animation');
+      optionDiv.classList.add('bg-gray-600');
+
+      // Show explanation with animation
+      setTimeout(() => {
+        explanationElement.classList.add('explanation-enter-active');
+        explanationElement.classList.remove('opacity-0', 'translate-y-2');
+        explanationElement.style.opacity = '1';
+      }, 1000);
+    }
+
+    // Reset animations when new question loads
+    function resetAnimations() {
+      document.querySelectorAll('.option-item').forEach(item => {
+        item.classList.remove('correct-animation', 'wrong-animation', 'answered');
+        item.style.cursor = '';
+        const content = item.querySelector('.option-content');
+        content.classList.remove(
+          'border-realgreen', 'border-red-500', 'bg-gray-600'
+        );
+        content.classList.add('hover:border-gray-500', 'cursor-pointer');
+      });
+      explanationElement.classList.remove('explanation-enter-active');
+      explanationElement.style.opacity = '0';
+    }
+  </script>
+</div>

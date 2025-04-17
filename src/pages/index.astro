@@ -13,9 +13,20 @@ import MainLayout from "../layouts/MainLayout.astro";
 import PersonalizedHero from '../components/sections/PersonalizedHero.astro';
 import ChatWindow from "../components/sections/ChatWindow.astro";
 import Profile from "../components/sections/Profile.astro";
-const strings = [
-  "I don't know what this can do, so I'll just leave it here for now"
-];
+
+import Quiz from '../components/sections/Quiz.astro';
+
+const sampleQuestion = {
+  question: "What is the capital of France?",
+  options: {
+    a: "London",
+    b: "Berlin",
+    c: "Paris",
+    d: "Madrid"
+  },
+  correctAnswer: "c",
+  explanation: "Paris is the capital and most populous city of France."
+};
 ---
 
 <MainLayout
@@ -27,5 +38,7 @@ const strings = [
   <HuangLi />
 
   <Cases />
+
+  <Quiz questionData={sampleQuestion} />
 
 </MainLayout>
