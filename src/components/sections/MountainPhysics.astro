@@ -164,25 +164,6 @@ const { items } = Astro.props;
   const forceFactor = 0.0005; // 推力系数
   const maxSpeed = 1;         // 最大速度限制
 
-  // 触摸事件处理
-  document.addEventListener('touchstart', (e) => {
-    isTouching = true;
-    lastY = e.touches[0].clientY;
-    e.preventDefault();
-  }, { passive: false });
-
-  document.addEventListener('touchmove', (e) => {
-    if (!isTouching) return;
-    e.preventDefault();
-
-    const deltaY = e.touches[0].clientY - lastY;
-    applyForceToAll(deltaY); // 反向施加力（下拉上推，上拉下推）
-    lastY = e.touches[0].clientY;
-  }, { passive: false });
-
-  document.addEventListener('touchend', () => {
-    isTouching = false;
-  });
 
   // 滚轮事件处理
   document.addEventListener('wheel', (e) => {
