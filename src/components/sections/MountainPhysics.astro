@@ -3,9 +3,11 @@ import Section from "./Section.astro";
 const { items } = Astro.props;
 ---
 <!-- 1. 创建容器 -->
-<div class="flex flex-col items-center justify-center">
+<div class="flex flex-col items-center justify-center relative">
   <div id="data" data-items={JSON.stringify(items)}></div>
-  <div id="c" class="max-w-[800px] w-full h-[300px] mx-auto rounded-lg shadow-lg"></div>
+  <div id="c" class="max-w-[800px] w-full h-[300px] mx-auto rounded-lg shadow-lg">
+      <div id="tooltip" class="absolute text-sm bg-black text-white p-2 rounded opacity-0 transition-opacity duration-200 pointer-events-none"></div>
+  </div>
 </div>
 
 <!-- 2. 引入 matter -->
@@ -78,29 +80,129 @@ const { items } = Astro.props;
     }
 
   // 5-1. 创建10个不同颜色的正方形
+  // 5-1. 根据数量生成不同半径的圆形
   let boxes = [];
 
   for(const item of items) {
     const processed = await createProcessedBody(item.image);
-    for (let i = 0; i < item.count; i++) {
-      const radius=30;
-      boxes.push(
-              Bodies.circle(
-                      Common.random(containerWidth / 2 - 30, containerWidth / 2 + 30),  // x位置随机，不超出边界
-                      Common.random(-400, 0),     // y位置随机在上半部分
-                      radius,                  // 宽度随机               // 高度随机
-                      {
-                        render: {
-                          sprite: {
-                          texture: processed.texture,
-                          xScale: (radius * 2) / processed.size,
-                          yScale: (radius * 2) / processed.size
-                          }
-                        },
-                        restitution: 0.2,
-                      }
-              )
-      );
+    const count = item.count;
+    const countStr = String(count);
+    const len = countStr.length;
+
+    // 处理个位（半径20）
+    if (len >= 1) {
+      const onesDigit = parseInt(countStr[len - 1], 10);
+      for (let i = 0; i < onesDigit; i++) {
+        const radius = 20;
+        boxes.push(
+          Bodies.circle(
+            Common.random(containerWidth / 2 - 30, containerWidth / 2 + 30),
+            Common.random(-400, 0),
+            radius,
+            {
+              render: {
+                sprite: {
+                  texture: processed.texture,
+                  xScale: (radius * 2) / processed.size,
+                  yScale: (radius * 2) / processed.size
+                }
+              },
+              restitution: 0.2,
+              customData: {
+                type: 'large',
+                count: item.count
+              }
+            }
+          )
+        );
+      }
+    }
+
+    // 处理十位（半径30）
+    if (len >= 2) {
+      const tensDigit = parseInt(countStr[len - 2], 10);
+      for (let i = 0; i < tensDigit; i++) {
+        const radius = 30;
+        boxes.push(
+          Bodies.circle(
+            Common.random(containerWidth / 2 - 30, containerWidth / 2 + 30),
+            Common.random(-400, 0),
+            radius,
+            {
+              render: {
+                sprite: {
+                  texture: processed.texture,
+                  xScale: (radius * 2) / processed.size,
+                  yScale: (radius * 2) / processed.size
+                }
+              },
+              restitution: 0.2,
+              customData: {
+                type: 'large',
+                count: item.count
+              }
+            }
+          )
+        );
+      }
+    }
+
+    // 处理百位（半径40）
+    if (len >= 3) {
+      const hundredsDigit = parseInt(countStr[len - 3], 10);
+      for (let i = 0; i < hundredsDigit; i++) {
+        const radius = 40;
+        boxes.push(
+          Bodies.circle(
+            Common.random(containerWidth / 2 - 30, containerWidth / 2 + 30),
+            Common.random(-400, 0),
+            radius,
+            {
+              render: {
+                sprite: {
+                  texture: processed.texture,
+                  xScale: (radius * 2) / processed.size,
+                  yScale: (radius * 2) / processed.size
+                }
+              },
+              restitution: 0.2,
+              customData: {
+                type: 'large',
+                count: item.count
+              }
+            }
+          )
+        );
+      }
+    }
+
+    // 处理更高位（半径50）
+    if (len > 3) {
+      const extraDigits = len - 3;
+      for (let i = 0; i < extraDigits; i++) {
+        const radius = 50;
+        boxes.push(
+          Bodies.circle(
+            Common.random(containerWidth / 2 - 30, containerWidth / 2 + 30),
+            Common.random(-400, 0),
+            radius,
+            {
+              render: {
+                sprite: {
+                  texture: processed.texture,
+                  xScale: (radius * 2) / processed.size,
+                  yScale: (radius * 2) / processed.size
+                }
+              },
+              restitution: 0.2,
+              customData: {
+                type: 'large',
+                count: item.count
+              }
+            }
+          )
+        );
+      }
     }
   }
 
@@ -278,4 +380,29 @@ const { items } = Astro.props;
 
     Composite.add(engine.world, [ground, leftWall, rightWall]);
   });
+
+  const tooltip = document.getElementById('tooltip');
+
+render.canvas.addEventListener('mousemove', (e) => {
+  let found = false;
+
+  for (let body of engine.world.bodies) {
+    if (body.customData?.type === 'large') {
+      const dx = e.offsetX - body.position.x;
+      const dy = e.offsetY - body.position.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      if (distance <= body.circleRadius) {
+        tooltip.textContent = `Total：${body.customData.count}`;
+        tooltip.style.opacity = '1';
+        found = true;
+        break;
+      }
+    }
+  }
+
+  if (!found) {
+    tooltip.style.opacity = '0';
+  }
+});
 </script>
