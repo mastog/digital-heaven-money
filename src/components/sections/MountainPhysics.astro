@@ -1,0 +1,283 @@
+---
+import Section from "./Section.astro";
+const { items } = Astro.props;
+---
+<!-- 1. 创建容器 -->
+<div class="flex flex-col items-center justify-center">
+  <div id="data" data-items={JSON.stringify(items)}></div>
+  <div id="c" class="max-w-[800px] w-full h-[300px] mx-auto rounded-lg shadow-lg"></div>
+</div>
+
+<!-- 2. 引入 matter -->
+<script>
+  import Matter from 'matter-js';
+  const Engine = Matter.Engine;
+  const Render = Matter.Render;
+  const Bodies = Matter.Bodies;
+  const Composite = Matter.Composite;
+  const Runner = Matter.Runner;
+  const Common = Matter.Common;
+
+  const dataElement = document.getElementById('data');
+
+  const items = JSON.parse(dataElement.dataset.items);
+  // 3. 创建引擎
+  let engine = Engine.create();
+
+  // 获取父容器尺寸
+  const container = document.getElementById('c');
+  const containerWidth = container.clientWidth;
+  const containerHeight = container.clientHeight;
+
+  // 4. 创建渲染器，并将引擎连接到画布上
+  let render = Render.create({
+    element: container,
+    engine: engine,
+    options: {
+      width: containerWidth,
+      height: containerHeight,
+      background: 'transparent',
+      wireframes: false
+    }
+  });
+
+  async function createProcessedBody(imageUrl) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          const size = Math.min(img.width, img.height);
+
+          canvas.width = size;
+          canvas.height = size;
+
+          // 创建圆形遮罩
+          ctx.beginPath();
+          ctx.arc(size/2, size/2, size/2, 0, Math.PI*2);
+          ctx.clip();
+
+          // 绘制并转灰度
+          ctx.drawImage(img, 0, 0, size, size);
+          const imageData = ctx.getImageData(0, 0, size, size);
+          for(let i=0; i<imageData.data.length; i+=4) {
+            const avg = (imageData.data[i] + imageData.data[i+1] + imageData.data[i+2]) / 3;
+            imageData.data[i] = avg;
+            imageData.data[i+1] = avg;
+            imageData.data[i+2] = avg;
+          }
+          ctx.putImageData(imageData, 0, 0);
+
+          resolve({
+            texture: canvas.toDataURL(),
+            size: size
+          });
+        };
+        img.src = imageUrl;
+      });
+    }
+
+  // 5-1. 创建10个不同颜色的正方形
+  let boxes = [];
+
+  for(const item of items) {
+    const processed = await createProcessedBody(item.image);
+    for (let i = 0; i < item.count; i++) {
+      const radius=30;
+      boxes.push(
+              Bodies.circle(
+                      Common.random(containerWidth / 2 - 30, containerWidth / 2 + 30),  // x位置随机，不超出边界
+                      Common.random(-400, 0),     // y位置随机在上半部分
+                      radius,                  // 宽度随机               // 高度随机
+                      {
+                        render: {
+                          sprite: {
+                          texture: processed.texture,
+                          xScale: (radius * 2) / processed.size,
+                          yScale: (radius * 2) / processed.size
+                          }
+                        },
+                        restitution: 0.2,
+                      }
+              )
+      );
+    }
+  }
+
+
+
+  // 5-2. 创建透明地面（位置根据容器高度调整）
+  let ground = Bodies.rectangle(
+    containerWidth/2,                 // 水平居中
+    containerHeight - 5,             // 靠近底部
+    containerWidth,                   // 宽度与容器相同
+    10,                               // 高度
+    {
+      isStatic: true,
+      render: {
+        fillStyle: 'transparent',
+        strokeStyle: 'transparent'
+      },
+    }
+  );
+
+  // 添加左侧墙
+  let leftWall = Bodies.rectangle(
+    0,                              // 最左侧
+    containerHeight/2,              // 垂直居中
+    5,                             // 厚度
+    containerHeight,                // 高度与容器相同
+    {
+      isStatic: true,
+      render: {
+        fillStyle: 'transparent',
+        strokeStyle: 'transparent'
+      }
+    }
+  );
+
+  // 添加右侧墙
+  let rightWall = Bodies.rectangle(
+    containerWidth,                 // 最右侧
+    containerHeight/2,              // 垂直居中
+    5,                             // 厚度
+    containerHeight,                // 高度与容器相同
+    {
+      isStatic: true,
+      render: {
+        fillStyle: 'transparent',
+        strokeStyle: 'transparent'
+      }
+    }
+  );
+  engine.gravity.y = 0.5;
+
+  // 6. 将所有物体添加到世界中
+  Composite.add(engine.world, [...boxes, ground, leftWall, rightWall]);
+
+  // 7. 执行渲染操作
+  Render.run(render);
+
+  // 添加推力控制逻辑
+  let isTouching = false;
+  let lastY = 0;
+  const forceFactor = 0.0005; // 推力系数
+  const maxSpeed = 1;         // 最大速度限制
+
+  // 触摸事件处理
+  document.addEventListener('touchstart', (e) => {
+    isTouching = true;
+    lastY = e.touches[0].clientY;
+    e.preventDefault();
+  }, { passive: false });
+
+  document.addEventListener('touchmove', (e) => {
+    if (!isTouching) return;
+    e.preventDefault();
+
+    const deltaY = e.touches[0].clientY - lastY;
+    applyForceToAll(deltaY); // 反向施加力（下拉上推，上拉下推）
+    lastY = e.touches[0].clientY;
+  }, { passive: false });
+
+  document.addEventListener('touchend', () => {
+    isTouching = false;
+  });
+
+  // 滚轮事件处理
+  document.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    applyForceToAll(-e.deltaY * 0.1); // 调整滚轮灵敏度
+  }, { passive: false });
+
+  // 统一施加力的方法
+  function applyForceToAll(delta) {
+    const force = delta * forceFactor;
+
+    engine.world.bodies.forEach(body => {
+      if (!body.isStatic) { // 只对非静态物体施加力
+        // 施加力的同时限制最大速度
+        Matter.Body.applyForce(body, body.position, {
+          x: 0,
+          y: force * body.mass // 根据质量调整力的大小
+        });
+
+        // 速度限制（防止过快）
+        if (Math.abs(body.velocity.y) > maxSpeed) {
+          Matter.Body.setVelocity(body, {
+            x: body.velocity.x,
+            y: Math.sign(body.velocity.y) * maxSpeed
+          });
+        }
+      }
+    });
+  }
+
+  // 8. 创建运行方法
+  var runner = Runner.create();
+
+  // 9. 运行渲染器
+  Runner.run(runner, engine);
+
+  // 添加窗口大小调整事件监听
+  window.addEventListener('resize', function() {
+    const newWidth = container.clientWidth;
+    const newHeight = container.clientHeight;
+
+    // 更新渲染器尺寸
+    render.options.width = newWidth;
+    render.options.height = newHeight;
+    render.canvas.width = newWidth;
+    render.canvas.height = newHeight;
+
+    // 更新地面位置和尺寸
+    Composite.remove(engine.world, ground);
+    ground = Bodies.rectangle(
+      newWidth/2,
+      newHeight - 5,
+      newWidth,
+      10,
+      {
+        isStatic: true,
+        render: {
+          fillStyle: 'transparent',
+          strokeStyle: 'transparent'
+        }
+      }
+    );
+
+    // 更新左侧墙位置和尺寸
+    Composite.remove(engine.world, leftWall);
+    leftWall = Bodies.rectangle(
+      0,
+      newHeight/2,
+      5,
+      newHeight,
+      {
+        isStatic: true,
+        render: {
+          fillStyle: 'transparent',
+          strokeStyle: 'transparent'
+        }
+      }
+    );
+
+    // 更新右侧墙位置和尺寸
+    Composite.remove(engine.world, rightWall);
+    rightWall = Bodies.rectangle(
+      newWidth,
+      newHeight/2,
+      5,
+      newHeight,
+      {
+        isStatic: true,
+        render: {
+          fillStyle: 'transparent',
+          strokeStyle: 'transparent'
+        }
+      }
+    );
+
+    Composite.add(engine.world, [ground, leftWall, rightWall]);
+  });
+</script>

@@ -2,6 +2,7 @@
 import MainLayout from "../layouts/MainLayout.astro";
 import AboutCard from "../components/sections/AboutCard.astro";
 import Oblation from "../components/sections/Oblation.astro";
+import MountainPhysics from "../components/sections/MountainPhysics.astro";
 import Testimonials from "../components/sections/Testimonials.astro";
 const testimonialContent = {
   enable: true,
@@ -34,12 +35,18 @@ const testimonialContent = {
     }
   ]
 }
+const sampleItems = [
+  { image: '/images/oblation1.png', count: 15 },
+  { image: '/images/oblation2.png', count: 10 },
+  { image: '/images/oblation3.png', count: 8 },
+];
 ---
 
 <MainLayout title="Services">
 	<main class="space-y-20">
         <div class="py-0.5" />
         <AboutCard />
+        <MountainPhysics items={sampleItems} />
         <Oblation testimonialData={testimonialContent} />
         <Testimonials />
 	</main>
