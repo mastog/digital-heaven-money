@@ -405,4 +405,31 @@ render.canvas.addEventListener('mousemove', (e) => {
     tooltip.style.opacity = '0';
   }
 });
+
+window.dropCircle = async function(imageUrl) {
+  const processed = await createProcessedBody(imageUrl);
+  const radius = 20;
+
+  const circle = Bodies.circle(
+    Common.random(containerWidth / 2 - 30, containerWidth / 2 + 30),
+    Common.random(-200, 0), // 出现位置
+    radius,
+    {
+      render: {
+        sprite: {
+          texture: processed.texture,
+          xScale: (radius * 2) / processed.size,
+          yScale: (radius * 2) / processed.size
+        }
+      },
+      restitution: 0.2,
+      customData: {
+        type: 'large',
+        count: 1  // 或者你也可以允许传入 count
+      }
+    }
+  );
+
+  Composite.add(engine.world, circle);
+};
 </script>
