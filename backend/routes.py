@@ -105,17 +105,43 @@ def data_management(resource, action):
 
 
 # Invite Users to Memorial Hall
-@app.route('/memorial/<int:id>/invite', methods=['POST'])
+@app.route('/invite/<int:id>', methods=['GET'])
 @jwt_required()
 def invite_users(id):  # memorial id
     current_user_id = get_jwt_identity()
+    message="The invitation code has been created. "
+    exist=dao_factory.get_dao("InviteKey").get({'user_id': current_user_id,'deceased_id': id})
+    if exist:
+        dao_factory.get_dao("InviteKey").delete(exist)
+        message+="The previous invitation code has been overwritten"
     alphabet = string.ascii_letters + string.digits  # Contains letters and numbers
     invite_key = ''.join(secrets.choice(alphabet) for _ in range(16))  # Generates a 16-bit random invitation code
     data = {'user_id': current_user_id,
             'deceased_id': id,
             'key': invite_key}
     dao_factory.get_dao("InviteKey").create(**data)
-    return jsonify({'invite_key': invite_key}), 201
+    return jsonify({'invite_key': invite_key,'message':message}), 201
+
+# Join in Memorial Hall
+@app.route('/join/<string:key>', methods=['GET'])
+@jwt_required()
+def join(key):  # memorial id
+    current_user_id = get_jwt_identity()
+    inviteDao = dao_factory.get_dao("InviteKey")
+    invite=inviteDao.get({"key":key})
+    if not invite :
+        return jsonify({'error': "Unrecognizable key"}), 400
+    if invite.user.id==current_user_id:
+        return jsonify({'error': "Why do you use the invitation code you created to invite yourself?"}), 400
+    if current_user_id==invite.deceased.creator_id:
+        return jsonify({'error': "You cannot join the memorial you created yourself again"}), 400
+    if dao_factory.get_dao("DeceasedUser").get({"deceased_id":invite.deceased.id,"user_id":current_user_id}):
+        return jsonify({'error': "You have joined this memorial"}), 400
+    data = {'user_id': current_user_id,
+            'deceased_id': invite.deceased.id
+            }
+    dao_factory.get_dao("DeceasedUser").create(**data)
+    return jsonify({'message': "You joined "+invite.deceased.name+"'s memorial at "+invite.user.username+"'s invitation"}), 201
 
 @app.route('/ai', methods=['POST'])
 #@jwt_required()
@@ -129,7 +155,7 @@ def ai_request():
 @app.route('/dailyQuestion', methods=['GET'])
 def daily_question():
     random.seed(date.today())  #The same date generates the same random number
-    id_today=random.randint(1, 60)
+    id_today=random.randint(1, 50)
     return jsonify(dao_factory.get_dao("DailyQuestion").get({id==id_today}).to_dict()), 200
 
 @app.route('/history', methods=['GET'])
@@ -175,6 +201,34 @@ def upload_pic():
         return jsonify({'message': 'Picture uploaded successfully','pic_name': timestamped_filename}), 200
 
     return jsonify({'error': 'Invalid file type'}), 400
+
+@app.route('/publicDeceased', methods=['GET'])
+def public_deceased():
+    dao = dao_factory.get_dao("Deceased")
+    return jsonify([obj.to_dict() for obj in dao.get_all({"is_private":False})]), 200
+
+@app.route('/privateDeceased', methods=['GET'])
+@jwt_required()
+def private_deceased():
+    current_user_id = get_jwt_identity()
+    deceasedDao = dao_factory.get_dao("Deceased")
+    joinedDao= dao_factory.get_dao("DeceasedUser")
+    result=deceasedDao.get_all({"is_private":False,"creator_id":current_user_id})
+    for i in joinedDao.get_all({"user_id":current_user_id}):
+        result.append(i.deceased)
+    return jsonify([obj.to_dict() for obj in result]), 200
+
+@app.route('/timeLine/<int:id>', methods=['GET'])
+def get_timeLine(id):
+    dao=dao_factory.get_dao("DeceasedPhoto")
+    timeLine=dao.get_all({"deceased_id":id})
+    timeLine=sorted(timeLine, key=lambda x: x['photo_date'])
+    return jsonify([obj.to_dict() for obj in timeLine]), 200
+
+@app.route('/keys', methods=['GET'])
+def get_keys():
+    return jsonify(dao_factory.get_dao_keys()), 200
+
 
 # Error Handlers
 @app.errorhandler(404)

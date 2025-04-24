@@ -88,6 +88,12 @@ class InviteKeyDAO(BaseDAO):
             data['key_hash'] = generate_password_hash(key)
         return super().create(**data)
 
+    def get(self, **filters) -> ModelType:
+        key = filters.pop('key', None)
+        if key:
+            filters['key_hash']= generate_password_hash(key)
+        return super().get(**filters)
+
 class DeceasedPhotoDAO(BaseDAO):
     def __init__(self):
         super().__init__(DeceasedPhoto)
@@ -155,5 +161,8 @@ class DAOFactory:
     def get_dao(self, name: str) -> BaseDAO | None:
         # Return the corresponding DAO instance by name
         return self.dao_map.get(name, None)
+
+    def get_dao_keys(self) -> list[str]:
+        return list(self.dao_map.keys())
 
 dao_factory = DAOFactory()
