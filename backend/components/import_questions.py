@@ -43,7 +43,7 @@ def import_questions_to_db():
 
     # Create the table if it doesn't already exist
     cursor.execute('''
-    CREATE TABLE IF NOT EXISTS DailyQuestion (
+    CREATE TABLE IF NOT EXISTS daily_question (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         question TEXT,
         answerA TEXT,
@@ -64,7 +64,7 @@ def import_questions_to_db():
     # Insert data into the database
     for q in question_list:
         cursor.execute('''
-        INSERT INTO DailyQuestion (question, answerA, answerB, answerC, answerD, correctAnswer, explanation)
+        INSERT INTO daily_question (question, answerA, answerB, answerC, answerD, correctAnswer, explanation)
         VALUES (?, ?, ?, ?, ?, ?, ?)
         ''', q)
 
