@@ -13,10 +13,16 @@ import MainLayout from "../layouts/MainLayout.astro";
 import PersonalizedHero from '../components/sections/PersonalizedHero.astro';
 import ChatWindow from "../components/sections/ChatWindow.astro";
 import Profile from "../components/sections/Profile.astro";
-
+import { apiRequest } from '../utils/api';
 import Quiz from '../components/sections/Quiz.astro';
 
-const sampleQuestion = {
+
+const question = await apiRequest(
+        "/dailyQuestion",
+        "GET",
+        {},
+        false
+      )|| {
   question: "What is the capital of France?",
   options: {
     a: "London",
@@ -39,6 +45,6 @@ const sampleQuestion = {
 
   <Cases />
 
-  <Quiz questionData={sampleQuestion} />
+  <Quiz questionData={question} />
 
 </MainLayout>

@@ -140,15 +140,15 @@ const { questionData } = Astro.props;
 
       // Visual feedback - first remove any existing border classes
       const optionDiv = optionItem.querySelector('.option-content');
-      optionDiv.classList.remove('border-gray-600', 'border-red-500', 'border-realgreen');
+      optionDiv.classList.remove('border-gray-600', 'border-red-500', 'border-lightgreen');
 
       // Then add the correct border class
-      optionDiv.classList.add(isCorrect ? 'border-realgreen' : 'border-red-500');
+      optionDiv.classList.add(isCorrect ? 'border-lightgreen' : 'border-red-500');
 
       // Highlight correct answer if wrong was selected
       if (!isCorrect) {
         const correctOption = document.querySelector(`.option-item[data-option="${correctAnswer}"] .option-content`);
-        correctOption.classList.add('border-realgreen');
+        correctOption.classList.add('border-lightgreen');
       }
 
       // Add animation class
@@ -170,7 +170,7 @@ const { questionData } = Astro.props;
         item.style.cursor = '';
         const content = item.querySelector('.option-content');
         content.classList.remove(
-          'border-realgreen', 'border-red-500', 'bg-gray-600'
+          'border-lightgreen', 'border-red-500', 'bg-gray-600'
         );
         content.classList.add('hover:border-gray-500', 'cursor-pointer');
       });

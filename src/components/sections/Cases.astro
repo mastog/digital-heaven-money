@@ -3,63 +3,34 @@ import { Image, imageConfig } from "astro:assets";
 import Card from "../ui/Card.astro";
 import Section from "./Section.astro";
 
-const cards = [
-  {
+import { apiRequest } from '../../utils/api';
+
+
+const cards = await apiRequest(
+        "/history",
+        "GET",
+        {},
+        false
+      )|| [{
     index: 0,
-    description: "Emperor of the Eastern Roman Empire. (died in 450)",
+    data: "Emperor of the Eastern Roman Empire. (died in 450)",
     name: "Theodosius II",
-    status: "2",
-    date: "401",
-  },
-  {
-    index: 1,
-    description: "Taiwan province actor.",
-    name: "Huang Zhiwei",
-    status: "2",
-    date: "1981",
-  },
-  {
-    index: 2,
-    description: "Somali-American actor.",
-    name: "Barkhad Abdi",
-    status: "2",
-    date: "1985",
-  },
-  {
-    index: 3,
-    description: 'Carolingian king of the West Franks, nicknamed "The Stutterer". (born in 846)',
-    name: "Louis II",
-    status: "3",
-    date: "879",
-  },
-  {
-    index: 4,
-    description: "King of Denmark and King of Norway. (born in 1471)",
-    name: "Frederick I",
-    status: "3",
-    date: "1533",
-  },
-  {
-    index: 5,
-    description: "Japanese amateur astronomer. (born in 1950)",
-    name: "Yuji Hyakutake",
-    status: "3",
-    date: "2002",
-  },
-];
+    type: "2",
+    year: "401",
+  }];
 
 
 import larrow from "../../assets/icon3.svg";
 import SectionTitle from "../ui/SectionTitle.astro";
-import { date } from "astro:schema";
+import { year } from "astro:schema";
 ---
 
 <Section id="cases">
   <SectionTitle
     sectionTitle="Today in History"
-    description="Journey through time with significant births and deaths that shaped history on this calendar date"
+    data="Journey through time with significant births and deaths that shaped history on this calendar year"
   />
-  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 grid-rows-2 gap-4 mb-10">
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mb-10">
     {
       cards.map((card) => (
       <Card>
@@ -68,23 +39,23 @@ import { date } from "astro:schema";
           {/* left upper corner: Name */}
           <h1 class="text-4xl font-bold">{card.name}</h1>
           {/* right upper corner: state Dead or Born */}
-          {/* <h2 class="text-2xl font-semibold">{card.status}</h2> */}
+          {/* <h2 class="text-2xl font-semibold">{card.type}</h2> */}
           <div>
             <img
               src={
-                card.status === "2"
+                card.type === "2"
                   ? "/images/sun.svg"
                   : "/images/skull.svg"
               }
-              alt={card.status}
+              alt={card.type}
               class="h-8 w-8"
             />
           </div>
         </div>
-        {/* small font: date */}
-        <p class="text-sm text-gray-400">{card.date}</p>
-        {/* middle font: description */}
-        <p class="text-lg mt-4">{card.description}</p>
+        {/* small font: year */}
+        <p class="text-sm text-gray-400">{card.year}</p>
+        {/* middle font: data */}
+        <p class="text-lg mt-4">{card.data}</p>
         <a href=`https://en.wikipedia.org/wiki/${card.name}` target="_blank" class="flex items-center gap-[15px] mt-4">
           <span class="text-green">Wiki Info</span>
           <picture>

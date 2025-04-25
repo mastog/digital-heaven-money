@@ -154,16 +154,30 @@ def ai_request():
 
 @app.route('/dailyQuestion', methods=['GET'])
 def daily_question():
-    random.seed(date.today())  #The same date generates the same random number
-    id_today=random.randint(1, 50)
-    return jsonify(dao_factory.get_dao("DailyQuestion").get({id==id_today}).to_dict()), 200
+    random.seed(str(date.today()))  #The same date generates the same random number
+    daily_questions = dao_factory.get_dao("DailyQuestion").get_all()
+    id_today=random.randint(0, len(daily_questions)-1)
+    # Transform the data into the desired format
+    formatted_question = {
+        "question": daily_questions[id_today].question,
+        "options": {
+            "a": daily_questions[id_today].answerA,
+            "b": daily_questions[id_today].answerB,
+            "c": daily_questions[id_today].answerC,
+            "d": daily_questions[id_today].answerD
+        },
+        "correctAnswer": daily_questions[id_today].correctAnswer.lower(),  # Ensure it's lowercase
+        "explanation": daily_questions[id_today].explanation
+    }
+
+    return jsonify(formatted_question), 200
 
 @app.route('/history', methods=['GET'])
 def history():
     current_month = datetime.now().month
     current_day = datetime.now().day
 
-    history_objects = dao_factory.get_dao("history").get_all(month=current_month, day=current_day)
+    history_objects = dao_factory.get_dao("History").get_all(month=current_month, day=current_day)
     result=[]
     for obj in history_objects:
         #url="https://en.wikipedia.org/wiki/"+obj.name
