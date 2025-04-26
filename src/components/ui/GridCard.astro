@@ -1,14 +1,5 @@
 ---
-// src/components/InteractiveGrid.astro
-import type { ContentItem } from '../../types';
 import { GRID1_CONTENT, GRID2_CONTENT, GRID3_CONTENT, GRID4_CONTENT } from '../../types';
-
-interface Props {
-  grid1?: ContentItem[];
-  grid2?: ContentItem[];
-  grid3?: ContentItem[];
-  grid4?: ContentItem[];
-}
 
 const { grid1 = GRID1_CONTENT, grid2 = GRID2_CONTENT, grid3 = GRID3_CONTENT, grid4 = GRID4_CONTENT } = Astro.props;
 ---

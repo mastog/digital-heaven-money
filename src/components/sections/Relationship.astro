@@ -1,0 +1,22 @@
+---
+import GridCard from "../ui/GridCard.astro";
+import SectionTitle from "../ui/SectionTitle.astro";
+import Section from "./Section.astro";
+import { GRID1_CONTENT, GRID2_CONTENT, GRID3_CONTENT, GRID4_CONTENT } from '../../types';
+
+---
+
+<Section id="relationship">
+    <div>
+      <SectionTitle
+        sectionTitle="Relationship"
+        description="In Loving Memory: Relive the Milestones and Precious Sequences that Shaped a Treasured Existence"
+      />
+      <GridCard 
+        grid1={GRID1_CONTENT}
+        grid2={GRID2_CONTENT}
+        grid3={GRID3_CONTENT}
+        grid4={GRID4_CONTENT}
+      />
+    </div>
+</Section>
