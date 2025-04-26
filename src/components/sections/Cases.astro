@@ -15,7 +15,7 @@ const cards = await apiRequest(
     index: 0,
     data: "Emperor of the Eastern Roman Empire. (died in 450)",
     name: "Theodosius II",
-    type: "2",
+    type: 2,
     year: "401",
   }];
 
@@ -35,15 +35,15 @@ import { year } from "astro:schema";
       cards.map((card) => (
       <Card>
       <div class="flex p-[60px] h-full bg-dark text-gray rounded-[45px] m-[1px] flex-col">
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-start">
           {/* left upper corner: Name */}
           <h1 class="text-4xl font-bold">{card.name}</h1>
           {/* right upper corner: state Dead or Born */}
           {/* <h2 class="text-2xl font-semibold">{card.type}</h2> */}
-          <div>
+          <div class="flex-shrink-0">
             <img
               src={
-                card.type === "2"
+                card.type === 2
                   ? "/images/sun.svg"
                   : "/images/skull.svg"
               }
