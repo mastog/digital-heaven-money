@@ -4,6 +4,9 @@ import AboutCard from "../components/sections/AboutCard.astro";
 import Oblation from "../components/sections/Oblation.astro";
 import MountainPhysics from "../components/sections/MountainPhysics.astro";
 import Testimonials from "../components/sections/Testimonials.astro";
+import GridCard from "../components/sections/GridCard.astro";
+import { GRID1_CONTENT, GRID2_CONTENT, GRID3_CONTENT, GRID4_CONTENT } from '../types';
+
 const testimonialContent = {
   enable: true,
   title: "## Client Experiences",
@@ -56,6 +59,12 @@ const sampleItems = [
         </button>
       </div>
         <Oblation testimonialData={testimonialContent} />
+        <GridCard 
+          grid1={GRID1_CONTENT}
+          grid2={GRID2_CONTENT}
+          grid3={GRID3_CONTENT}
+          grid4={GRID4_CONTENT}
+         />
         <Testimonials />
 	</main>
 </MainLayout>

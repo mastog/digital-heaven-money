@@ -32,6 +32,9 @@ importers:
       marked:
         specifier: ^15.0.7
         version: 15.0.7
+      matter-js:
+        specifier: ^0.20.0
+        version: 0.20.0
       react:
         specifier: ^19.0.0
         version: 19.1.0
@@ -1386,6 +1389,9 @@ packages:
     resolution: {integrity: sha512-dgLIeKGLx5FwziAnsk4ONoGwHwGPJzselimvlVskE9XLN4Orv9u2VA3GWw/lYUqjfA0rUT/6fqKwfZJapP9BEg==}
     engines: {node: '>= 18'}
     hasBin: true
+
+  matter-js@0.20.0:
+    resolution: {integrity: sha512-iC9fYR7zVT3HppNnsFsp9XOoQdQN2tUyfaKg4CHLH8bN+j6GT4Gw7IH2rP0tflAebrHFw730RR3DkVSZRX8hwA==}
 
   mdast-util-definitions@6.0.0:
     resolution: {integrity: sha512-scTllyX6pnYNZH/AIp/0ePz6s4cZtARxImwoPJ7kS42n+MnVsI4XbnG6d4ibehRIldYMWM2LD7ImQblVhUejVQ==}
@@ -3816,6 +3822,8 @@ snapshots:
   markdown-table@3.0.4: {}
 
   marked@15.0.7: {}
+
+  matter-js@0.20.0: {}
 
   mdast-util-definitions@6.0.0:
     dependencies:

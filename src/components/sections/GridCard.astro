@@ -1,0 +1,258 @@
+---
+// src/components/InteractiveGrid.astro
+import type { ContentItem } from '../../types';
+import { GRID1_CONTENT, GRID2_CONTENT, GRID3_CONTENT, GRID4_CONTENT } from '../../types';
+
+interface Props {
+  grid1?: ContentItem[];
+  grid2?: ContentItem[];
+  grid3?: ContentItem[];
+  grid4?: ContentItem[];
+}
+
+const { grid1 = GRID1_CONTENT, grid2 = GRID2_CONTENT, grid3 = GRID3_CONTENT, grid4 = GRID4_CONTENT } = Astro.props;
+---
+<style is:global>
+  .grid-container {
+    display: grid;
+    gap: 1rem;
+    padding: 1rem;
+    grid-template-columns: repeat(2, minmax(200px, 1fr));
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 768px) {
+    .grid-container {
+      grid-template-columns: 1fr;
+      max-width: 400px;
+    }
+  }
+
+  .grid-item {
+    aspect-ratio: 1/1;
+    background: #b8b8b8;
+    border-radius: 16px;
+    overflow-y: auto;
+    position: relative;
+  }
+
+  .content-block {
+    height: 80px;
+    width: auto;
+    margin: 10px;
+    cursor: grab;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .content-wrapper {
+    width: 75%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s ease;
+    position: relative;
+    background: #8d8d8d;
+    border-radius: 16px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: 1px solid white;
+  }
+
+  .avatar-container {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin: 0 10px;
+    flex-shrink: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .avatar-image {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1.50);
+    width: 100%;
+    height: auto;
+  }
+
+  .avatar-image.portrait {
+    width: auto;
+    height: 100%;
+  }
+
+  .content-text {
+    flex: 1;
+    min-width: 0;
+    padding-right: 20px;
+  }
+
+  .content-title {
+    margin:0;
+    font-size:16px;
+    color:#fff;
+    font-weight: bold;
+  }
+
+  .content-desc {
+    margin:0;
+    font-size:14px;
+    color:#fff;
+  }
+
+  .cancel-text {
+    position: absolute;
+    left: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 25%;
+    text-align: left;
+    color: #000;
+    font-size: 14px;
+    pointer-events: none;
+  }
+
+  .visit-text {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 25%;
+    text-align: right;
+    color: #000;
+    font-size: 14px;
+    pointer-events: none;
+  }
+
+  .content-block.dragging .content-wrapper {
+    transition: none;
+  }
+</style>
+
+<div class="grid-container">
+  <!-- 重复4个grid-item -->
+  <div class="grid-item">
+    {grid1.map(item => (
+      <div class="content-block" data-link={item.link}>
+        <div class="cancel-text">cancel</div>
+        <div class="visit-text">access</div>
+        <div class="content-wrapper">
+          <div class="avatar-container">
+            <img src={item.avatar} class="avatar-image" alt="Avatar">
+          </div>
+          <div class="content-text">
+            <h3 class="content-title">{item.title}</h3>
+            <p class="content-desc">{item.description}</p>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+  <div class="grid-item">
+    {grid2.map(item => (
+      <div class="content-block" data-link={item.link}>
+        <div class="cancel-text">cancel</div>
+        <div class="visit-text">access</div>
+        <div class="content-wrapper">
+          <div class="avatar-container">
+            <img src={item.avatar} class="avatar-image" alt="Avatar">
+          </div>
+          <div class="content-text">
+            <h3 class="content-title">{item.title}</h3>
+            <p class="content-desc">{item.description}</p>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+  <div class="grid-item">
+    {grid3.map(item => (
+      <div class="content-block" data-link={item.link}>
+        <div class="cancel-text">cancel</div>
+        <div class="visit-text">access</div>
+        <div class="content-wrapper">
+          <div class="avatar-container">
+            <img src={item.avatar} class="avatar-image" alt="Avatar">
+          </div>
+          <div class="content-text">
+            <h3 class="content-title">{item.title}</h3>
+            <p class="content-desc">{item.description}</p>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+  <div class="grid-item">
+    {grid4.map(item => (
+      <div class="content-block" data-link={item.link}>
+        <div class="cancel-text">cancel</div>
+        <div class="visit-text">access</div>
+        <div class="content-wrapper">
+          <div class="avatar-container">
+            <img src={item.avatar} class="avatar-image" alt="Avatar">
+          </div>
+          <div class="content-text">
+            <h3 class="content-title">{item.title}</h3>
+            <p class="content-desc">{item.description}</p>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+  <!-- 其他三个grid-item结构相同 -->
+</div>
+
+<script is:inline>
+(function() {
+  let isDragging = false;
+  let startX = 0;
+  let currentX = 0;
+  let currentBlock = null;
+  let maxDrag = 0;
+
+  document.querySelectorAll('.content-block').forEach(block => {
+    block.addEventListener('mousedown', startDrag);
+    block.addEventListener('mouseup', endDrag);
+    block.addEventListener('mouseleave', endDrag);
+  });
+
+  function startDrag(e) {
+    isDragging = true;
+    startX = e.clientX;
+    currentBlock = e.currentTarget;
+    maxDrag = currentBlock.offsetWidth * 0.25;
+    currentBlock.classList.add('dragging');
+    document.addEventListener('mousemove', drag);
+  }
+
+  function drag(e) {
+    if (!isDragging) return;
+    const deltaX = e.clientX - startX;
+    currentX = Math.min(Math.max(deltaX, 0), maxDrag);
+    currentBlock.querySelector('.content-wrapper').style.transform = `translateX(${currentX}px)`;
+  }
+
+  function endDrag() {
+    if (!isDragging) return;
+    isDragging = false;
+    document.removeEventListener('mousemove', drag);
+    
+    const wrapper = currentBlock.querySelector('.content-wrapper');
+    wrapper.style.transition = 'transform 0.3s ease';
+    wrapper.style.transform = 'translateX(0)';
+    
+    if (currentX >= maxDrag) {
+      setTimeout(() => {
+        window.location.href = currentBlock.dataset.link;
+      }, 300);
+    }
+    
+    currentBlock.classList.remove('dragging');
+    setTimeout(() => {
+      wrapper.style.transition = '';
+    }, 300);
+  }
+})();
+</script>
