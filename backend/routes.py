@@ -1,22 +1,41 @@
 import os
 import time
-from datetime import datetime,date
+from datetime import datetime, date
 import secrets
 import string
 import random
 
-from flask import request, jsonify
-from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity, create_refresh_token
+from flask import request, jsonify, session
 from werkzeug.utils import secure_filename
 
-from backend import app
+from backend import app, login_manager
 from backend.models.DAOs import dao_factory
 
 # User Management
 from backend.services import aiService
 from backend.services.lunarCalendarService import get_lunarCalendar
 from backend.services.utils import allowed_file, picUpdate
+from flask_login import login_user, logout_user, login_required, current_user
 
+# 用户加载器回调
+@login_manager.user_loader
+def load_user(user_id):
+    user_dao = dao_factory.get_dao("User")
+    return user_dao.get(id=user_id)
+
+
+@login_manager.unauthorized_handler
+def handle_unauthorized():
+    from flask import request, jsonify, redirect
+
+    if request.accept_mimetypes.accept_json:
+        return jsonify({
+            "error": "Unauthorized",
+            "code": 401,
+            "redirect": "/login"  # 可选：携带重定向地址
+        }), 401
+    # 否则返回重定向（传统浏览器请求）
+    return redirect("/login")
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -29,6 +48,7 @@ def register():
     dao_factory.get_dao("User").create(**data)
     return jsonify({'message': 'Success'}), 201
 
+
 @app.route('/login', methods=['POST'])
 def login():
     data = request.form.to_dict()
@@ -37,22 +57,29 @@ def login():
     user = dao_factory.get_dao("User").get(username=data.get('username'))
     if not user or not user.check_password(data.get('password')):
         return jsonify({'error': 'Invalid credentials'}), 401
-    access_token = create_access_token(identity=str(user.id))
-    refresh_token = create_refresh_token(identity=str(user.id))
-    return jsonify({'access_token': access_token,'refresh_token': refresh_token}),200
+    login_user(user)  # 使用flask_login的login_user函数登录用户
+    return jsonify({'message': user.name+' login successful'}), 200
 
-@app.route("/refresh", methods=["POST"])
-@jwt_required(refresh=True)  # A valid refresh token is required
-def refresh():
-    current_user = get_jwt_identity()
-    new_access_token = create_access_token(identity=current_user)
-    return jsonify(access_token=new_access_token),200
+
+@app.route('/logout', methods=['POST'])
+@login_required
+def logout():
+    name = current_user.name
+    logout_user()  # 使用flask_login的logout_user函数登出用户
+    return jsonify({'message': name+' logout successful'}), 200
+
+
+@app.route('/current', methods=['POST'])
+def current():
+    if not current_user.is_authenticated:
+        return jsonify(None), 200  # 返回 `null`（JSON 里的 None）
+    return jsonify(current_user.to_dict()), 200
+
 
 @app.route('/profile', methods=['GET', 'PUT'])
-@jwt_required()
+@login_required
 def profile():
-    current_user_id = get_jwt_identity()
-    user = dao_factory.get_dao("User").get(id=current_user_id)
+    user = current_user
     if request.method == 'GET':
         return jsonify(user.to_dict()), 200
     elif request.method == 'PUT':
@@ -63,8 +90,8 @@ def profile():
         updated_user = dao_factory.get_dao("User").update(user, **data)
         return jsonify(updated_user.to_dict()), 200
 
+
 @app.route('/crud/<resource>/<action>', methods=['POST'])
-# @jwt_required()
 def data_management(resource, action):
     dao = dao_factory.get_dao(resource)
     if not dao:
@@ -106,57 +133,59 @@ def data_management(resource, action):
 
 # Invite Users to Memorial Hall
 @app.route('/invite/<int:id>', methods=['GET'])
-@jwt_required()
+@login_required
 def invite_users(id):  # memorial id
-    current_user_id = get_jwt_identity()
-    message="The invitation code has been created. "
-    exist=dao_factory.get_dao("InviteKey").get({'user_id': current_user_id,'deceased_id': id})
+    current_user_id = current_user.id
+    message = "The invitation code has been created. "
+    exist = dao_factory.get_dao("InviteKey").get({'user_id': current_user_id, 'deceased_id': id})
     if exist:
         dao_factory.get_dao("InviteKey").delete(exist)
-        message+="The previous invitation code has been overwritten"
+        message += "The previous invitation code has been overwritten"
     alphabet = string.ascii_letters + string.digits  # Contains letters and numbers
     invite_key = ''.join(secrets.choice(alphabet) for _ in range(16))  # Generates a 16-bit random invitation code
     data = {'user_id': current_user_id,
             'deceased_id': id,
             'key': invite_key}
     dao_factory.get_dao("InviteKey").create(**data)
-    return jsonify({'invite_key': invite_key,'message':message}), 201
+    return jsonify({'invite_key': invite_key, 'message': message}), 201
+
 
 # Join in Memorial Hall
 @app.route('/join/<string:key>', methods=['GET'])
-@jwt_required()
+@login_required
 def join(key):  # memorial id
-    current_user_id = get_jwt_identity()
+    current_user_id = current_user.id
     inviteDao = dao_factory.get_dao("InviteKey")
-    invite=inviteDao.get({"key":key})
-    if not invite :
+    invite = inviteDao.get({"key": key})
+    if not invite:
         return jsonify({'error': "Unrecognizable key"}), 400
-    if invite.user.id==current_user_id:
+    if invite.user.id == current_user_id:
         return jsonify({'error': "Why do you use the invitation code you created to invite yourself?"}), 400
-    if current_user_id==invite.deceased.creator_id:
+    if current_user_id == invite.deceased.creator_id:
         return jsonify({'error': "You cannot join the memorial you created yourself again"}), 400
-    if dao_factory.get_dao("DeceasedUser").get({"deceased_id":invite.deceased.id,"user_id":current_user_id}):
+    if dao_factory.get_dao("DeceasedUser").get({"deceased_id": invite.deceased.id, "user_id": current_user_id}):
         return jsonify({'error': "You have joined this memorial"}), 400
     data = {'user_id': current_user_id,
             'deceased_id': invite.deceased.id
             }
     dao_factory.get_dao("DeceasedUser").create(**data)
-    return jsonify({'message': "You joined "+invite.deceased.name+"'s memorial at "+invite.user.username+"'s invitation"}), 201
+    return jsonify({'message': "You joined " + invite.deceased.name + "'s memorial at " + invite.user.username + "'s invitation"}), 201
+
 
 @app.route('/ai', methods=['POST'])
-#@jwt_required()
 def ai_request():
     data = request.form.to_dict()
     if not data:
         return jsonify({'error': 'No data provided'}), 400
-    response=aiService.communicate(data.get('name'),data.get('description'),data.get('text'))
+    response = aiService.communicate(data.get('name'), data.get('description'), data.get('text'))
     return jsonify({'response': response}), 201
+
 
 @app.route('/dailyQuestion', methods=['GET'])
 def daily_question():
-    random.seed(str(date.today()))  #The same date generates the same random number
+    random.seed(str(date.today()))  # The same date generates the same random number
     daily_questions = dao_factory.get_dao("DailyQuestion").get_all()
-    id_today=random.randint(0, len(daily_questions)-1)
+    id_today = random.randint(0, len(daily_questions) - 1)
     # Transform the data into the desired format
     formatted_question = {
         "question": daily_questions[id_today].question,
@@ -172,26 +201,25 @@ def daily_question():
 
     return jsonify(formatted_question), 200
 
+
 @app.route('/history', methods=['GET'])
 def history():
     current_month = datetime.now().month
     current_day = datetime.now().day
 
     history_objects = dao_factory.get_dao("History").get_all(month=current_month, day=current_day)
-    result=[]
+    result = []
     for obj in history_objects:
-        #url="https://en.wikipedia.org/wiki/"+obj.name
         obj_dict = obj.to_dict()
-        #  Add url key-value pairs
-        #obj_dict["url"] = url
         result.append(obj_dict)
-
+    print(result)
     return jsonify(result), 200
 
 
 @app.route('/lunar', methods=['GET'])
 def lunarCalendar():
     return jsonify(get_lunarCalendar(datetime.now())), 200
+
 
 @app.route('/upload_pic', methods=['POST'])
 def upload_pic():
@@ -212,32 +240,32 @@ def upload_pic():
         file_path = os.path.join(app.config['FILE_UPLOAD_DIR'], timestamped_filename)
         file.save(file_path)  # save the picture
 
-        return jsonify({'message': 'Picture uploaded successfully','pic_name': timestamped_filename}), 200
+        return jsonify({'message': 'Picture uploaded successfully', 'pic_name': timestamped_filename}), 200
 
     return jsonify({'error': 'Invalid file type'}), 400
+
 
 @app.route('/publicDeceased', methods=['GET'])
 def public_deceased():
     dao = dao_factory.get_dao("Deceased")
-    return jsonify([obj.to_dict() for obj in dao.get_all({"is_private":False})]), 200
+    return jsonify([obj.to_dict() for obj in dao.get_all({"is_private": False})]), 200
+
 
 @app.route('/privateDeceased', methods=['GET'])
-@jwt_required()
+@login_required
 def private_deceased():
-    current_user_id = get_jwt_identity()
-    deceasedDao = dao_factory.get_dao("Deceased")
-    joinedDao= dao_factory.get_dao("DeceasedUser")
-    result=deceasedDao.get_all({"is_private":False,"creator_id":current_user_id})
-    for i in joinedDao.get_all({"user_id":current_user_id}):
-        result.append(i.deceased)
+    current_user_id = current_user.id
+    result = getPrivateMemorial(current_user_id)
     return jsonify([obj.to_dict() for obj in result]), 200
+
 
 @app.route('/timeLine/<int:id>', methods=['GET'])
 def get_timeLine(id):
-    dao=dao_factory.get_dao("DeceasedPhoto")
-    timeLine=dao.get_all({"deceased_id":id})
-    timeLine=sorted(timeLine, key=lambda x: x['photo_date'])
+    dao = dao_factory.get_dao("DeceasedPhoto")
+    timeLine = dao.get_all({"deceased_id": id})
+    timeLine = sorted(timeLine, key=lambda x: x['photo_date'])
     return jsonify([obj.to_dict() for obj in timeLine]), 200
+
 
 @app.route('/keys', methods=['GET'])
 def get_keys():
@@ -249,6 +277,16 @@ def get_keys():
 def not_found(error):
     return jsonify({'error': 'Not found'}), 404
 
+
 @app.errorhandler(500)
 def internal_error(error):
     return jsonify({'error': 'Internal server error'}), 500
+
+
+def getPrivateMemorial(current_user_id):
+    deceasedDao = dao_factory.get_dao("Deceased")
+    joinedDao = dao_factory.get_dao("DeceasedUser")
+    result = deceasedDao.get_all({"is_private": False, "creator_id": current_user_id})
+    for i in joinedDao.get_all({"user_id": current_user_id}):
+        result.append(i.deceased)
+    return result

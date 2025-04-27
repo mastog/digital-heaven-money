@@ -89,7 +89,6 @@ const FormComponent = ({
         apiUrl,
         method,
         requestData,
-        requiresAuth
       );
 
       console.log('Successful:', responseData);

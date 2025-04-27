@@ -14,12 +14,8 @@ export default function LoginForm() {
           submitText="Login"
           classConfig={login}
           onSuccess={(data) => {
-            if (data.access_token && data.refresh_token) {
-              localStorage.setItem('accessToken', data.access_token);
-              localStorage.setItem('refreshToken', data.refresh_token);
-              alert('Login successful!');
+              alert(data.message);
               window.location.href = '/';
-            }
           }}
         />
   );

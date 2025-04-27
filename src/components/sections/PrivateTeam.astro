@@ -10,12 +10,10 @@ const description =
   "Meet the skilled and experienced team behind our successful digital marketing strategies";
 
 const team = await apiRequest(
-        "/crud/Deceased/get",
-        "POST",
+        "/privateDeceased",
+        "GET",
         {},
-        false
       )|| [];
-
 ---
 
 <Section id="about">
@@ -24,11 +22,12 @@ const team = await apiRequest(
     <div
       class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 grid-rows-2 gap-10"
     >
+        <script src="../../utils/loginCheck.js"></script>
         <Card isUnderline={true}>
         <PriTeamForm client:load />
         </Card>
       {
-        team.map((member, index) => (
+        Array.isArray(team) && team.map((member, index) => (
           <TeamCard
             key={index}
             pic={member.pic_url}
@@ -40,9 +39,6 @@ const team = await apiRequest(
           />
         ))
       }
-    </div>
-    <div class="flex justify-end mt-10">
-      <button class="btn-primary">See all team</button>
     </div>
   </div>
 </Section>
