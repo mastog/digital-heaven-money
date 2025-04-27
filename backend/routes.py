@@ -58,13 +58,14 @@ def login():
     if not user or not user.check_password(data.get('password')):
         return jsonify({'error': 'Invalid credentials'}), 401
     login_user(user)  # 使用flask_login的login_user函数登录用户
-    return jsonify({'message': user.name+' login successful'}), 200
+    print(current_user.to_dict())
+    return jsonify({'message': user.username+' login successful'}), 200
 
 
 @app.route('/logout', methods=['POST'])
 @login_required
 def logout():
-    name = current_user.name
+    name = current_user.username
     logout_user()  # 使用flask_login的logout_user函数登出用户
     return jsonify({'message': name+' logout successful'}), 200
 
@@ -212,7 +213,6 @@ def history():
     for obj in history_objects:
         obj_dict = obj.to_dict()
         result.append(obj_dict)
-    print(result)
     return jsonify(result), 200
 
 
