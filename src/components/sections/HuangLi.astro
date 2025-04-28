@@ -7,7 +7,7 @@ import { apiRequest } from '../../utils/api';
 
 const today = new Date();
 const dateNumber = today.getDate(); // date
-const monthNumber = today.getMonth();
+const monthNumber = today.getMonth()+1;
 const weekDay = ["Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"][today.getDay()];
 const year = today.getFullYear();
 

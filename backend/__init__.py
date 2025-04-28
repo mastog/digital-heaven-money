@@ -2,13 +2,23 @@ import os
 
 from flask import Flask, jsonify, request
 from flask_jwt_extended import JWTManager
+from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from backend.config import Config
 
 app = Flask(__name__)
 app.config.from_object(Config)
-CORS(app)
+CORS(
+    app,
+    origins=["http://localhost:4321"],  # 支持多个地址
+    supports_credentials=True,
+)
 db = SQLAlchemy(app)
-jwt = JWTManager(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+app.config.update(
+    SESSION_COOKIE_SAMESITE='None',  # 允许跨站携带 Cookie
+    SESSION_COOKIE_SECURE=True,      # 仅 HTTPS 生效
+)
 

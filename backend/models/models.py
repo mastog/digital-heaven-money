@@ -1,5 +1,6 @@
 from datetime import datetime, date
 
+from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
 
 from backend import db
@@ -53,7 +54,7 @@ class BasePicModel(BaseModel):
 
 
 # User Model
-class User(BasePicModel):
+class User(BasePicModel, UserMixin):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String(50), unique=True, nullable=False)

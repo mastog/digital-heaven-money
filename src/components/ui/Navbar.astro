@@ -8,8 +8,6 @@ const menuitems = [
   { href: '/articles', label: 'Articles'},
   { href: '/profile', label: 'Profile'},
 ];
-
-const navButton = { href: '/login', label: 'Login' };
 ---
 
 <div class="mt-20">
@@ -49,11 +47,20 @@ const navButton = { href: '/login', label: 'Login' };
             ))}
             <div class="lg:hidden flex items-center justify-center mt-3 gap-4">
               <a 
-                class="mobile-nav-link px-9 py-5 rounded-2xl border border-zinc-900 bg-white hover:bg-black text-black hover:text-white inline-flex" 
-                href={navButton.href}
+                id="mobile-login-btn"
+                class="mobile-nav-link px-9 py-5 rounded-2xl border border-zinc-900 bg-white hover:bg-black text-black hover:text-white inline-flex"
+                href="/login"
                 data-close-menu="true"
               >
-                <h2 class="text-center text-xl font-normal leading-7">{navButton.label}</h2>
+                <h2 class="text-center text-xl font-normal leading-7">Login</h2>
+              </a>
+              <a
+                id="mobile-logout-btn"
+                class="mobile-nav-link px-9 py-5 rounded-2xl border border-zinc-900 bg-white hover:bg-black text-black hover:text-white inline-flex hidden"
+                href="#"
+                data-close-menu="true"
+              >
+                <h2 class="text-center text-xl font-normal leading-7">Logout</h2>
               </a>
             </div>
           </ul>
@@ -62,8 +69,11 @@ const navButton = { href: '/login', label: 'Login' };
 
       <div>
         <div class="hidden lg:flex items-center gap-4">
-          <a class="px-9 py-5 rounded-2xl border border-zinc-900 bg-white hover:bg-black text-black hover:text-white inline-flex" href={navButton.href}>
-            <h2 class="text-center text-xl font-normal leading-7">{navButton.label}</h2>
+          <a id="desktop-login-btn" class="px-9 py-5 rounded-2xl border border-zinc-900 bg-white hover:bg-black text-black hover:text-white inline-flex" href="/login">
+            <h2 class="text-center text-xl font-normal leading-7">Login</h2>
+          </a>
+          <a id="desktop-logout-btn" class="px-9 py-5 rounded-2xl border border-zinc-900 bg-white hover:bg-black text-black hover:text-white inline-flex hidden" href="#">
+            <h2 class="text-center text-xl font-normal leading-7">Logout</h2>
           </a>
         </div>
       </div>
@@ -71,29 +81,107 @@ const navButton = { href: '/login', label: 'Login' };
   </nav>
 </div>
 
-<script is:inline>
-  // Get references to the menu icon, open/close icons, and menu items
-  const menuIcon = document.getElementById('menu-icon');
-  const openIcon = document.getElementById('open-icon');
-  const closeIcon = document.getElementById('close-icon');
-  const menuItems = document.getElementById('menu-items');
-  const closeMenuItems = document.querySelectorAll('[data-close-menu="true"]');  // Select all items with the 'data-close-menu' attribute
+<script>
+  import {apiRequest} from "../../utils/api";
+  // Function to check login status
+  async function checkLoginStatus() {
+    try {
+      const response = await apiRequest("/current", "POST", {});
+      return response !== null;
+    } catch (error) {
+      console.error('Error checking login status:', error);
+      return false;
+    }
+  }
 
-  // Toggle the menu visibility and icon when the menu icon is clicked
-  menuIcon.addEventListener('click', () => {
-    menuItems.classList.toggle('hidden');  // Toggle the 'hidden' class on the menu
+  // Function to update UI based on login status
+  async function updateLoginUI() {
+    const isLoggedIn = await checkLoginStatus();
 
-    // Toggle between open and close icons
-    openIcon.classList.toggle('hidden');
-    closeIcon.classList.toggle('hidden');
-  });
+    // Desktop buttons
+    const desktopLoginBtn = document.getElementById('desktop-login-btn');
+    const desktopLogoutBtn = document.getElementById('desktop-logout-btn');
 
-  // Close the menu when any item is clicked
-  closeMenuItems.forEach(item => {
-    item.addEventListener('click', () => {
-      menuItems.classList.add('hidden');  // Add the 'hidden' class to hide the menu
-      openIcon.classList.remove('hidden');  // Show the open (hamburger) icon
-      closeIcon.classList.add('hidden');  // Hide the close (X) icon
+    // Mobile buttons
+    const mobileLoginBtn = document.getElementById('mobile-login-btn');
+    const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
+
+    if (isLoggedIn) {
+      // Show logout buttons and hide login buttons
+      if (desktopLoginBtn) desktopLoginBtn.classList.add('hidden');
+      if (desktopLogoutBtn) desktopLogoutBtn.classList.remove('hidden');
+      if (mobileLoginBtn) mobileLoginBtn.classList.add('hidden');
+      if (mobileLogoutBtn) mobileLogoutBtn.classList.remove('hidden');
+    } else {
+      // Show login buttons and hide logout buttons
+      if (desktopLoginBtn) desktopLoginBtn.classList.remove('hidden');
+      if (desktopLogoutBtn) desktopLogoutBtn.classList.add('hidden');
+      if (mobileLoginBtn) mobileLoginBtn.classList.remove('hidden');
+      if (mobileLogoutBtn) mobileLogoutBtn.classList.add('hidden');
+    }
+  }
+
+  // Function to handle logout
+  async function handleLogout() {
+    try {
+      const response = await apiRequest("/logout", "POST", {});
+      alert(response.message);
+      // Update UI after logout
+      updateLoginUI();
+      // Optionally redirect to home page
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  }
+
+  // Initialize the UI when page loads
+  document.addEventListener('DOMContentLoaded', () => {
+    updateLoginUI();
+
+    // Get references to the menu icon, open/close icons, and menu items
+    const menuIcon = document.getElementById('menu-icon');
+    const openIcon = document.getElementById('open-icon');
+    const closeIcon = document.getElementById('close-icon');
+    const menuItems = document.getElementById('menu-items');
+    const closeMenuItems = document.querySelectorAll('[data-close-menu="true"]');  // Select all items with the 'data-close-menu' attribute
+
+    // Toggle the menu visibility and icon when the menu icon is clicked
+    if (menuIcon) {
+      menuIcon.addEventListener('click', () => {
+        menuItems.classList.toggle('hidden');  // Toggle the 'hidden' class on the menu
+
+        // Toggle between open and close icons
+        openIcon.classList.toggle('hidden');
+        closeIcon.classList.toggle('hidden');
+      });
+    }
+
+    // Close the menu when any item is clicked
+    closeMenuItems.forEach(item => {
+      item.addEventListener('click', () => {
+        menuItems.classList.add('hidden');  // Add the 'hidden' class to hide the menu
+        openIcon.classList.remove('hidden');  // Show the open (hamburger) icon
+        closeIcon.classList.add('hidden');  // Hide the close (X) icon
+      });
     });
+
+    // Add logout event listeners
+    const desktopLogoutBtn = document.getElementById('desktop-logout-btn');
+    const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
+
+    if (desktopLogoutBtn) {
+      desktopLogoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        handleLogout();
+      });
+    }
+
+    if (mobileLogoutBtn) {
+      mobileLogoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        handleLogout();
+      });
+    }
   });
 </script>
