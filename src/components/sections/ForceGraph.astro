@@ -8,19 +8,19 @@ const links = [
   {
     name1: "张三",
     image1: "/team/d1.png",
-    href1: "/profile/zhangsan",
+    id1: "zhangsan",
     name2: "李四",
     image2: "/team/d2.png",
-    href2: "/profile/lisi",
+    id2: "lisi",
     relation: "classmate"
   },
   {
     name1: "张三",
     image1: "/team/d1.png",
-    href1: "/profile/wangwu",
+    id1: "wangwu",
     name2: "赵六",
     image2: "/team/d3.png",
-    href2: "/profile/zhaoliu",
+    id2: "zhaoliu",
     relation: "friend"
   }
 ];
@@ -33,29 +33,29 @@ const processData = (links) => {
 
   links.forEach(link => {
     // 处理第一个节点
-    if (!nodeMap.has(link.name1)) {
-      nodeMap.set(link.name1, {
+    if (!nodeMap.has(link.id1)) {
+      nodeMap.set(link.id1, {
         id: nodeMap.size,
         name: link.name1,
         image: link.image1,
-        href: link.href1
+        href: '/deceased/'+link.id1
       });
     }
 
     // 处理第二个节点
-    if (!nodeMap.has(link.name2)) {
-      nodeMap.set(link.name2, {
+    if (!nodeMap.has(link.id2)) {
+      nodeMap.set(link.id2, {
         id: nodeMap.size,
         name: link.name2,
         image: link.image2,
-        href: link.href2
+        href: '/deceased/'+link.id2
       });
     }
 
     // 添加边
     edges.push({
-      source: nodeMap.get(link.name1).id,
-      target: nodeMap.get(link.name2).id,
+      source: nodeMap.get(link.id1).id,
+      target: nodeMap.get(link.id2).id,
       relation: link.relation
     });
   });
@@ -108,9 +108,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 创建节点组
   const node = svg.append('g')
-    .selectAll('g')
+    .selectAll('a')
     .data(data.nodes)
-    .enter().append('g')
+    .enter().append('a')
+    .attr("xlink:href", d => d.href)
     .call(d3.drag()
       .on('start', dragstarted)
       .on('drag', dragged)
@@ -130,9 +131,6 @@ document.addEventListener('DOMContentLoaded', () => {
         .style('opacity', 0.8)
 
     })
-    .on('click', d => {
-      window.location.href = d.href;
-    });
 
   // 创建圆形裁剪路径
   node.append('clipPath')

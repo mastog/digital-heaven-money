@@ -111,12 +111,27 @@ const FormComponent = ({
           <label htmlFor={field.name} className={classConfig.label || ""}>{field.label}</label>
           {field.type === 'file' ? (
             <input
-              type={field.type}
+              type="file"
               id={field.name}
               name="pic"
               required={field.required}
               className={classConfig.input || ""}
             />
+          ) : field.type === 'select' ? (
+            <select
+              id={field.name}
+              name={field.name}
+              required={field.required}
+              className={classConfig.input || ""}
+              defaultValue=""
+            >
+              <option value="" disabled>Please choose {field.label}</option>
+              {field.options?.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
           ) : (
             <input
               type={field.type || 'text'}
@@ -128,6 +143,7 @@ const FormComponent = ({
               className={classConfig.input || ""}
             />
           )}
+
         </div>
       ))}
       <div className="flex justify-between gap-6 mt-10">
