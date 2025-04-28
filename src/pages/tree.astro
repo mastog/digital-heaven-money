@@ -1,0 +1,11 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import Service from "../components/sections/Services.astro";
+import ForceGraph from "../components/sections/ForceGraph.astro";
+---
+
+<MainLayout title="Services">
+	<main class="space-y-20">
+        <ForceGraph client:load/>
+	</main>
+</MainLayout>
