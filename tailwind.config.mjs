@@ -25,7 +25,7 @@ export default {
         dark: "var(--dark)",
         darkgray: "var(--darkgray)",
         gray: "var(--gray)",
-        white: "var(--white)",
+        white: "rgba(255, 255, 255, <alpha-value>)",
       },
     },
   },

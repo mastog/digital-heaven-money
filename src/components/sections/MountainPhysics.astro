@@ -3,9 +3,9 @@ import Section from "./Section.astro";
 const { items } = Astro.props;
 ---
 <!-- 1. 创建容器 -->
-<div class="flex flex-col items-center justify-center relative">
+<div class="flex flex-col items-center justify-center relative w-full">
   <div id="data" data-items={JSON.stringify(items)}></div>
-  <div id="c" class="max-w-[800px] w-full h-[300px] mx-auto rounded-lg shadow-lg">
+  <div id="c" class="max-w-[1200px] w-full h-[600px] mx-auto rounded-lg shadow-lg">
       <div id="tooltip" class="absolute text-sm bg-black text-white p-2 rounded opacity-0 transition-opacity duration-200 pointer-events-none"></div>
   </div>
 </div>
