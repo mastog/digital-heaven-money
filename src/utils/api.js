@@ -1,14 +1,16 @@
 /**
- * Enhanced API request function with session validation
+ * Enhanced API request function with separated data and astro context
  * @param {string} endpoint - API endpoint
  * @param {string} method - HTTP method
- * @param {object} data - Request payload
- * @returns {Promise} - Promise resolving to API response
+ * @param {object|null} data - Request body (for POST, PUT, etc)
+ * @param {AstroGlobal|null} astro - Astro context for server-side cookie injection
+ * @returns {Promise<any>} - API response
  */
 export const apiRequest = async (
   endpoint,
   method,
-  data,
+  data = null,
+  astro = null
 ) => {
   const isServer = typeof window === "undefined";
 
@@ -22,6 +24,12 @@ export const apiRequest = async (
 
   let body = method !== "GET" ? data : undefined;
 
+  if (isServer && astro) {
+    const cookie = astro.request.headers.get('cookie');
+    if (cookie) {
+      headers["Cookie"] = cookie;
+    }
+  }
   try {
     const response = await fetch(url, {
       method,
@@ -34,6 +42,21 @@ export const apiRequest = async (
 
     if (!response.ok) {
       const responseData = await response.json();
+
+      if (!isServer) {
+        if (response.status === 401) {
+          alert('Require login');
+          window.location.href = '/login';
+          return ;
+        } else if (response.status === 404) {
+          alert(responseData?.error || 'Resource not found');
+          window.location.href = '/404';
+          return;
+        } else if (response.status === 400) {
+          alert(responseData?.alert || 'Something wrong happened');
+          return;
+        }
+      }
       throw new Error(responseData?.error || `HTTP error! status: ${response.status}`);
     }
 

@@ -17,7 +17,7 @@ export default function PriTeamForm() {
 ];
   return (
       <ModalForm
-            apiUrl="/crud/Deceased/create"
+            apiUrl="/createMemorial"
             method="POST"
             fields={formFields}
             submitText="Submit"

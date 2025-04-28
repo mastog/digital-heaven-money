@@ -11,7 +11,7 @@ app = Flask(__name__)
 app.config.from_object(Config)
 CORS(
     app,
-    origins=["http://localhost:4321"],  # 支持多个地址
+    origins=["http://127.0.0.1:4321"],  # 支持多个地址
     supports_credentials=True,
 )
 db = SQLAlchemy(app)

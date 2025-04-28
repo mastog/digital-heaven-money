@@ -157,14 +157,14 @@ def invite_users(id):  # memorial id
 def join(key):  # memorial id
     current_user_id = current_user.id
     inviteDao = dao_factory.get_dao("InviteKey")
-    invite = inviteDao.get({"key": key})
+    invite = inviteDao.get(key= key)
     if not invite:
         return jsonify({'error': "Unrecognizable key"}), 400
     if invite.user.id == current_user_id:
         return jsonify({'error': "Why do you use the invitation code you created to invite yourself?"}), 400
     if current_user_id == invite.deceased.creator_id:
         return jsonify({'error': "You cannot join the memorial you created yourself again"}), 400
-    if dao_factory.get_dao("DeceasedUser").get({"deceased_id": invite.deceased.id, "user_id": current_user_id}):
+    if dao_factory.get_dao("DeceasedUser").get(deceased_id= invite.deceased.id, user_id= current_user_id):
         return jsonify({'error': "You have joined this memorial"}), 400
     data = {'user_id': current_user_id,
             'deceased_id': invite.deceased.id
@@ -248,7 +248,7 @@ def upload_pic():
 @app.route('/publicDeceased', methods=['GET'])
 def public_deceased():
     dao = dao_factory.get_dao("Deceased")
-    return jsonify([obj.to_dict() for obj in dao.get_all({"is_private": False})]), 200
+    return jsonify([obj.to_dict() for obj in dao.get_all(is_private= False)]), 200
 
 
 @app.route('/privateDeceased', methods=['GET'])
@@ -256,13 +256,14 @@ def public_deceased():
 def private_deceased():
     current_user_id = current_user.id
     result = getPrivateMemorial(current_user_id)
+    print([obj.to_dict() for obj in result])
     return jsonify([obj.to_dict() for obj in result]), 200
 
 
 @app.route('/timeLine/<int:id>', methods=['GET'])
 def get_timeLine(id):
     dao = dao_factory.get_dao("DeceasedPhoto")
-    timeLine = dao.get_all({"deceased_id": id})
+    timeLine = dao.get_all(deceased_id= id)
     timeLine = sorted(timeLine, key=lambda x: x['photo_date'])
     return jsonify([obj.to_dict() for obj in timeLine]), 200
 
@@ -271,6 +272,43 @@ def get_timeLine(id):
 def get_keys():
     return jsonify(dao_factory.get_dao_keys()), 200
 
+@app.route('/memories', methods=['GET'])
+@login_required
+def get_memorials():
+    current_user_id = current_user.id
+    memorials = getPrivateMemorial(current_user_id)
+    result=[]
+    for memorial in memorials:
+        result.append( { "value": memorial.id, "label": memorial.name })
+    return jsonify(result), 200
+
+@app.route('/createMemorial', methods=['POST'])
+@login_required
+def create_memorial():
+    current_user_id = current_user.id
+    data = request.form.to_dict()
+    if 'pic' in request.files:
+        filename = picUpdate(request)
+        data['pic_url'] = filename
+    data['creator_id']=current_user_id
+    dao_factory.get_dao("Deceased").create(**data)
+    return jsonify({'message':"Success!"}), 200
+
+@app.route('/get_relationship', methods=['GET'])
+@login_required
+def get_relationship():
+    relationships=dao_factory.get_dao("FamilyTree").get_all(creator_id= current_user.id)
+    result=[]
+    for relationship in relationships:
+        result.append({ "name1": relationship.deceased1.name,
+                        "name2": relationship.deceased2.name,
+                        "image1": relationship.deceased1.pic_url,
+                        "image2": relationship.deceased1.pic_url,
+                        "id1": relationship.deceased1.id,
+                        "id2": relationship.deceased2.id,
+                        "relation": relationship.relation_type,
+                        })
+    return jsonify(result), 200
 
 # Error Handlers
 @app.errorhandler(404)
@@ -286,7 +324,7 @@ def internal_error(error):
 def getPrivateMemorial(current_user_id):
     deceasedDao = dao_factory.get_dao("Deceased")
     joinedDao = dao_factory.get_dao("DeceasedUser")
-    result = deceasedDao.get_all({"is_private": False, "creator_id": current_user_id})
-    for i in joinedDao.get_all({"user_id": current_user_id}):
+    result = deceasedDao.get_all(is_private=False, creator_id=current_user_id)
+    for i in joinedDao.get_all(user_id= current_user_id):
         result.append(i.deceased)
     return result

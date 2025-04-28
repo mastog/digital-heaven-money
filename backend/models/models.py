@@ -70,6 +70,7 @@ class User(BasePicModel, UserMixin):
     deceased_offerings = relationship("DeceasedOffering", back_populates="user", cascade="all, delete-orphan")
     deceased_messages = relationship("DeceasedMessage", back_populates="user", cascade="all, delete-orphan")
     remembrance_messages = relationship("RemembranceMessage", back_populates="user", cascade="all, delete-orphan")
+    family_trees = relationship("FamilyTree", back_populates="creator", cascade="all, delete-orphan")
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -150,10 +151,12 @@ class FamilyTree(BaseModel):
     deceased1_id = Column(Integer, ForeignKey('deceased.id', ondelete='SET NULL'), nullable=False)
     deceased2_id = Column(Integer, ForeignKey('deceased.id', ondelete='SET NULL'), nullable=False)
     relation_type = Column(String(50), nullable=False)
+    creator_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)  # 新增creator_id字段
 
     # Relationships
     deceased1 = relationship("Deceased", foreign_keys=[deceased1_id])
     deceased2 = relationship("Deceased", foreign_keys=[deceased2_id])
+    creator = relationship("User", back_populates="family_trees")  # 新增relationship到User
 
 # Offering Model
 class Offering(BasePicModel):

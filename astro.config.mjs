@@ -12,6 +12,8 @@ export default defineConfig({
   output: 'server',
   adapter: vercel(),
   server: {
+    host: '127.0.0.1',  // 这里设置
+    port: 4321,         // 这里设置
     allowedHosts: ['csi6220-1-vm4.ucd.ie']
   }
 });
