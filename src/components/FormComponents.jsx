@@ -125,7 +125,7 @@ const FormComponent = ({
               className={classConfig.input || ""}
               defaultValue=""
             >
-              <option value="" disabled>Please choose {field.label}</option>
+              <option value="" disabled>{field.label}</option>
               {field.options?.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
