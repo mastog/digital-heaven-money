@@ -71,7 +71,6 @@ const FormComponent = ({
       formRef.current.reset();
       setImagePreview(null); // Clear the image preview after submission
     } catch (error) {
-      alert(`Error! ${error.message}`);
     }
   };
 

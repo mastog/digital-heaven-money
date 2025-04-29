@@ -1,23 +1,46 @@
 ---
 import Card from "../ui/Card.astro";
-// 添加客户端交互逻辑
+import { apiRequest } from '../../utils/api';
 const enableClientScript = true;
+
+const user = await apiRequest(
+        "/profile",
+        "GET",
+        {},
+        Astro,
+      )|| {
+  username: "John Doe",
+  email: "johndoe@example.com",
+  gender: "Femboy",
+  location: "San Francisco, CA",
+  introduction: "A passionate software engineer with experience in building scalable applications and modern web technologies.",
+  pic_url: "/uploaded_Pic/profile.jpg"
+};
 ---
 
 <Card>
     <!-- Profile Header -->
     <header class="w-full max-w-2xl bg-green rounded-lg p-6 flex flex-col items-center mx-auto relative">
-        <img src="/public/images/profile.jpg" alt="Profile Picture" class="w-24 h-24 rounded-full">
-        <h1 class="text-2xl font-bold mt-4">John Doe</h1>
-        <h5 class="text-sm text-gray-500 mb-4">San Francisco, CA</h5>
-        
-        <!-- 新增编辑开关 -->
+        <div id="profileImageWrapper" class="relative w-24 h-24">
+          <img id="profileImage" src={user.pic_url ? user.pic_url : "/images/profile.jpg"} alt="Profile Picture"
+             class="w-24 h-24 rounded-full shadow-xl transition duration-300">
+          <div id="uploadOverlay" class="absolute inset-0 bg-black bg-opacity-40 rounded-full flex items-center justify-center opacity-0 transition">
+            <img
+              src="/images/edit.svg"
+              class="h-8 w-8"
+            />
+          </div>
+        </div>
+        <h1 class="text-2xl font-bold mt-4">{user.username}</h1>
+        <h5 class="text-sm text-gray-500 mb-4"> </h5>
+
+        <!-- New Edit Toggle -->
         <div class="edit-switch">
             <label class="switch">
                 <input type="checkbox" id="editToggle">
                 <span class="slider">
-                    <span class="edit-text">Edit</span>
-                    <span class="view-text">View</span>
+                    <span class="edit-text">Confirm</span>
+                    <span class="view-text">Edit</span>
                 </span>
             </label>
         </div>
@@ -25,42 +48,37 @@ const enableClientScript = true;
 
     <!-- Main Content -->
     <main class="w-full max-w-2xl grid gap-6 mt-6 mx-auto">
-        <Card>
+        <section class="bg-green rounded-lg p-5">
             <!-- About Section -->
             <section class="bg-green rounded-lg p-5">
                 <h2 class="text-xl font-semibold mb-2">About</h2>
-                <p class="text-gray-700 editable">A passionate software engineer with experience in building scalable applications and modern web technologies.</p>
+                <p class="text-gray-700 editable w-full" id="introduction">{user.introduction}</p>
             </section>
-        </Card>
+        </section>
 
         <!-- Personal Details Section -->
         <section class="bg-green rounded-lg p-5 mb-[30px]">
-            <h2 class="text-xl font-semibold mb-4">Personal Details</h2>            
+            <h2 class="text-xl font-semibold mb-4">Personal Details</h2>
             <div class="card-info grid grid-cols-2 gap-4">
                 <div class="font-semibold flex items-center">
-                    <img src="/images/profile1.svg" alt="User Icon" class="w-5 h-5 mr-2"> Full Name
+                    <img src="/images/profile1.svg" alt="User Icon" class="w-5 h-5 mr-2"> User Name
                 </div>
-                <p class="editable">John Doe</p>
-
-                <div class="font-semibold flex items-center">
-                    <img src="/images/profile2.svg" alt="Calendar Icon" class="w-5 h-5 mr-2"> Date of Birth
-                </div>
-                <p class="editable">January 1, 1990</p>
+                <p class="px-2 py-1 border-2 border-transparent transition-colors duration-200">{user.username}</p>
 
                 <div class="font-semibold flex items-center">
                     <img src="/images/profile3.svg" alt="Gender Icon" class="w-5 h-5 mr-2"> Gender
                 </div>
-                <p class="editable">Femboy</p>
+                <p class="editable" id="gender">{user.gender}</p>
 
                 <div class="font-semibold flex items-center">
                     <img src="/images/profile4.svg" alt="Email Icon" class="w-5 h-5 mr-2"> Email
                 </div>
-                <p class="editable">johndoe@example.com</p>
+                <p class="editable" id="email">{user.email}</p>
 
                 <div class="font-semibold flex items-center">
                     <img src="/images/profile5.svg" alt="Location Icon" class="w-5 h-5 mr-2"> Location
                 </div>
-                <p class="editable">San Francisco, CA</p>
+                <p class="editable" id="location">{user.location}</p>
             </div>
         </section>
     </main>
@@ -200,13 +218,16 @@ const enableClientScript = true;
             background: #f8f8f8;
             border: 2px solid #e0e0e0;
             border-radius: 10px;
-            display: inline-flex;
+            display: inline-block;
             align-items: center;
             min-height: calc(1em + 4px);
             line-height: 1.5;
             padding: 5px 10px;
             vertical-align: baseline;
             box-sizing: content-box;
+            word-break: break-word;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
         }
 
         .editable[contenteditable="true"]:focus {
@@ -215,33 +236,135 @@ const enableClientScript = true;
             outline: none;
             box-shadow: 0 0 0 2px rgba(144, 202, 249, 0.3);
         }
+
+        #profileImageWrapper {
+          position: relative;
+        }
+
+        #profileImageWrapper.cursor-pointer {
+          cursor: pointer;
+        }
+
+        #uploadOverlay {
+          transition: opacity 0.3s;
+        }
+
+        #profileImageWrapper.cursor-pointer:hover #uploadOverlay {
+          opacity: 1;
+        }
     </style>
 
     {enableClientScript && (
-        <script>
-            // 切换编辑状态
-            const toggleEdit = document.getElementById('editToggle');
-            const editables = document.querySelectorAll('.editable');
+    <script>
+        import { apiRequest } from '../../utils/api';
+        const toggleEdit = document.getElementById('editToggle');
+        const editables = document.querySelectorAll('.editable');
+        const profileImage = document.getElementById('profileImage');
+        const uploadOverlay = document.getElementById('uploadOverlay');
+        const profileImageWrapper = document.getElementById('profileImageWrapper');
+        let selectedImageFile = null; // 用来保存选中的图片文件
 
-            toggleEdit.addEventListener('change', function() {
-                const isEdit = this.checked;
+        // 添加邮箱校验
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        toggleEdit.addEventListener('change', function (event) {
+            const isEdit = this.checked;
+
+            if (!isEdit) {
+                // 进入 Confirm 模式
+                let hasInvalid = false;
                 editables.forEach(element => {
-                    element.contentEditable = isEdit;
-                    // 动态添加/移除类名而不是直接修改样式
-                    element.classList.toggle('editing-mode', isEdit);
-                    
-                    // 保持原有光标位置
-                    if(isEdit) {
-                        const range = document.createRange();
-                        const sel = window.getSelection();
-                        range.selectNodeContents(element);
-                        range.collapse(true);
-                        sel.removeAllRanges();
-                        sel.addRange(range);
+                    const key = element.previousElementSibling?.innerText?.trim();
+                    const value = element.innerText.trim();
+                    if (key.toLowerCase().includes('email') && !validateEmail(value)) {
+                        alert('Invalid email format!');
+                        hasInvalid = true;
                     }
                 });
-            });
-        </script>
-    )}
-</Card>
 
+                if (hasInvalid) {
+                    event.preventDefault();
+                    toggleEdit.checked = true;
+                    return;
+                }
+
+                submitProfileData();
+
+                editables.forEach(element => {
+                    element.contentEditable = false;
+                    element.classList.remove('editing-mode');
+                });
+
+                // 禁止头像点击
+                profileImageWrapper.classList.remove('cursor-pointer');
+                uploadOverlay.classList.add('opacity-0');
+                uploadOverlay.classList.remove('opacity-30');
+                uploadOverlay.removeEventListener('click', selectImage);
+
+            } else {
+                // 进入 Edit 模式
+                editables.forEach(element => {
+                    element.contentEditable = true;
+                    element.classList.add('editing-mode');
+                });
+
+                // 允许头像点击
+                profileImageWrapper.classList.add('cursor-pointer');
+                uploadOverlay.classList.remove('opacity-0');
+                uploadOverlay.classList.add('opacity-30');
+                uploadOverlay.addEventListener('click', selectImage);
+            }
+        });
+
+        function selectImage() {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            fileInput.click();
+
+            fileInput.onchange = function (event) {
+                const file = event.target.files[0];
+                if (file) {
+                    selectedImageFile = file;
+
+                    // 更新预览
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        profileImage.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+        }
+
+        function submitProfileData() {
+            const data = new FormData();
+
+            // 收集文本信息
+            editables.forEach(element => {
+                const key = element.id || 'about';
+                let value = element.innerText.trim();
+                data.append(key, value);
+            });
+
+            // 收集头像
+            if (selectedImageFile) {
+                data.append('pic', selectedImageFile);
+            }
+
+            apiRequest('/profile', 'PUT', data)
+            .then(result => {
+                console.log('Profile updated:', result);
+                alert('Profile updated successfully!');
+            })
+            .catch(error => {
+                console.error('Error updating profile:', error);
+                alert('Error updating profile: ' + error);
+            });
+            }
+    </script>
+)}
+</Card>

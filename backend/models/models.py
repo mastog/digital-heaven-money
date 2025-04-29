@@ -59,6 +59,9 @@ class User(BasePicModel, UserMixin):
     id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String(50), unique=True, nullable=False)
     email = Column(String(100))
+    gender = Column(String(100))
+    location = Column(String(100))
+    introduction = Column(Text)
     password_hash = Column(String(255), nullable=False)
     is_admin = Column(Boolean, default=False)
 

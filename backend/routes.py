@@ -56,8 +56,8 @@ def login():
         return jsonify({'error': 'No data provided'}), 400
     user = dao_factory.get_dao("User").get(username=data.get('username'))
     if not user or not user.check_password(data.get('password')):
-        return jsonify({'error': 'Invalid credentials'}), 401
-    login_user(user)  # 使用flask_login的login_user函数登录用户
+        return jsonify({'error': 'Invalid credentials'}), 400
+    login_user(user)
     print(current_user.to_dict())
     return jsonify({'message': user.username+' login successful'}), 200
 
@@ -88,6 +88,7 @@ def profile():
         if 'pic' in request.files:
             filename = picUpdate(request)
             data['pic_url'] = filename
+        print(data)
         updated_user = dao_factory.get_dao("User").update(user, **data)
         return jsonify(updated_user.to_dict()), 200
 

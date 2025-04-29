@@ -53,7 +53,7 @@ export const apiRequest = async (
           window.location.href = '/404';
           return;
         } else if (response.status === 400) {
-          alert(responseData?.alert || 'Something wrong happened');
+          alert(responseData?.error || 'Something wrong happened');
           return;
         }
       }
