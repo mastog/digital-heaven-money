@@ -40,6 +40,16 @@ const FormComponent = ({
       return;
     }
 
+    // Get birth_date and death_date values
+    const birthDate = formData.get('birth_date');
+    const deathDate = formData.get('death_date');
+
+    // Check if birth_date is later than death_date
+    if (birthDate && deathDate && new Date(birthDate) > new Date(deathDate)) {
+      alert('Birth date must be before death date!');
+      return;
+    }
+
     // Check file type
     const fileInput = formRef.current.querySelector('input[type="file"]');
     if (fileInput && fileInput.files.length > 0) {
