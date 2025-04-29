@@ -15,7 +15,7 @@ const { birth_date,death_date, name, avatar, about } = PERSONAL_INFO;
     <div class="flex flex-col items-center align-middle">
         <div class="mx-4 w-fit rounded-xl">
             <div class="max-w-screen-lg px-4 md:px-8">
-                <div class="grid items-center gap-8 sm:grid-cols-2">
+                <div class="grid items-center gap-8 z-[2] sm:grid-cols-2">
                     <div class="flex flex-col mr-5 items-center justify-center sm:items-start">
                         <p class="mb-4 text-sm font-semibold text-darkgray md:text-base">
                             {birth_date} ~ {death_date}
@@ -36,6 +36,8 @@ const { birth_date,death_date, name, avatar, about } = PERSONAL_INFO;
                             class="h-full w-full object-cover object-center"
                         />
                     </div>
+                </div>
+                <div class="absolute left-0 rounded-[24px] w-1/2 h-[300px] top-1/2 -translate-y-1/2 bg-white/85 z-[3] transition-all">
                 </div>
             </div>
         </div>

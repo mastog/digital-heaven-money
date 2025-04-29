@@ -1,0 +1,168 @@
+---
+// 模拟数据库数据
+const database = {
+  users: [
+    { id: 1, name: 'Alice', age: 30, active: true },
+    { id: 2, name: 'Bob', age: 25, active: false },
+  ],
+  products: [
+    { sku: 'A1', name: 'Laptop', price: 999.99, stock: 10 },
+    { sku: 'B2', name: 'Phone', price: 599.99, stock: 25 },
+  ],
+  orders: [
+    { orderId: 'O1', total: 150.00, completed: true },
+    { orderId: 'O2', total: 200.00, completed: false },
+  ]
+};
+---
+
+<style>
+  /* 新增初始状态样式 */
+  .table-wrapper:empty::before {
+    content: "请在上方选择数据类型";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    height: 200px;
+  }
+
+  .admin-panel {
+    font-family: system-ui, sans-serif;
+    max-width: 1200px;
+    margin: 2rem auto;
+  }
+
+  .type-bar {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f5f7fa;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+
+  .type-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    background: #e1e8f0;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .type-btn:hover {
+    background: #4f46e5;
+    color: white;
+  }
+
+  .table-wrapper {
+    border: 2px dashed #e2e8f0;
+    border-radius: 8px;
+    min-height: 200px;
+    max-height: 500px;
+    overflow-y: auto;
+    background: white;
+    transition: all 0.3s;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #e3e8ee;
+  }
+
+  .data-table th {
+    background: #f8fafc;
+    font-weight: 500;
+    position: sticky;
+    top: 0;
+  }
+
+  .type-row {
+    font-size: 0.9em;
+    color: #64748b;
+  }
+</style>
+
+<div class="admin-panel">
+  <div class="type-bar">
+    {Object.keys(database).map((type) => (
+      <button 
+        class="type-btn" 
+        data-type={type}
+        onclick="handleTypeClick(event)"
+      >
+        {type}
+      </button>
+    ))}
+  </div>
+
+  <!-- 修改后的表格容器 -->
+  <div class="table-wrapper" id="tableContainer"></div>
+</div>
+
+<script is:inline>
+  window.__ADMIN_DATABASE__ = ${JSON.stringify(database)};
+</script>
+
+<script is:inline>
+  function getType(value) {
+    if (Array.isArray(value)) return 'array';
+    if (value === null) return 'null';
+    return typeof value;
+  }
+
+  function handleTypeClick(event) {
+    const type = event.target.dataset.type;
+    const container = document.getElementById('tableContainer');
+    const data = window.__ADMIN_DATABASE__[type];
+
+    if (!data || !data.length) return;
+
+    // 创建表格结构
+    const tableHTML = `
+      <table class="data-table">
+        <thead>
+          ${createTableHeader(data[0])}
+        </thead>
+        <tbody>
+          ${createTableBody(data)}
+        </tbody>
+      </table>
+    `;
+
+    container.innerHTML = tableHTML;
+  }
+
+  function createTableHeader(firstItem) {
+    const keys = Object.keys(firstItem);
+    return `
+      <tr>
+        <th>#</th>
+        ${keys.map(key => `<th>${key}</th>`).join('')}
+      </tr>
+      <tr class="type-row">
+        <th>number</th>
+        ${keys.map(key => `<th>${getType(firstItem[key])}</th>`).join('')}
+      </tr>
+    `;
+  }
+
+  function createTableBody(data) {
+    return data.map((item, index) => `
+      <tr>
+        <td>${index + 1}</td>
+        ${Object.values(item).map(value => `
+          <td>${typeof value === 'object' ? JSON.stringify(value) : value}</td>
+        `).join('')}
+      </tr>
+    `).join('');
+  }
+</script>
