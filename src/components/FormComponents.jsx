@@ -155,7 +155,21 @@ const FormComponent = ({
               </div>
             </div>
 
-          ) : (
+          ) : field.type === 'textarea' ? (
+            <textarea
+              id={field.name}
+              name={field.name}
+              placeholder={field.placeholder}
+              required={field.required}
+              defaultValue={field.value}
+              className={`${classConfig.input || ""} resize-none overflow-hidden`}
+              rows={1}
+              onInput={(e) => {
+                e.target.style.height = 'auto';
+                e.target.style.height = `${e.target.scrollHeight}px`;
+              }}
+            />
+          ): (
             <input
               type={field.type || 'text'}
               id={field.name}

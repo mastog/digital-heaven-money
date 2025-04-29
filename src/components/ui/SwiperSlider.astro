@@ -1,18 +1,14 @@
 ---
 import Testimonials from "../../data/clientData.json";
 
-const processedTestimonials = Testimonials.map((item, index, array) => ({
-  ...item,
-  index: index + 1,
-  length: array.length
-}));
+const processedTestimonials = Testimonials;
 ---
 
 <div
   id="ProjectSlider"
   class="swiper mt-10"
   style={{
-    "--swiper-pagination-color": "var(--green)",
+    "--swiper-pagination-color": "var(--darkgray)",
     "--swiper-pagination-bullet-inactive-color": "#fff",
     "--swiper-pagination-bullet-inactive-opacity": "1",
     "--swiper-pagination-bullet-size": "19px",
@@ -25,24 +21,34 @@ const processedTestimonials = Testimonials.map((item, index, array) => ({
         <div
           class="swiper-slide text-gray flex flex-col"
           role="group"
-          aria-label={`${item.index} / ${item.length}`}
         >
-          <div class="flex flex-col justify-center items-center py-[48px] px-6 sm:px-[52px]">
+          <div class="w-full px-10 sm:px-20 ">
+            <div class="flex items-center gap-4">
+              <img
+                src={item.pic_url}
+                alt={item.name}
+                class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-green"
+              />
+              <a
+                href={`/clients/${item.id}`}
+                class="text-green font-medium hover:underline"
+              >
+                {item.name}
+              </a>
+            </div>
+          </div>
+          <div class="flex flex-col py-[48px] px-6 sm:px-[52px] w-full">
             <p class="bubble">
               "{item.comment}"
             </p>
-          </div>
-          <div class="w-full px-10 sm:px-20 ">
-            <div class="text-green font-medium">{item.name}</div>
-            <div>{item.role}</div>
           </div>
         </div>
       ))
     }
   </div>
   <div class="flex justify-around lg:justify-center mb-[68px] lg:gap-[189px]">
-    <div class="swiper-button-prev w-7 h-7 sm:w-10 sm:h-10">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+    <div class="swiper-button-prev absolute left-20 w-7 h-7 sm:w-10 sm:h-10">
+      <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
         ><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
         <path
           fill="#ffffff"
@@ -50,9 +56,9 @@ const processedTestimonials = Testimonials.map((item, index, array) => ({
         ></path></svg
       >
     </div>
-    <div class="swiper-pagination"></div>
-    <div class="swiper-button-next w-7 h-7 sm:w-10 sm:h-10 rotate-180">
-      <svg xmlns="http://www.w3.org/2000/svg " viewBox="0 0 448 512">
+    <div class="swiper-pagination mb-[68px]"></div>
+    <div class="swiper-button-next absolute right-20 w-7 h-7 sm:w-10 sm:h-10 ">
+      <svg class="w-full h-full rotate-180" xmlns="http://www.w3.org/2000/svg " viewBox="0 0 448 512">
         <path
           fill="#ffffff"
           d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
@@ -76,6 +82,8 @@ const processedTestimonials = Testimonials.map((item, index, array) => ({
     pagination: {
       el: ".swiper-pagination",
       clickable: true,
+      dynamicBullets: true,
+      dynamicMainBullets: 3
     },
     navigation: {
       nextEl: ".swiper-button-next",
@@ -110,20 +118,21 @@ const processedTestimonials = Testimonials.map((item, index, array) => ({
   .bubble:after {
     content: "";
     position: absolute;
-    bottom: -20px; /* Adjust this value to move the arrow up or down */
-    left: 50px; /* Adjust this value to move the arrow left or right */
-    border-width: 22px; /* Adjust this value to change the size of the arrow */
+    top: -20px; /* 箭头位置 */
+    left: 50px; /* 箭头水平位置 */
+    border-width: 22px;
     border-style: solid;
-    border-color: var(--dark) transparent transparent var(--dark);
+    border-color: transparent transparent var(--dark) var(--dark);
   }
+
   .bubble:before {
     content: "";
     position: absolute;
-    bottom: -40px; /* This should be 2px more than the bottom value of .bubble:after */
-    left: 48px; /* This should be 1px less than the left value of .bubble:after */
-    border-width: 20px; /* Adjust this to match the border-width of .bubble:after */
+    top: -40px; /* 比 after 更高 */
+    left: 48px;
+    border-width: 20px;
     border-style: solid;
-    border-color: var(--green) transparent transparent var(--green);
+    border-color: transparent transparent var(--green) var(--green);
   }
   .swiper-wrapper {
     position: relative;
@@ -133,11 +142,5 @@ const processedTestimonials = Testimonials.map((item, index, array) => ({
     align-items: center;
     justify-content: center;
     transition: all 500ms ease-in-out;
-  }
-  .swiper-pagination {
-    display: flex;
-    align-items: center;
-    width: auto !important;
-    position: static !important;
   }
 </style>

@@ -58,7 +58,6 @@ def login():
     if not user or not user.check_password(data.get('password')):
         return jsonify({'error': 'Invalid credentials'}), 400
     login_user(user)
-    print(current_user.to_dict())
     return jsonify({'message': user.username+' login successful'}), 200
 
 
@@ -88,7 +87,6 @@ def profile():
         if 'pic' in request.files:
             filename = picUpdate(request)
             data['pic_url'] = filename
-        print(data)
         updated_user = dao_factory.get_dao("User").update(user, **data)
         return jsonify(updated_user.to_dict()), 200
 
@@ -257,7 +255,6 @@ def public_deceased():
 def private_deceased():
     current_user_id = current_user.id
     result = getPrivateMemorial(current_user_id)
-    print([obj.to_dict() for obj in result])
     return jsonify([obj.to_dict() for obj in result]), 200
 
 
@@ -283,6 +280,18 @@ def get_memorials():
         result.append( { "value": memorial.id, "label": memorial.name })
     return jsonify(result), 200
 
+@app.route('/memorialMessage/<int:id>', methods=['GET'])
+def memorial_message(id):
+    messages=dao_factory.get_dao("DeceasedMessage").get_all(deceased_id=id)
+    result = []
+    for message in messages:
+        result.append({"id": message.user.id,
+                       "name": message.user.username,
+                       "pic_url": message.user.pic_url,
+                       "comment": message.message,
+                       })
+    return jsonify(result), 200
+
 @app.route('/createMemorial', methods=['POST'])
 @login_required
 def create_memorial():
@@ -292,6 +301,7 @@ def create_memorial():
         filename = picUpdate(request)
         data['pic_url'] = filename
     data['creator_id']=current_user_id
+    data['is_private'] = True
     dao_factory.get_dao("Deceased").create(**data)
     return jsonify({'message':"Success!"}), 200
 

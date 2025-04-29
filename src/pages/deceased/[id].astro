@@ -6,6 +6,8 @@ import AboutCard from "./AboutCard.astro";
 import Oblation from "../../components/sections/Oblation.astro";
 import Testimonials from "./Testimonials.astro";
 import { apiRequest } from '../../utils/api';
+import MountainPhysics from "../../components/sections/MountainPhysics.astro";
+import AiForm from '../../components/jsx/AiForm.jsx';
 
 const { id } = Astro.params;
 const deceased = await apiRequest(
@@ -45,12 +47,67 @@ const testimonialContent = {
     }
   ]
 }
+const sampleItems = [
+  { image: '/images/oblation1.png', count: 100234 },
+  { image: '/images/oblation2.png', count: 140 },
+  { image: '/images/oblation3.png', count: 2170 },
+];
 ---
-<MainLayout title={`Service: ${id}`}>
-  <main class="space-y-20">
-    <div class="py-0.5"/>
-    <AboutCard PERSONAL_INFO={deceased}/>
-    <Oblation testimonialData={testimonialContent} />
-    <Testimonials/>
-  </main>
+<MainLayout title="Services">
+	<main class="space-y-20">
+        <div class="py-0.5" />
+        <div class="hajimi">
+          <div class="hajimi-1">
+            <MountainPhysics items={sampleItems} />
+          </div>
+          <div class="hajimi-2">
+            <AboutCard PERSONAL_INFO={deceased}/>
+          </div>
+        </div>
+      <div class="flex justify-center">
+        <button
+          onclick="window.dropCircle('/images/oblation4.png')"
+          class="btn-primary items-center mb-10"
+        >
+          Drop a Circle
+        </button>
+      </div>
+        <Oblation testimonialData={testimonialContent} />
+        <Testimonials />
+        <AiForm
+              client:load
+              name={deceased[0].name}
+              description={deceased[0].biography}
+              pic_url={deceased[0].pic_url}
+      />
+	</main>
 </MainLayout>
+
+<style>
+ .hajimi {
+    display: grid;
+    margin: 0 auto;
+    position: relative;
+    width: 100%;
+    height: 600px;
+ }
+
+ .hajimi-1 {
+    grid-area: 1/1;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+ }
+
+ .hajimi-2 {
+    grid-area: 1/1;
+    pointer-events: none;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ }
+</style>

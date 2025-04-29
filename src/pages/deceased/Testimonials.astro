@@ -5,6 +5,7 @@ import Section from "../../components/sections/Section.astro";
 import TimeLine from "../../components/sections/TimeLine.astro";
 import ModalForm from '../../components/ModalForm';
 import modalStyles from '../../utils/formConfigs/modal';
+import TimeLine from "./TimeLine.astro";
 
 const formFieldsTime = [
     { name: 'Picture', label: 'Picture', type: 'file' },
@@ -21,32 +22,13 @@ const formFields = [
   <div>
     <SectionTitle
       sectionTitle="TimeLine"
-      description="In Loving Memory: Relive the Milestones and Precious Sequences that Shaped a Treasured Existence"
+      description="Relive the Milestones and Precious Sequences that Shaped a Treasured Existence"
     />
+      <TimeLine />
     <ModalForm
             apiUrl="/api/submit"
             method="POST"
             fields={formFieldsTime}
-            submitText="Submit"
-            cancelText="Cancel"
-            classConfig={modalStyles}
-            onSuccess={(data) => console.log('表单提交成功:', data)}
-            client:load
-            >
-            <button class="btn-primary items-center mb-20">
-                Add Timeline
-                </button>
-        </ModalForm>
-    <SectionTitle
-      sectionTitle="Message Wall"
-      description="In Loving Memory: Share Your Heartfelt Tributes and Cherished Moments to Honor a Precious Life"
-    />
-    <div class="rounded-[45px] bg-dark mb-[50px] text-gray">
-    </div>
-    <ModalForm
-            apiUrl="/api/submit"
-            method="POST"
-            fields={formFields}
             submitText="Submit"
             cancelText="Cancel"
             classConfig={modalStyles}

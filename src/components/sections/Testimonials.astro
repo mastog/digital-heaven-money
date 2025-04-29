@@ -12,7 +12,17 @@ const formFieldsTime = [
     { name: 'Picture', label: 'Picture', type: 'file' },
     { name: 'Title', label: 'Title', type: 'text' },
     { name: 'Time', label: 'Time', type: 'month' },
-    { name: 'Description', label: 'Description', type: 'textarea' }
+    { name: 'Description', label: 'Description', type: 'textarea' },
+    {
+  name: 'role',
+  label: 'Role',
+  type: 'select',
+  required: true,
+  options: [
+    { value: 'user', label: 'User' },
+    { value: 'admin', label: 'Admin' },
+  ]
+}
 ];
 const formFields = [
     { name: 'Content', label: 'Content', type: 'textarea' }
@@ -44,6 +54,7 @@ const formFields = [
             client:load
             name="Kobe Bryant"
             description="Kobe Bryant, a basketball legend, was born in 1978. Drafted in 1996, he spent 20 seasons with the Lakers, winning 5 championships. His Mamba Mentality inspired many."
+            pic_url="/images/kobe.jpg"
     />
     <SectionTitle
       sectionTitle="Message Wall"

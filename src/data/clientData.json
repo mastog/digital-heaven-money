@@ -1,38 +1,38 @@
 [
     {
-        "index": 1,
+        "id": 1,
         "name": "Tian Xinqi",
-        "role": "",
+        "pic_url": "/team/1.png",
         "comment": "Kobe, your fadeaway shot may not contain wine, but it has intoxicated my entire youth. The fighting spirit of the Black Mamba will always shine on the basketball court, inspiring us never to give up."
     },
     {
-        "index": 2,
+        "id": 2,
         "name": "Harry Siu",
-        "role": "",
+        "pic_url": "/team/1.png",
         "comment": "Every time I see the basketball go through the net, I think of your fearless figure. Kobe, although you have left, the Mamba Mentality lives on and will accompany us as we continue to conquer the arena of life."
     },
     {
-        "index": 3,
+        "id": 3,
         "name": "Jerome",
-        "role": "",
+        "pic_url": "/team/1.png",
         "comment": "I once thought you would always dominate the basketball court, but fate played a cruel trick. Kobe, your legendary story has been deeply engraved in the history of basketball and has become an eternal classic."
     },
     {
-        "index": 4,
+        "id": 4,
         "name": "Master OG",
-        "role": "",
+        "pic_url": "/team/1.png",
         "comment": "Kobe, you are the sun in the basketball world, whose light has illuminated every child who loves basketball. Your perseverance is the source of our strength to move forward in the face of difficulties."
     },
     {
-        "index": 5,
+        "id": 5,
         "name": "Shaq",
-        "role": "",
+        "pic_url": "/team/1.png",
         "comment": "From the 4 a.m. basketball court to countless glories on the playing field, you have demonstrated your love for basketball with your actions. Here on the message wall, I express my endless yearning for you."
     },
     {
-        "index": 6,
+        "id": 6,
         "name": "Penny",
-        "role": "",
+        "pic_url": "/team/1.png",
         "comment": "Whenever a challenge comes, your eyes come to my mind. Kobe, thank you for leaving behind the Mamba Mentality, which gives us the courage to face the hardships of life head-on."
     }
 ]
