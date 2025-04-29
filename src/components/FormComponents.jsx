@@ -111,20 +111,41 @@ const FormComponent = ({
             </div>
 
           ) : field.type === 'select' ? (
-            <select
-              id={field.name}
-              name={field.name}
-              required={field.required}
-              className={classConfig.input || ""}
-              defaultValue=""
-            >
-              <option value="" disabled>{field.label}</option>
-              {field.options?.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
+            <div className="relative">
+              <select
+                id={field.name}
+                name={field.name}
+                required={field.required}
+                className={`${classConfig.input || ""} appearance-none pr-10`} // 留出空间给图标
+                defaultValue=""
+              >
+                <option value="" disabled hidden>
+                  {field.label}
                 </option>
-              ))}
-            </select>
+                {field.options?.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+
+              {/* 自定义下拉箭头 */}
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500">
+                <svg
+                  className="h-4 w-4"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M5.23 7.21a.75.75 0 011.06.02L10 10.939l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.25 8.27a.75.75 0 01-.02-1.06z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+            </div>
+
           ) : (
             <input
               type={field.type || 'text'}
