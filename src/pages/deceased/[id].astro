@@ -13,8 +13,7 @@ const { id } = Astro.params;
 const deceased = await apiRequest(
         "/crud/Deceased/get",
         "POST",
-        {"id":id},
-        false
+        {"id":id}
       ) || [];
 const testimonialContent = {
   enable: true,
@@ -55,6 +54,13 @@ const sampleItems = [
 ---
 <MainLayout title="Services">
 	<main class="space-y-20">
+        <div id="polling-anchor" data-id={id}></div>
+        <script>
+          import { initPolling } from '../../utils/notifications.js';
+          const el = document.getElementById("polling-anchor");
+          const id = el?.dataset?.id;
+          initPolling(id);
+        </script>
         <div class="py-0.5" />
         <div class="hajimi">
           <div class="hajimi-1">
@@ -65,12 +71,6 @@ const sampleItems = [
           </div>
         </div>
       <div class="flex justify-center">
-        <button
-          onclick="window.dropCircle('/images/oblation4.png')"
-          class="btn-primary items-center mb-10"
-        >
-          Drop a Circle
-        </button>
       </div>
         <Oblation testimonialData={testimonialContent} />
         <Testimonials />

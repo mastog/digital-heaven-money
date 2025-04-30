@@ -118,6 +118,7 @@ def data_management(resource, action):
         return jsonify(dao.update(obj, **data).to_dict()), 200
 
     elif action == 'get':
+        print(data)
         return jsonify([obj.to_dict() for obj in dao.get_all(**data)]), 200
 
     elif action == 'delete':
@@ -306,7 +307,6 @@ def create_memorial():
     return jsonify({'message':"Success!"}), 200
 
 @app.route('/get_relationship', methods=['GET'])
-@login_required
 def get_relationship():
     relationships=dao_factory.get_dao("FamilyTree").get_all(creator_id= current_user.id)
     result=[]
@@ -319,6 +319,23 @@ def get_relationship():
                         "id2": relationship.deceased2.id,
                         "relation": relationship.relation_type,
                         })
+    return jsonify(result), 200
+
+@app.route('/decreasedOfferings/<int:id>', methods=['GET'])
+def decreased_offerings(id):
+    offerings=dao_factory.get_dao("DeceasedOffering").get_all(deceased_id= id)
+    offering_map = {}
+    for offering in offerings:
+        offering_id = offering.offering_id
+        if offering_id not in offering_map:
+            offering_map[offering_id] = {
+                "name": offering.offering.name,
+                "image": offering.offering.pic_url,
+                "count": 0
+            }
+        offering_map[offering_id]["count"] += offering.quantity
+
+    result = list(offering_map.values())
     return jsonify(result), 200
 
 # Error Handlers
@@ -335,7 +352,7 @@ def internal_error(error):
 def getPrivateMemorial(current_user_id):
     deceasedDao = dao_factory.get_dao("Deceased")
     joinedDao = dao_factory.get_dao("DeceasedUser")
-    result = deceasedDao.get_all(is_private=False, creator_id=current_user_id)
+    result = deceasedDao.get_all(is_private=True, creator_id=current_user_id)
     for i in joinedDao.get_all(user_id= current_user_id):
         result.append(i.deceased)
     return result

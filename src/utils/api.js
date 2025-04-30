@@ -22,7 +22,18 @@ export const apiRequest = async (
 
   const headers = {};
 
-  let body = method !== "GET" ? data : undefined;
+  let body;
+
+  if (method !== "GET" && data) {
+    if (data instanceof FormData) {
+      body = data;
+    } else if (typeof data === 'object') {
+      body = new URLSearchParams(data).toString();
+      headers["Content-Type"] = "application/x-www-form-urlencoded";
+    } else {
+      body = data;
+    }
+  }
 
   if (isServer && astro) {
     const cookie = astro.request.headers.get('cookie');

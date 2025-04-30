@@ -144,10 +144,10 @@ const { testimonialData } = Astro.props as Props;
 
         document.body.appendChild(clone);
 
-        const imgSrc = img.getAttribute('data-src');
-        if (window.dropCircle && imgSrc) {
-          window.dropCircle(imgSrc);
-        }
+        // const imgSrc = img.getAttribute('data-src');
+        // if (window.dropCircle && imgSrc) {
+        //   window.dropCircle(imgSrc);
+        // }
 
         clone.addEventListener('animationend', () => clone.remove());
       }

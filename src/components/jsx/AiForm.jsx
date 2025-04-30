@@ -65,6 +65,13 @@ export default function AiForm({ name, description,pic_url }) {
           border-radius: 45px;
           filter: grayscale(100%);
         }
+        .hero__content {
+          text-shadow: 
+            -1px -1px 0 #fff, 
+            1px -1px 0 #fff, 
+            -1px 1px 0 #fff, 
+            1px 1px 0 #fff;
+        }
       `}</style>
     </div>
   );

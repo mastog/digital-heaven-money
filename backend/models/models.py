@@ -172,15 +172,15 @@ class Offering(BasePicModel):
 # DeceasedOffering Model (previously MemorialOffering)
 class DeceasedOffering(BaseModel):
     __tablename__ = 'deceased_offerings'
-    id = Column(Integer, ForeignKey('offerings.id', ondelete='CASCADE'), primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)  # Changed this to auto-increment
     user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'))
     deceased_id = Column(Integer, ForeignKey('deceased.id', ondelete='CASCADE'))
     offering_id = Column(Integer, ForeignKey('offerings.id', ondelete='CASCADE'))
-    quantity = Column(Integer, default=0)
+    quantity = Column(Integer, default=1)
     offered_at = Column(DateTime, server_default=db.func.current_timestamp())
 
     # Relationships
-    offering = relationship("Offering", back_populates="deceased_offerings")
+    offering = relationship("Offering", back_populates="deceased_offerings", foreign_keys=[offering_id])
     user = relationship("User", back_populates="deceased_offerings")
     deceased = relationship("Deceased", back_populates="offerings")
 
