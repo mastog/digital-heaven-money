@@ -58,14 +58,11 @@ export const apiRequest = async (
         if (response.status === 401) {
           alert('Require login');
           window.location.href = '/login';
-          return ;
         } else if (response.status === 404) {
           alert(responseData?.error || 'Resource not found');
           window.location.href = '/404';
-          return;
         } else if (response.status === 400) {
           alert(responseData?.error || 'Something wrong happened');
-          return;
         }
       }
       throw new Error(responseData?.error || `HTTP error! status: ${response.status}`);
@@ -74,9 +71,9 @@ export const apiRequest = async (
     return await processResponse(response);
   } catch (error) {
     console.error('API request failed:', error);
-    try {
-      alert('API request failed: ' + error);
-    } catch (error) {}
+    if(!isServer){
+      throw(error)
+    }
   }
 };
 
