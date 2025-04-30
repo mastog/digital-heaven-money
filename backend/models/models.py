@@ -69,10 +69,8 @@ class User(BasePicModel, UserMixin):
     deceaseds = relationship("Deceased", back_populates="creator", cascade="all, delete-orphan")
     deceased_user_links = relationship("DeceasedUser", back_populates="user", cascade="all, delete-orphan")
     invited_keys = relationship("InviteKey", back_populates="user", cascade="all, delete-orphan")
-    user_offerings = relationship("UserOffering", back_populates="user", cascade="all, delete-orphan")
     deceased_offerings = relationship("DeceasedOffering", back_populates="user", cascade="all, delete-orphan")
     deceased_messages = relationship("DeceasedMessage", back_populates="user", cascade="all, delete-orphan")
-    remembrance_messages = relationship("RemembranceMessage", back_populates="user", cascade="all, delete-orphan")
     family_trees = relationship("FamilyTree", back_populates="creator", cascade="all, delete-orphan")
 
     def set_password(self, password):
@@ -102,7 +100,6 @@ class Deceased(BasePicModel):
     family2 = relationship("FamilyTree", foreign_keys="[FamilyTree.deceased2_id]", back_populates="deceased2")
     offerings = relationship("DeceasedOffering", back_populates="deceased", cascade="all, delete-orphan")
     messages = relationship("DeceasedMessage", back_populates="deceased", cascade="all, delete-orphan")
-    special_offerings = relationship("SpecialOffering", back_populates="deceased", cascade="all, delete-orphan")
 
 # DeceasedUser Model (for invited users)
 class DeceasedUser(BaseModel):
@@ -167,36 +164,10 @@ class Offering(BasePicModel):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
     description = Column(Text)
-    special_offering = Column(Boolean, default=False)
 
     # Relationships
-    user_offerings = relationship("UserOffering", back_populates="offering", cascade="all, delete-orphan")
     deceased_offerings = relationship("DeceasedOffering", back_populates="offering", cascade="all, delete-orphan")
-    special_offerings = relationship("SpecialOffering", back_populates="offering", cascade="all, delete-orphan")
 
-# SpecialOffering Model
-class SpecialOffering(BaseModel):
-    __tablename__ = 'special_offerings'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    deceased_id = Column(Integer, ForeignKey('deceased.id', ondelete='CASCADE'))
-    offering_id = Column(Integer, ForeignKey('offerings.id', ondelete='CASCADE'))
-    created_at = Column(DateTime, server_default=db.func.current_timestamp())
-
-    # Relationships
-    deceased = relationship("Deceased", back_populates="special_offerings")
-    offering = relationship("Offering", back_populates="special_offerings")
-
-# UserOffering Model
-class UserOffering(BaseModel):
-    __tablename__ = 'user_offerings'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'))
-    offering_id = Column(Integer, ForeignKey('offerings.id', ondelete='CASCADE'))
-    quantity = Column(Integer, default=0)
-
-    # Relationships
-    user = relationship("User", back_populates="user_offerings")
-    offering = relationship("Offering", back_populates="user_offerings")
 
 # DeceasedOffering Model (previously MemorialOffering)
 class DeceasedOffering(BaseModel):
@@ -204,6 +175,7 @@ class DeceasedOffering(BaseModel):
     id = Column(Integer, ForeignKey('offerings.id', ondelete='CASCADE'), primary_key=True)
     user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'))
     deceased_id = Column(Integer, ForeignKey('deceased.id', ondelete='CASCADE'))
+    offering_id = Column(Integer, ForeignKey('offerings.id', ondelete='CASCADE'))
     quantity = Column(Integer, default=0)
     offered_at = Column(DateTime, server_default=db.func.current_timestamp())
 
@@ -225,16 +197,6 @@ class DeceasedMessage(BaseModel):
     deceased = relationship("Deceased", back_populates="messages")
     user = relationship("User", back_populates="deceased_messages")
 
-# RemembranceMessage Model
-class RemembranceMessage(BaseModel):
-    __tablename__ = 'remembrance_messages'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
-    message = Column(Text, nullable=False)
-    posted_at = Column(DateTime, server_default=db.func.current_timestamp())
-
-    # Relationships
-    user = relationship("User", back_populates="remembrance_messages")
 
 class DailyQuestion(BaseModel):
     __tablename__ = 'daily_question'

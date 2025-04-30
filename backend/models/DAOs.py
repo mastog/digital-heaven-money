@@ -110,14 +110,6 @@ class OfferingDAO(BaseDAO):
     def __init__(self):
         super().__init__(Offering)
 
-class SpecialOfferingDAO(BaseDAO):
-    def __init__(self):
-        super().__init__(SpecialOffering)
-
-class UserOfferingDAO(BaseDAO):
-    def __init__(self):
-        super().__init__(UserOffering)
-
 class DeceasedOfferingDAO(BaseDAO):
     def __init__(self):
         super().__init__(DeceasedOffering)
@@ -125,10 +117,6 @@ class DeceasedOfferingDAO(BaseDAO):
 class DeceasedMessageDAO(BaseDAO):
     def __init__(self):
         super().__init__(DeceasedMessage)
-
-class RemembranceMessageDAO(BaseDAO):
-    def __init__(self):
-        super().__init__(RemembranceMessage)
 
 class DailyQuestionDAO(BaseDAO):
     def __init__(self):
@@ -149,11 +137,8 @@ class DAOFactory:
             "Deceased": DeceasedDAO(),
             "FamilyTree": FamilyTreeDAO(),
             "Offering": OfferingDAO(),
-            "SpecialOffering": SpecialOfferingDAO(),
-            "UserOffering": UserOfferingDAO(),
             "DeceasedOffering": DeceasedOfferingDAO(),
             "DeceasedMessage": DeceasedMessageDAO(),
-            "RemembranceMessage": RemembranceMessageDAO(),
             "DailyQuestion": DailyQuestionDAO(),
             "History": HistoryDAO()
         }
