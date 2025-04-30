@@ -118,7 +118,6 @@ def data_management(resource, action):
         return jsonify(dao.update(obj, **data).to_dict()), 200
 
     elif action == 'get':
-        print(data)
         return jsonify([obj.to_dict() for obj in dao.get_all(**data)]), 200
 
     elif action == 'delete':
@@ -263,7 +262,7 @@ def private_deceased():
 def get_timeLine(id):
     dao = dao_factory.get_dao("DeceasedPhoto")
     timeLine = dao.get_all(deceased_id= id)
-    timeLine = sorted(timeLine, key=lambda x: x['photo_date'])
+    timeLine = sorted(timeLine, key=lambda x: x.photo_date)
     return jsonify([obj.to_dict() for obj in timeLine]), 200
 
 
@@ -306,18 +305,19 @@ def create_memorial():
     dao_factory.get_dao("Deceased").create(**data)
     return jsonify({'message':"Success!"}), 200
 
-@app.route('/get_relationship', methods=['GET'])
-def get_relationship():
-    relationships=dao_factory.get_dao("FamilyTree").get_all(creator_id= current_user.id)
+@app.route('/get_relationship/<int:id>', methods=['GET'])
+def get_relationship(id):
+    relationships=dao_factory.get_dao("FamilyTree").get_all(deceased_id= id)
     result=[]
     for relationship in relationships:
         result.append({ "name1": relationship.deceased1.name,
                         "name2": relationship.deceased2.name,
                         "image1": relationship.deceased1.pic_url,
-                        "image2": relationship.deceased1.pic_url,
+                        "image2": relationship.deceased2.pic_url,
                         "id1": relationship.deceased1.id,
                         "id2": relationship.deceased2.id,
                         "relation": relationship.relation_type,
+                        "id": relationship.id
                         })
     return jsonify(result), 200
 
@@ -337,6 +337,24 @@ def decreased_offerings(id):
 
     result = list(offering_map.values())
     return jsonify(result), 200
+
+@app.route('/offering', methods=['POST'])
+@login_required
+def offering():
+    data = request.form.to_dict()
+    current_user_id = current_user.id
+    offering_id=dao_factory.get_dao("Offering").get(name=data['name']).id
+    dao_factory.get_dao("DeceasedOffering").create(user_id=current_user_id,offering_id=offering_id,deceased_id=data['id'])
+    return jsonify({'message': "Success"}), 201
+
+@app.route('/createMessage', methods=['POST'])
+@login_required
+def create_message():
+    data = request.form.to_dict()
+    current_user_id = current_user.id
+    data['user_id']=current_user_id
+    dao_factory.get_dao("DeceasedMessage").create(**data)
+    return jsonify({'message': "Success"}), 201
 
 # Error Handlers
 @app.errorhandler(404)

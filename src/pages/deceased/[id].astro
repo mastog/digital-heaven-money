@@ -8,6 +8,10 @@ import Testimonials from "./Testimonials.astro";
 import { apiRequest } from '../../utils/api';
 import MountainPhysics from "../../components/sections/MountainPhysics.astro";
 import AiForm from '../../components/jsx/AiForm.jsx';
+import TimeLine from "./TimeLine.astro";
+import Relationship from "./Relationship.astro";
+import Section from "../../components/sections/Section.astro";
+import SectionTitle from "../../components/ui/SectionTitle.astro";
 
 const { id } = Astro.params;
 const deceased = await apiRequest(
@@ -46,11 +50,7 @@ const testimonialContent = {
     }
   ]
 }
-const sampleItems = [
-  { image: '/images/oblation1.png', count: 100234 },
-  { image: '/images/oblation2.png', count: 140 },
-  { image: '/images/oblation3.png', count: 2170 },
-];
+const items = await apiRequest(`/decreasedOfferings/${id}`, 'GET');
 ---
 <MainLayout title="Services">
 	<main class="space-y-20">
@@ -64,22 +64,30 @@ const sampleItems = [
         <div class="py-0.5" />
         <div class="hajimi">
           <div class="hajimi-1">
-            <MountainPhysics items={sampleItems} />
+            <MountainPhysics items={items} />
           </div>
           <div class="hajimi-2">
             <AboutCard PERSONAL_INFO={deceased}/>
           </div>
         </div>
-      <div class="flex justify-center">
-      </div>
-        <Oblation testimonialData={testimonialContent} />
-        <Testimonials />
-        <AiForm
-              client:load
-              name={deceased[0].name}
-              description={deceased[0].biography}
-              pic_url={deceased[0].pic_url}
-      />
+        <Oblation testimonialData={testimonialContent} id={id}/>
+        <Section>
+            <TimeLine id={id}/>
+            <Relationship id={id}/>
+                <SectionTitle
+              sectionTitle="Echoes Beyond"
+              description="Reconnect Through Voices and Reflections that Preserve the Essence of Those Who Linger in Memory"
+            />
+            <div class="max-w-[700px] mx-auto">
+            <AiForm
+                  client:load
+                  name={deceased[0].name}
+                  description={deceased[0].biography}
+                  pic_url={deceased[0].pic_url}
+            />
+            </div>
+            <Testimonials id={id}/>
+        </Section>
 	</main>
 </MainLayout>
 

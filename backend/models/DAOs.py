@@ -102,9 +102,40 @@ class DeceasedDAO(BaseDAO):
     def __init__(self):
         super().__init__(Deceased)
 
+
 class FamilyTreeDAO(BaseDAO):
     def __init__(self):
         super().__init__(FamilyTree)
+
+    def get_all(self, **filters) -> list[ModelType]:
+        # If filters include deceased_id, we search for it in either deceased1_id or deceased2_id
+        deceased_id = filters.get('deceased_id')
+        if deceased_id:
+            return self.session.query(self.model).filter(
+                (self.model.deceased1_id == deceased_id) | (self.model.deceased2_id == deceased_id)
+            ).all()
+        return super().get_all(**filters)
+
+    def create(self, **data):
+        deceased1_id = data.get('deceased1_id')
+        deceased2_id = data.get('deceased2_id')
+
+        if deceased1_id and deceased2_id:
+            # Check if a family tree entry already exists with these deceased IDs
+            existing_family_tree = self.session.query(self.model).filter(
+                (self.model.deceased1_id == deceased1_id) & (self.model.deceased2_id == deceased2_id) |
+                (self.model.deceased1_id == deceased2_id) & (self.model.deceased2_id == deceased1_id)
+            ).first()
+
+            if existing_family_tree:
+                # If it exists, update the relation_type
+                existing_family_tree.relation_type = data.get('relation_type', existing_family_tree.relation_type)
+                self.session.commit()
+                self.session.refresh(existing_family_tree)
+                return existing_family_tree
+
+        # If no existing entry, create a new one
+        return super().create(**data)
 
 class OfferingDAO(BaseDAO):
     def __init__(self):

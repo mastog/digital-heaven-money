@@ -9,11 +9,11 @@ const description = "Add a private cemetery.";
 const link = "#";
 export default function PriTeamForm() {
     const formFields = [
-    { name: 'pic', label: 'Picture', type: 'file' },
-    { name: 'name', label: 'Name', type: 'text' },
-    { name: 'birth_date', label: 'Birth Date', type: 'date' },
-    { name: 'death_date', label: 'Death Date', type: 'date' },
-    { name: 'biography', label: 'Description', type: 'textarea' }
+    { name: 'pic', label: 'Picture', type: 'file', required: true },
+    { name: 'name', label: 'Name', type: 'text', required: true },
+    { name: 'birth_date', label: 'Birth Date', type: 'date' , required: true},
+    { name: 'death_date', label: 'Death Date', type: 'date' , required: true},
+    { name: 'biography', label: 'Description', type: 'textarea', required: true }
 ];
   return (
       <ModalForm

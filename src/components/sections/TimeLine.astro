@@ -58,8 +58,8 @@ const pics = [
 ];
 ---
 
-<section class="flex flex-col pt-16 pb-20 gap-16 mx-auto justify-center items-center text-cente max-w-[800px]" id="timeLine" >
-    <div class="relative flex flex-col gap-20 " >
+<section class="flex flex-col pt-16 pb-20 gap-16 mx-auto justify-center items-center text-center max-w-[900px] shadow-xl rounded-2xl" id="timeLine" >
+    <div class="relative flex flex-col gap-20 px-10" >
         {pics.map((pic) => <TimeLineCard {...pic} />)}
         <div
             class="absolute left-0 border-l-[1px] h-full z-[-1] border-dashed border-light-gray-secondary dark:border-dark-gray-secondary sm:left-[50%]"

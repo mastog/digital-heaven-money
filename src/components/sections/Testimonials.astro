@@ -7,6 +7,7 @@ import ModalForm from '../ModalForm';
 import modalStyles from '../../utils/formConfigs/modal';
 import Communicate from "./Communicate.astro";
 import AiForm from '../jsx/AiForm.jsx';
+import Testimonials from "../../data/clientData.json";
 
 const formFieldsTime = [
     { name: 'Picture', label: 'Picture', type: 'file' },
@@ -61,7 +62,7 @@ const formFields = [
       description="In Loving Memory: Share Your Heartfelt Tributes and Cherished Moments to Honor a Precious Life"
     />
     <div class="rounded-[45px] bg-dark mb-[50px] text-gray">
-      <SwiperSlider/>
+      <SwiperSlider items={Testimonials}/>
     </div>
     <ModalForm
             apiUrl="/api/submit"

@@ -14,10 +14,11 @@ interface TestimonialData {
 }
 
 interface Props {
-  testimonialData: TestimonialData
+  testimonialData: TestimonialData;
+  id: int;
 }
 
-const { testimonialData } = Astro.props as Props;
+const { testimonialData, id } = Astro.props as Props;
 ---
 
 {
@@ -29,7 +30,7 @@ const { testimonialData } = Astro.props as Props;
             <div class="row">
               <div class="col-12">
                 <div class="swiper testimonial-slider">
-                  <div class="swiper-wrapper">
+                  <div class="swiper-wrapper" data-id={id}>
                     {testimonialData.testimonials.map(
                       (item: {
                         avatar: string;
@@ -94,6 +95,7 @@ const { testimonialData } = Astro.props as Props;
   import "swiper/css";
   import "swiper/css/pagination";
   import { Autoplay, Pagination } from "swiper/modules";
+  import { apiRequest } from '../../utils/api';
 
   // 初始化 Swiper
   const swiper = new Swiper(".testimonial-slider", {
@@ -148,7 +150,13 @@ const { testimonialData } = Astro.props as Props;
         // if (window.dropCircle && imgSrc) {
         //   window.dropCircle(imgSrc);
         // }
-
+        const name = img.getAttribute('data-name');
+        const id=document.querySelector(".swiper-wrapper").getAttribute("data-id")
+        apiRequest(
+          "/offering",
+          "POST",
+          {"name":name,"id":id}
+        );
         clone.addEventListener('animationend', () => clone.remove());
       }
     });

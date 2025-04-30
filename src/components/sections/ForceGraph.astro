@@ -1,29 +1,21 @@
-
+---
+const {links} = Astro.props;
+const hasLinks = Array.isArray(links) && links.length > 0;
+---
 <div class="container">
-  <svg id="force-graph"></svg>
+  {hasLinks && (
+    <>
+      <svg id="force-graph"></svg>
+      <div id="links-data" style="display: none;">
+        {JSON.stringify(links)}
+      </div>
+    </>
+  )}
   <script>
     import * as d3 from 'd3';
 
-const links = [
-  {
-    name1: "张三",
-    image1: "/team/d1.png",
-    id1: "zhangsan",
-    name2: "李四",
-    image2: "/team/d2.png",
-    id2: "lisi",
-    relation: "classmate"
-  },
-  {
-    name1: "张三",
-    image1: "/team/d1.png",
-    id1: "wangwu",
-    name2: "赵六",
-    image2: "/team/d3.png",
-    id2: "zhaoliu",
-    relation: "friend"
-  }
-];
+const raw = document.getElementById('links-data').textContent.trim();
+    const links = JSON.parse(raw);
 
 // 转换输入数据为图结构
 const processData = (links) => {
@@ -71,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const data = processData(links);
   const container = document.querySelector('#force-graph');
   const width = container.clientWidth;
-  const height = 800;
+  const height = 600;
   const margin = { top: 20, right: 20, bottom: 20, left: 20 };
 
   const svg = d3.select('#force-graph')
@@ -82,9 +74,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 创建力导向模拟
   const simulation = d3.forceSimulation()
-    .force('link', d3.forceLink().id(d => d.id).distance(300))
+    .force('link', d3.forceLink().id(d => d.id).distance(250))
     .force('charge', d3.forceManyBody().strength(-50))
-    .force('center', d3.forceCenter(width/2, height/2));
+    .force('center', d3.forceCenter(width/2, height/2))
+  .force('x', d3.forceX(width / 2).strength(0.05))
+  .force('y', d3.forceY(height / 2).strength(0.05));
 
   // 创建连线
   const link = svg.append('g')
@@ -136,16 +130,17 @@ document.addEventListener('DOMContentLoaded', () => {
   node.append('clipPath')
     .attr('id', d => `clip-${d.id}`)
     .append('circle')
-    .attr('r', 40);
+    .attr('r', 35);
 
   // 添加头像图片
   node.append('image')
     .attr('xlink:href', d => d.image)
-    .attr('width', 80)
-    .attr('height', 80)
-    .attr('x', -40)
-    .attr('y', -40)
+    .attr('width', 70)
+    .attr('height', 70)
+    .attr('x', -35)
+    .attr('y', -35)
     .attr('clip-path', d => `url(#clip-${d.id})`)
+    .attr('preserveAspectRatio', 'xMidYMid slice')
     .style('filter', 'grayscale(100%)');
 
   // 添加姓名标签
@@ -200,12 +195,10 @@ document.addEventListener('DOMContentLoaded', () => {
   .container {
     width: 100%;
     height: 100%;
-    border-radius: 8px;
-    padding: 20px;
   }
 
   #force-graph {
     width: 100%;
-    height: 800px;
+    height: 600px;
   }
 </style>
