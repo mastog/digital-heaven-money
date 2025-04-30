@@ -5,7 +5,7 @@ import Sponsors from "../components/sections/Sponsors.astro";
 import Service from "../components/sections/Services.astro";
 import PrivateTeam from "../components/sections/PrivateTeam.astro";
 import { apiRequest } from '../utils/api';
-const response = await apiRequest("/current", "POST", {});
+const response = await apiRequest("/current", "POST", {}, Astro);
 if(!response){
     return Astro.redirect('/login');
 }

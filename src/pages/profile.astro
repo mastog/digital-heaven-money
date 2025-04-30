@@ -5,7 +5,7 @@ import Profile from "../components/sections/Profile.astro";
 import ModalForm from '../components/ModalForm';
 import modalStyles from '../utils/formConfigs/modal';
 import { apiRequest } from '../utils/api';
-const response = await apiRequest("/current", "POST", {});
+const response = await apiRequest("/current", "POST", {}, Astro);
 if(!response){
     return Astro.redirect('/login');
 }

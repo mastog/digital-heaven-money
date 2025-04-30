@@ -3,7 +3,7 @@ import MainLayout from "../layouts/MainLayout.astro";
 import Service from "../components/sections/Services.astro";
 import ForceGraph from "../components/sections/ForceGraph.astro";
 import { apiRequest } from '../utils/api';
-const response = await apiRequest("/current", "POST", {});
+const response = await apiRequest("/current", "POST", {}, Astro);
 if(!response){
     return Astro.redirect('/login');
 }
