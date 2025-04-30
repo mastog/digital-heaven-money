@@ -20,9 +20,15 @@ const { items } = Astro.props;
   const Runner = Matter.Runner;
   const Common = Matter.Common;
 
+  const imageCountMap = new Map();
+
   const dataElement = document.getElementById('data');
 
   const items = JSON.parse(dataElement.dataset.items);
+
+  for(const item of items) {
+    imageCountMap.set(item.image, item.count);
+  }
   // 3. 创建引擎
   let engine = Engine.create();
 
@@ -110,7 +116,7 @@ const { items } = Astro.props;
               restitution: 0.2,
               customData: {
                 type: 'large',
-                count: item.count
+                image: item.image,
               }
             }
           )
@@ -139,7 +145,7 @@ const { items } = Astro.props;
               restitution: 0.2,
               customData: {
                 type: 'large',
-                count: item.count
+                image: item.image,
               }
             }
           )
@@ -168,7 +174,7 @@ const { items } = Astro.props;
               restitution: 0.2,
               customData: {
                 type: 'large',
-                count: item.count
+                image: item.image,
               }
             }
           )
@@ -197,7 +203,7 @@ const { items } = Astro.props;
               restitution: 0.2,
               customData: {
                 type: 'large',
-                count: item.count
+                image: item.image,
               }
             }
           )
@@ -393,7 +399,10 @@ render.canvas.addEventListener('mousemove', (e) => {
       const distance = Math.sqrt(dx * dx + dy * dy);
 
       if (distance <= body.circleRadius) {
-        tooltip.textContent = `Total：${body.customData.count}`;
+        const imageUrl = body.customData.image;
+        const count = imageCountMap.get(imageUrl);
+
+        tooltip.textContent = `Total：${count}`;
         tooltip.style.opacity = '1';
         found = true;
         break;
@@ -407,12 +416,21 @@ render.canvas.addEventListener('mousemove', (e) => {
 });
 
 window.dropCircle = async function(imageUrl) {
+  if (imageUrl.startsWith('/public/')) {
+    imageUrl = imageUrl.replace(/^\/public/, '');
+  }
+
   const processed = await createProcessedBody(imageUrl);
   const radius = 20;
 
+  // 更新 count
+  const currentCount = imageCountMap.get(imageUrl) || 0;
+  const newCount = currentCount + 1;
+  imageCountMap.set(imageUrl, newCount);
+
   const circle = Bodies.circle(
     Common.random(containerWidth / 2 - 30, containerWidth / 2 + 30),
-    Common.random(-200, 0), // 出现位置
+    Common.random(-200, 0),
     radius,
     {
       render: {
@@ -425,7 +443,7 @@ window.dropCircle = async function(imageUrl) {
       restitution: 0.2,
       customData: {
         type: 'large',
-        count: 1  // 或者你也可以允许传入 count
+        image: imageUrl, // 重要
       }
     }
   );
