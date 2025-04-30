@@ -13,8 +13,10 @@ export default function LoginForm() {
           ]}
           submitText="Login"
           classConfig={login}
-          onSuccess={(data) => {
-              alert(data.message);
+          onSuccess={async (data) => {
+              const {showNotification} = await import('../../utils/notifications.js');
+              showNotification([data.message]);
+              await new Promise(resolve => setTimeout(resolve, 1000));
               window.location.href = '/';
           }}
         />

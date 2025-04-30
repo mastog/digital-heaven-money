@@ -17,7 +17,6 @@ export default function TimeLineForm({ id}) {
             cancelText="Cancel"
             classConfig={modalStyles}
             onSuccess={() => {
-                alert('Success');
                 window.location.reload();
             }}
             client:load

@@ -80,7 +80,7 @@ function detectChanges(currentItems) {
   return changes;
 }
 
-function showNotification(messages) {
+export function showNotification(messages) {
   const notification = document.createElement('div');
   notification.className = 'astro-notification';
 

@@ -3,11 +3,14 @@ import MainLayout from "../layouts/MainLayout.astro";
 import Service from "../components/sections/Services.astro";
 import ForceGraph from "../components/sections/ForceGraph.astro";
 import { apiRequest } from '../utils/api';
+const response = await apiRequest("/current", "POST", {});
+if(!response){
+    return Astro.redirect('/login');
+}
 const relationships = await apiRequest('/all_relationship', 'GET',{},Astro)||[];
 ---
 
 <MainLayout title="Services">
-	<script src="../utils/loginCheck.js"></script>
 	<main class="space-y-20 min-h-[400px]">
         <ForceGraph links={relationships}/>
 	</main>

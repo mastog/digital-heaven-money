@@ -24,7 +24,6 @@ export default function PriTeamForm() {
             cancelText="Cancel"
             classConfig={modalStyles}
             onSuccess={() => {
-                alert('Success');
                 window.location.reload();
             }}
             client:load
