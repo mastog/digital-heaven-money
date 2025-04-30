@@ -255,6 +255,7 @@ const user = await apiRequest(
 
     {enableClientScript && (
     <script>
+        import {showNotification} from '../../utils/notifications.js';
         import { apiRequest } from '../../utils/api';
         const toggleEdit = document.getElementById('editToggle');
         const editables = document.querySelectorAll('.editable');
@@ -279,7 +280,7 @@ const user = await apiRequest(
                     const key = element.previousElementSibling?.innerText?.trim();
                     const value = element.innerText.trim();
                     if (key.toLowerCase().includes('email') && !validateEmail(value)) {
-                        alert('Invalid email format!');
+                        showNotification(['Invalid email format!']);
                         hasInvalid = true;
                     }
                 });
@@ -357,7 +358,7 @@ const user = await apiRequest(
             apiRequest('/profile', 'PUT', data)
             .then(result => {
                 console.log('Profile updated:', result);
-                alert('Profile updated successfully!');
+                showNotification(['Profile updated successfully!']);
             })
             .catch(error => {
                 console.error('Error updating profile:', error);

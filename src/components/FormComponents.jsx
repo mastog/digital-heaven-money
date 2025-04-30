@@ -36,7 +36,8 @@ const FormComponent = ({
     const password = formData.get('password');
     const confirmPassword = formData.get('confirm_password');
     if (password && confirmPassword && password !== confirmPassword) {
-      alert('Passwords do not match!');
+      const {showNotification} = await import('../utils/notifications.js');
+              showNotification(['Passwords do not match!']);
       return;
     }
 
@@ -46,7 +47,8 @@ const FormComponent = ({
 
     // Check if birth_date is later than death_date
     if (birthDate && deathDate && new Date(birthDate) > new Date(deathDate)) {
-      alert('Birth date must be before death date!');
+      const {showNotification} = await import('../utils/notifications.js');
+              showNotification(['Birth date must be before death date!']);
       return;
     }
 
@@ -57,7 +59,8 @@ const FormComponent = ({
       const allowedExtensions = ['png', 'jpg', 'jpeg'];
       const fileExtension = file.name.split('.').pop().toLowerCase();
       if (!allowedExtensions.includes(fileExtension)) {
-        alert('Invalid file type. Only PNG, JPG, and JPEG files are allowed.');
+        const {showNotification} = await import('../utils/notifications.js');
+              showNotification(['Invalid file type. Only PNG, JPG, and JPEG files are allowed.']);
         return;
       }
     }
