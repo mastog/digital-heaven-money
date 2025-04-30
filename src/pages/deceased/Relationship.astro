@@ -1,0 +1,61 @@
+---
+const {id} = Astro.props;
+import SectionTitle from "../../components/ui/SectionTitle.astro";
+import { apiRequest } from '../../utils/api';
+
+import RelationshipForm from '../../components/jsx/RelationshipForm.jsx';
+import RelationshipFormDelete from '../../components/jsx/RelationshipFormDelete.jsx';
+
+import ForceGraph from "../../components/sections/ForceGraph.astro";
+const relationships = await apiRequest(`/get_relationship/${id}`, 'GET')||[];
+
+const deceaseds = await apiRequest(
+        "/privateDeceased",
+        "GET",
+        {},
+        Astro,
+      )|| [];
+
+const relationshipOptions = deceaseds
+  .filter(deceased => String(deceased.id) !== id)
+  .map(deceased => ({
+    value: deceased.id,
+    label: deceased.name
+  }));
+
+const options = relationships.map(relationship => ({
+  value: relationship.id,
+  label: relationship.relation
+}));
+---
+<SectionTitle
+              sectionTitle="Relationship"
+              description="Honor the Shared Moments and Enduring Connections that Transcend Time"
+            />
+<section
+  class="relative flex flex-col gap-16 mx-auto justify-center items-center text-center max-w-[900px] shadow-xl rounded-2xl overflow-hidden mb-5"
+  id="timeLine"
+>
+  <!-- 模糊遮罩容器 -->
+  <div class="absolute inset-0 z-10 pointer-events-none">
+    <!-- 顶部渐变 -->
+    <div class="absolute top-0 h-16 w-full bg-gradient-to-b from-white/80 to-transparent"></div>
+    <!-- 底部渐变 -->
+    <div class="absolute bottom-0 h-16 w-full bg-gradient-to-t from-white/80 to-transparent"></div>
+    <!-- 左侧渐变 -->
+    <div class="absolute left-0 w-16 h-full bg-gradient-to-r from-white/80 to-transparent"></div>
+    <!-- 右侧渐变 -->
+    <div class="absolute right-0 w-16 h-full bg-gradient-to-l from-white/80 to-transparent"></div>
+  </div>
+  <div class="relative flex flex-col gap-20 w-full z-0">
+    <ForceGraph links={relationships} />
+  </div>
+</section>
+    <div class="flex flex-col sm:flex-row justify-center items-center text-center mb-20">
+        <div class="flex-1">
+            <RelationshipForm client:load id={id} options={relationshipOptions}/>
+        </div>
+        <div class="flex-1">
+            <RelationshipFormDelete client:load options={options} />
+        </div>
+    </div>

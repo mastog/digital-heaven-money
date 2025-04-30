@@ -96,8 +96,8 @@ class Deceased(BasePicModel):
     users = relationship("DeceasedUser", back_populates="deceased", cascade="all, delete-orphan")
     invited_keys = relationship("InviteKey", back_populates="deceased", cascade="all, delete-orphan")
     photos = relationship("DeceasedPhoto", back_populates="deceased", cascade="all, delete-orphan")
-    family1 = relationship("FamilyTree", foreign_keys="[FamilyTree.deceased1_id]", back_populates="deceased1")
-    family2 = relationship("FamilyTree", foreign_keys="[FamilyTree.deceased2_id]", back_populates="deceased2")
+    family1 = relationship("FamilyTree", foreign_keys="[FamilyTree.deceased1_id]", back_populates="deceased1",cascade="all, delete-orphan")
+    family2 = relationship("FamilyTree", foreign_keys="[FamilyTree.deceased2_id]", back_populates="deceased2",cascade="all, delete-orphan")
     offerings = relationship("DeceasedOffering", back_populates="deceased", cascade="all, delete-orphan")
     messages = relationship("DeceasedMessage", back_populates="deceased", cascade="all, delete-orphan")
 
@@ -148,10 +148,10 @@ class DeceasedPhoto(BasePicModel):
 class FamilyTree(BaseModel):
     __tablename__ = 'family_trees'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    deceased1_id = Column(Integer, ForeignKey('deceased.id', ondelete='SET NULL'), nullable=False)
-    deceased2_id = Column(Integer, ForeignKey('deceased.id', ondelete='SET NULL'), nullable=False)
+    deceased1_id = Column(Integer, ForeignKey('deceased.id', ondelete='CASCADE'), nullable=False)
+    deceased2_id = Column(Integer, ForeignKey('deceased.id', ondelete='CASCADE'), nullable=False)
     relation_type = Column(String(50), nullable=False)
-    creator_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)  # 新增creator_id字段
+    creator_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'))  # 新增creator_id字段
 
     # Relationships
     deceased1 = relationship("Deceased", foreign_keys=[deceased1_id])

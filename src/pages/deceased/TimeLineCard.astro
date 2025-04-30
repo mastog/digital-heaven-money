@@ -5,7 +5,7 @@ const {
     id,
     name,
     pic_url,
-    time,
+    photo_date,
     title,
     description
 } = Astro.props;
@@ -92,7 +92,7 @@ const {
             <span
                 class="text-light-gray-primary dark:text-dark-gray-primary font-bold text-base"
             >
-                {time}
+                {photo_date}
             </span>
         </div>
         <p
@@ -109,7 +109,7 @@ const {
         <img
             class="w-full h-auto transition hover:scale-110"
             src={pic_url}
-            alt={`Picture on ${time}`}
+            alt={`Picture on ${photo_date}`}
             loading="lazy"
             data-card-id={id}
             id={`image-${id}`}

@@ -1,7 +1,5 @@
 ---
-import Testimonials from "../../data/clientData.json";
-
-const processedTestimonials = Testimonials;
+const {items} = Astro.props;
 ---
 
 <div
@@ -17,7 +15,7 @@ const processedTestimonials = Testimonials;
 >
   <div class="swiper-wrapper mt-[84px] mb-[124px]" data-cursor="swipe">
     {
-      processedTestimonials.map((item) => (
+      items.map((item) => (
         <div
           class="swiper-slide text-gray flex flex-col"
           role="group"
@@ -25,7 +23,7 @@ const processedTestimonials = Testimonials;
           <div class="w-full px-10 sm:px-20 ">
             <div class="flex items-center gap-4">
               <img
-                src={item.pic_url}
+                src={item.pic_url ? item.pic_url : "/images/profile.jpg"}
                 alt={item.name}
                 class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-green"
               />
