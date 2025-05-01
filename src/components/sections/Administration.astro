@@ -1,5 +1,4 @@
 ---
-// 组件内部数据定义
 const database = {
   users: [
     { id: 1, name: 'Alice', age: 30, active: true },
@@ -18,12 +17,12 @@ const database = {
 
 <style is:global>
   .table-wrapper:empty::before {
-    content: "请在上方选择数据类型";
+    content: "Please select the data type above.";
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #94a3b8;
-    height: 200px;
+    color: #8d8d8d;
+    height: 125px;
   }
 
   .admin-panel {
@@ -33,52 +32,69 @@ const database = {
 
   .type-bar {
     display: flex;
-    gap: 1rem;
-    padding: 1rem;
-    background: #f5f7fa;
-    border-radius: 8px;
-    margin-bottom: 1rem;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .type-group {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .add-btn {
+    background: #b8b8b8 !important;
+    border-color: #b8b8b8 !important;
+    margin-left: auto;
+  }
+
+  .add-btn:hover {
+    background: #8d8d8d !important;
+    border-color: #8d8d8d !important;
   }
 
   .type-btn {
     padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 4px;
-    background: #e1e8f0;
+    border-color: #b8b8b8;
+    border-radius: 8px 8px 0 0;
+    background: #b8b8b8;
     cursor: pointer;
     transition: all 0.2s;
   }
 
   .type-btn.active {
-    background: #4f46e5;
+    border-color: #8d8d8d;
+    background: #8d8d8d;
     color: white;
   }
 
   .type-btn:hover {
-    background: #4f46e5;
+    border-color: #8d8d8d;
+    background: #8d8d8d;
     color: white;
   }
 
   .table-wrapper {
-    border: 2px dashed #e2e8f0;
-    border-radius: 8px;
-    min-height: 200px;
-    max-height: 500px;
+    border: 2px dashed #b8b8b8;
+    border-radius: 0 0 16px 16px;
+    min-height: 125px;
+    max-height: 600px;
     overflow-y: auto;
     background: white;
     transition: all 0.3s;
   }
 
   .data-table {
+    table-layout: fixed;
     width: 100%;
     border-collapse: collapse;
   }
 
   .data-table th,
   .data-table td {
-    padding: 12px 16px;
+    padding: 12px 36px 12px 16px;
     text-align: left;
-    border: 1px solid #d1d5db;
+    border: 2px solid #d1d5db;
+    white-space: nowrap;
   }
 
   .data-table th {
@@ -86,6 +102,31 @@ const database = {
     font-weight: 500;
     position: sticky;
     top: 0;
+  }
+
+  .data-table thead tr:first-child th {
+    border-top: none;
+  }
+
+  .data-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .data-table tr > :first-child {
+    border-left: none;
+  }
+
+  .data-table col:last-child.adaptive-fill {
+    border-right: none;
+  }
+
+  .data-table col {
+    min-width: 120px;
+  }
+
+  .adaptive-fill {
+    width: 100%;
+    min-width: 0;
   }
 
   .type-row {
@@ -96,18 +137,24 @@ const database = {
 
 <div class="admin-panel">
   <div class="type-bar">
-    {Object.keys(database).map((type) => (
-      <button 
-        class="type-btn" 
-        data-type={type}
-        key={type}
-      >
-        {type}
-      </button>
-    ))}
+    <div class="type-group">
+      {Object.keys(database).map((type) => (
+        <button 
+          class="type-btn" 
+          data-type={type}
+          key={type}
+        >
+          {type}
+        </button>
+      ))}
+    </div>
+
+    <button class="type-btn add-btn" id="addButton">
+      Add
+    </button>
   </div>
 
-  <div class="table-wrapper" id="tableContainer"></div>
+  <div class="table-wrapper mb-5" id="tableContainer"></div>
 </div>
 
 <script is:inline define:vars={{ database }}>
@@ -123,7 +170,7 @@ const database = {
     const keys = Object.keys(firstItem);
     return `
       <tr>
-        <th>#</th>
+        <th></th>
         ${keys.map(key => `<th>${key}</th>`).join('')}
       </tr>
       <tr class="type-row">
@@ -161,13 +208,64 @@ const database = {
 
     container.innerHTML = `
       <table class="data-table">
+        <colgroup></colgroup>
         <thead>${createTableHeader(data[0])}</thead>
         <tbody>${createTableBody(data)}</tbody>
       </table>
     `;
+
+    const table = container.querySelector('table');
+    const parentWidth = container.offsetWidth;
+    const colgroup = table.querySelector('colgroup');
+    let totalWidth = 0;
+
+    const measurer = document.createElement('div');
+    measurer.style.position = 'absolute';
+    measurer.style.visibility = 'hidden';
+    measurer.style.whiteSpace = 'nowrap';
+    document.body.appendChild(measurer);
+
+    const keys = ['#', ...Object.keys(data[0])];
+    keys.forEach(() => {
+      colgroup.appendChild(document.createElement('col'));
+    });
+
+    const cols = Array.from(colgroup.querySelectorAll('col'));
+    cols.forEach((col, colIndex) => {
+      const cells = [
+        ...table.querySelectorAll(`th:nth-child(${colIndex + 1})`),
+        ...table.querySelectorAll(`td:nth-child(${colIndex + 1})`)
+      ];
+
+      const headerText = table.rows[0].cells[colIndex]?.textContent || '';
+      
+      let maxWidth = 0;
+      [headerText, ...cells.map(c => c.textContent)].forEach(text => {
+        measurer.textContent = text;
+        maxWidth = Math.max(maxWidth, measurer.offsetWidth);
+      });
+
+      const columnWidth = maxWidth + 32;
+      col.style.width = `${columnWidth}px`;
+      totalWidth += columnWidth;
+    });
+
+    document.body.removeChild(measurer);
+
+    if (totalWidth < parentWidth) {
+      const fillCol = document.createElement('col');
+      fillCol.className = 'adaptive-fill';
+      colgroup.appendChild(fillCol);
+      
+      const rows = table.querySelectorAll('tr');
+      rows.forEach(tr => {
+        const td = document.createElement(tr.tagName === 'TR' && tr.parentNode.nodeName === 'THEAD' ? 'th' : 'td');
+        td.innerHTML = '&nbsp;';
+        tr.appendChild(td);
+      });
+    }
   }
 
-  // 事件绑定
   document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.type-btn').forEach(button => {
       button.addEventListener('click', (e) => {
