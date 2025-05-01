@@ -17,8 +17,4 @@ CORS(
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
-app.config.update(
-    SESSION_COOKIE_SAMESITE='None',  # 允许跨站携带 Cookie
-    SESSION_COOKIE_SECURE=True,      # 仅 HTTPS 生效
-)
 
