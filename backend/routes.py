@@ -300,6 +300,10 @@ def memorial_message(id):
     for message in messages:
         result.append({"id": message.user.id,
                        "name": message.user.username,
+                       "email": message.user.email,
+                       "gender": message.user.gender,
+                       "location": message.user.location,
+                       "introduction": message.user.introduction,
                        "pic_url": message.user.pic_url,
                        "comment": message.message,
                        })
