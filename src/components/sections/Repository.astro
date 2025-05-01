@@ -1,0 +1,205 @@
+---
+import SectionTitle from "../ui/SectionTitle.astro";
+import Section from "./Section.astro";
+
+const ecoData = [
+  {
+    image: "/images/oblation1.png",
+    name: "Wreath",
+    value: 86,
+    brief: "Non-degradable plastics pollute soil/water; resource-intensive flower cultivation harms ecosystems.",
+    detail: "Floral wreaths often involve non-biodegradable plastics, ribbons, and pesticide-treated flowers. When discarded, synthetic materials persist in landfills or waterways, leaching microplastics. Cultivating ceremonial flowers may also contribute to monoculture farming and water overuse."
+  },
+  {
+    image: "/images/oblation2.png",
+    name: "Heaven Money",
+    value: 86,
+    brief: "Burning releases toxic particulates/heavy metals; ash residues damage air, soil, and water.",
+    detail: "Burning paper money releases particulate matter (PM2.5), carbon monoxide, and toxic inks/metallic foils into the air. Large-scale incineration during festivals worsens urban smog and leaves ash residues containing heavy metals that contaminate soil and water systems."
+  },
+  {
+    image: "/images/oblation3.png",
+    name: "Incense",
+    value: 86,
+    brief: "Combustion emits carcinogens; long-term use worsens air quality; ash harms ecosystems.",
+    detail: "Combustion of incense generates volatile organic compounds (VOCs), benzene, and formaldehyde – linked to respiratory illnesses. Mass usage in confined spaces creates hazardous indoor air pollution, while ash accumulation affects ecosystems."
+  },
+  {
+    image: "/images/oblation4.png",
+    name: "Dessert",
+    value: 86,
+    brief: "Non-recyclable packaging wastes landfill; palm oil drives deforestation; leftovers produce methane.",
+    detail: "Individually wrapped sweets and non-recyclable plastic packaging contribute to landfill waste. Sugary offerings left outdoors attract pests and decompose into methane, a potent greenhouse gas. Palm oil-based desserts may indirectly drive deforestation."
+  },
+  {
+    image: "/images/oblation5.png",
+    name: "Tribute Meat",
+    value: 86,
+    brief: "Livestock farming increases emissions; discarded meat generates methane; chemicals pollute groundwater.",
+    detail: "Industrial livestock farming (for sacrificial animals) accounts for 14.5% of global greenhouse emissions. Discarded meat waste releases methane during decomposition, while preservatives/chemicals in processed offerings can leach into groundwater."
+  },
+  {
+    image: "/images/oblation6.png",
+    name: "Liquor",
+    value: 86,
+    brief: "Production wastes water/energy; bottles burden landfills; spills disrupt soil/water balance.",
+    detail: "Alcohol production requires intensive water/energy resources (e.g., 10L water per 1L beer). Glass/plastic bottles often end up in landfills, while spilled liquor alters soil pH and harms microorganisms. Ritual alcohol dumping pollutes waterways with ethanol byproducts."
+  },
+];
+---
+
+<style>
+  .container {
+    display: flex;
+    margin: 0 auto;
+    gap: 1.2rem;
+    width: 100%;
+    height: 600px;
+    position: relative;
+  }
+
+  .block {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    background: #b8b8b8;
+    border-radius: 32px;
+    padding: 1.2rem;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    color: black;
+  }
+
+  .block:hover {
+    flex: 4;
+    z-index: 15;
+    background: #8d8d8d;
+    color: white;
+  }
+
+  .block:hover .item-name,
+  .block:hover .number,
+  .block:hover .label,
+  .block:hover .brief-text {
+    color: inherit;
+  }
+
+  .image-wrapper {
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding-top: 1rem;
+  }
+
+  .eco-image {
+    max-width: 75%;
+    max-height: 75%;
+    border-radius: 50%;
+    object-fit: contain;
+    filter: grayscale(100%);
+    transition: transform 0.3s ease;
+  }
+
+  .item-name {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    text-align: center;
+    color: black;
+    font-weight: 500;
+  }
+
+  .number {
+    font-size: 2rem;
+    color: black;
+    margin-top: auto;
+    font-weight: 600;
+  }
+
+  .label {
+    font-size: 0.9rem;
+    color: black;
+    text-align: center;
+    margin-bottom: 0.8rem;
+  }
+
+  .brief-text {
+    position: absolute;
+    top: 53.5%;
+    left: 50%;
+    width: 80%;
+    transform: translate(-50%, -46.5%);
+    font-size: 0.95rem;
+    line-height: 1.4;
+    text-align: center;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+
+  .detail-overlay {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    width: 80%;
+    transform: translate(-50%, -40%);
+    width: 80%;
+    color: white;
+    font-size: 1rem;
+    line-height: 1.5;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    padding: 0 1rem;
+  }
+
+  .block:hover .brief-text {
+    opacity: 0;
+  }
+
+  .block:hover .detail-overlay {
+    opacity: 1;
+  }
+</style>
+
+<Section id="testimonials">
+  <div>
+    <SectionTitle
+      sectionTitle="Sacrificial Repository"
+      description="Salute to Sustainable Behavior: Exploring the Courage and Environmental Practices that Define Love and Sacrifice Heritage"
+    />
+
+    <div class="container">
+      {ecoData.map((item, index) => (
+        <div class="block mb-5" key={index}>
+          <div class="image-wrapper">
+            <img 
+              src={item.image}
+              alt="环保图标"
+              class="eco-image"
+              width="175"
+              height="175"
+            />
+            <div class="item-name">{item.name}</div>
+          </div>
+          
+          <div class="number">{item.value}</div>
+          <div class="label">send out quantity</div>
+
+          <div class="brief-text">
+            {item.brief}
+          </div>
+
+          <div class="detail-overlay">
+            {item.detail}
+          </div>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</Section>
