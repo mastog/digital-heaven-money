@@ -116,6 +116,10 @@ const database = {
     border-left: none;
   }
 
+  .data-table tr > :last-child {
+    border-right: none;
+  }
+
   .data-table col:last-child.adaptive-fill {
     border-right: none;
   }
@@ -172,10 +176,12 @@ const database = {
       <tr>
         <th></th>
         ${keys.map(key => `<th>${key}</th>`).join('')}
+        <th>operation</th>
       </tr>
       <tr class="type-row">
         <th>number</th>
         ${keys.map(key => `<th>${getType(firstItem[key])}</th>`).join('')}
+        <th>action</th>
       </tr>
     `;
   }
@@ -193,6 +199,7 @@ const database = {
                   : value)
           }</td>
         `).join('')}
+        <td style="color:red">delete</td>
       </tr>
     `).join('');
   }
@@ -225,7 +232,7 @@ const database = {
     measurer.style.whiteSpace = 'nowrap';
     document.body.appendChild(measurer);
 
-    const keys = ['#', ...Object.keys(data[0])];
+    const keys = ['#', ...Object.keys(data[0]), 'operation'];
     keys.forEach(() => {
       colgroup.appendChild(document.createElement('col'));
     });
