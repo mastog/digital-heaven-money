@@ -9,8 +9,8 @@ const { pic, name, birth_date, death_date, description, link } = Astro.props;
 <Card isUnderline={true}>
   <div class="p-[60px]">
     <div class="flex flex-col sm:flex-row relative">
-      <picture class="w-[175px] h-[175px] shrink-0 overflow-hidden">
-        <Image src={pic} alt={name} width="175" height="175" class="filter grayscale" />
+      <picture class="w-[175px] h-[175px] shrink-0 rounded-lg overflow-hidden">
+        <Image src={pic} alt={name} width="175" height="175" class="w-full h-full object-cover filter grayscale" />
       </picture>
       <div class="flex flex-col justify-end sm:ml-5">
         <h3 class="text-lg font-medium">{name}</h3>

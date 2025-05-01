@@ -151,11 +151,12 @@ def invite_users(id):  # memorial id
 
 
 # Join in Memorial Hall
-@app.route('/join/<string:key>', methods=['GET'])
+@app.route('/join', methods=['POST'])
 @login_required
-def join(key):  # memorial id
+def join():  # memorial id
     current_user_id = current_user.id
     inviteDao = dao_factory.get_dao("InviteKey")
+    key=request.form.to_dict().get('key')
     invite = inviteDao.get(key= key)
     if not invite:
         return jsonify({'error': "Unrecognizable key"}), 400
