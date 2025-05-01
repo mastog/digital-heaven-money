@@ -137,7 +137,7 @@ def data_management(resource, action):
 def invite_users(id):  # memorial id
     current_user_id = current_user.id
     message = "The invitation code has been created. "
-    exist = dao_factory.get_dao("InviteKey").get({'user_id': current_user_id, 'deceased_id': id})
+    exist = dao_factory.get_dao("InviteKey").get(user_id= current_user_id, deceased_id= id)
     if exist:
         dao_factory.get_dao("InviteKey").delete(exist)
         message += "The previous invitation code has been overwritten"

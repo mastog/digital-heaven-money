@@ -12,6 +12,7 @@ import TimeLine from "./TimeLine.astro";
 import Relationship from "./Relationship.astro";
 import Section from "../../components/sections/Section.astro";
 import SectionTitle from "../../components/ui/SectionTitle.astro";
+import ModalKey from '../../components/ModalKey.jsx';
 
 const { id } = Astro.params;
 const auth=await apiRequest(
@@ -81,6 +82,11 @@ const items = await apiRequest(`/decreasedOfferings/${id}`, 'GET');
         </div>
         <Oblation testimonialData={testimonialContent} id={id}/>
         <Section>
+            <ModalKey id={id} client:load>
+                <button class="btn-primary items-center mb-5">
+                Invite Key
+                </button>
+            </ModalKey>
             <TimeLine id={id}/>
             <Relationship id={id}/>
                 <SectionTitle
