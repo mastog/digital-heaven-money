@@ -11,8 +11,6 @@ const monthNumber = today.getMonth()+1;
 const weekDay = ["Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"][today.getDay()];
 const year = today.getFullYear();
 
-
-
 const date = await apiRequest(
         "/lunar",
         "GET",
@@ -39,7 +37,7 @@ const date = await apiRequest(
   <Card>
 
     <!-- Inner Flexbox container -->
-    <div class="flex flex-wrap justify-center items-center gap-3 w-full py-10 px-6 mb-20">
+    <div class="flex flex-wrap justify-center items-center gap-3 w-full py-10 px-6">
 
       <div class="flex flex-wrap justify-center items-center gap-10">
         <!-- Suitable Card -->

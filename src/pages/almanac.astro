@@ -1,0 +1,43 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import HuangLi from "../components/sections/HuangLi.astro";
+import { apiRequest } from '../utils/api';
+import Quiz from '../components/sections/Quiz.astro';
+
+const question = await apiRequest(
+        "/dailyQuestion",
+        "GET",
+        {},
+        false
+      )|| {
+  question: "What is the capital of France?",
+  options: {
+    a: "London",
+    b: "Berlin",
+    c: "Paris",
+    d: "Madrid"
+  },
+  correctAnswer: "c",
+  explanation: "Paris is the capital and most populous city of France."
+};
+---
+
+<MainLayout title="Services">
+	<main class="space-y-20">
+        <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-3">
+            <div class="relative flex flex-col-reverse items-center md:flex-row" id="hero">
+                <div class="row items-center py-5 md:pb-0 md:pt-10">
+                    <div class="text-center space-y-10">
+                        <h2 class="text-5xl font-medium leading-none md:text-6xl">We Honor <br> Loved Ones <br> in the Digital Age</h2>
+                        <p class="mt-6 mb-8  text-xl font-normal leading-7 sm:mb-12 text-center"><span class="italic">While time moves forward, love remains timeless.</span> <br/> Begin your legacy journey today - we safeguard memories with the care they deserve, preserving life's fleeting moments as timeless digital heirlooms for generations to come.</p>
+                        <a class="px-9 py-5 bg-zinc-900 hover:bg-white text-white hover:text-black border rounded-2xl justify-items-center md:justify-items-start gap-2.5 inline-flex" rel="noopener noreferrer"  href="https://github.com/mastog/digital-heaven-money" target="_blank">
+                            <h2 class="text-center text-xl font-normal leading-7">Learn more details</h2>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <HuangLi />
+        <Quiz questionData={question} />
+	</main>
+</MainLayout>
