@@ -137,7 +137,7 @@ def data_management(resource, action):
 def invite_users(id):  # memorial id
     current_user_id = current_user.id
     message = "The invitation code has been created. "
-    exist = dao_factory.get_dao("InviteKey").get({'user_id': current_user_id, 'deceased_id': id})
+    exist = dao_factory.get_dao("InviteKey").get(user_id= current_user_id, deceased_id= id)
     if exist:
         dao_factory.get_dao("InviteKey").delete(exist)
         message += "The previous invitation code has been overwritten"
@@ -151,11 +151,12 @@ def invite_users(id):  # memorial id
 
 
 # Join in Memorial Hall
-@app.route('/join/<string:key>', methods=['GET'])
+@app.route('/join', methods=['POST'])
 @login_required
-def join(key):  # memorial id
+def join():  # memorial id
     current_user_id = current_user.id
     inviteDao = dao_factory.get_dao("InviteKey")
+    key=request.form.to_dict().get('key')
     invite = inviteDao.get(key= key)
     if not invite:
         return jsonify({'error': "Unrecognizable key"}), 400
@@ -249,6 +250,19 @@ def public_deceased():
     dao = dao_factory.get_dao("Deceased")
     return jsonify([obj.to_dict() for obj in dao.get_all(is_private= False)]), 200
 
+@app.route('/checkAuth/<int:id>', methods=['GET'])
+def check_auth(id):
+    if not current_user.is_authenticated:
+        return jsonify(None), 200
+    current_user_id = current_user.id
+    memorials=getPrivateMemorial(current_user_id)
+    memorial_ids=[]
+    for memorial in memorials:
+        memorial_ids.append(memorial.id)
+    if(id not in memorial_ids):
+        return jsonify(None), 200
+    return jsonify({'message':"ok"}), 200
+
 
 @app.route('/privateDeceased', methods=['GET'])
 @login_required
@@ -287,6 +301,10 @@ def memorial_message(id):
     for message in messages:
         result.append({"id": message.user.id,
                        "name": message.user.username,
+                       "email": message.user.email,
+                       "gender": message.user.gender,
+                       "location": message.user.location,
+                       "introduction": message.user.introduction,
                        "pic_url": message.user.pic_url,
                        "comment": message.message,
                        })
@@ -319,6 +337,30 @@ def get_relationship(id):
                         "relation": relationship.relation_type,
                         "id": relationship.id
                         })
+    return jsonify(result), 200
+
+@app.route('/all_relationship', methods=['GET'])
+@login_required
+def all_relationship():
+    current_user_id = current_user.id
+    memorials = getPrivateMemorial(current_user_id)
+    relationship_map = {}
+    for memorial in memorials:
+        memorial_id=memorial.id
+        relationships = dao_factory.get_dao("FamilyTree").get_all(deceased_id=memorial_id)
+        for relationship in relationships:
+            if relationship.id not in relationship_map:
+                relationship_map[relationship.id]={ "name1": relationship.deceased1.name,
+                                "name2": relationship.deceased2.name,
+                                "image1": relationship.deceased1.pic_url,
+                                "image2": relationship.deceased2.pic_url,
+                                "id1": relationship.deceased1.id,
+                                "id2": relationship.deceased2.id,
+                                "relation": relationship.relation_type,
+                                "id": relationship.id
+                                }
+    result = list(relationship_map.values())
+
     return jsonify(result), 200
 
 @app.route('/decreasedOfferings/<int:id>', methods=['GET'])

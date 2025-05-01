@@ -9,11 +9,11 @@ const user = await apiRequest(
         {},
         Astro,
       )|| {
-  username: "John Doe",
-  email: "johndoe@example.com",
-  gender: "Femboy",
-  location: "San Francisco, CA",
-  introduction: "A passionate software engineer with experience in building scalable applications and modern web technologies.",
+  username: "",
+  email: "",
+  gender: "",
+  location: "",
+  introduction: "",
   pic_url: "/images/profile.jpg"
 };
 ---
@@ -32,7 +32,6 @@ const user = await apiRequest(
           </div>
         </div>
         <h1 class="text-2xl font-bold mt-4">{user.username}</h1>
-        <h5 class="text-sm text-gray-500 mt-1 mb-4">{user.location}</h5>
 
         <!-- New Edit Toggle -->
         <div class="edit-switch">
@@ -256,6 +255,7 @@ const user = await apiRequest(
 
     {enableClientScript && (
     <script>
+        import {showNotification} from '../../utils/notifications.js';
         import { apiRequest } from '../../utils/api';
         const toggleEdit = document.getElementById('editToggle');
         const editables = document.querySelectorAll('.editable');
@@ -280,7 +280,7 @@ const user = await apiRequest(
                     const key = element.previousElementSibling?.innerText?.trim();
                     const value = element.innerText.trim();
                     if (key.toLowerCase().includes('email') && !validateEmail(value)) {
-                        alert('Invalid email format!');
+                        showNotification(['Invalid email format!']);
                         hasInvalid = true;
                     }
                 });
@@ -358,7 +358,7 @@ const user = await apiRequest(
             apiRequest('/profile', 'PUT', data)
             .then(result => {
                 console.log('Profile updated:', result);
-                alert('Profile updated successfully!');
+                showNotification(['Profile updated successfully!']);
             })
             .catch(error => {
                 console.error('Error updating profile:', error);

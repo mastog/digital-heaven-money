@@ -84,6 +84,7 @@ const menuitems = [
 
 <script>
   import {apiRequest} from "../../utils/api";
+  import {showNotification} from '../../utils/notifications.js';
   // Function to check login status
   async function checkLoginStatus() {
     try {
@@ -126,7 +127,8 @@ const menuitems = [
   async function handleLogout() {
     try {
       const response = await apiRequest("/logout", "POST", {});
-      alert(response.message);
+      showNotification([response.message]);
+      await new Promise(resolve => setTimeout(resolve, 1000));
       // Update UI after logout
       updateLoginUI();
       // Optionally redirect to home page

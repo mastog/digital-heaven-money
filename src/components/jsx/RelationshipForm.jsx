@@ -15,7 +15,6 @@ export default function RelationshipForm({ id,options}) {
             cancelText="Cancel"
             classConfig={modalStyles}
             onSuccess={() => {
-                alert('Success');
                 window.location.reload();
             }}
             client:load

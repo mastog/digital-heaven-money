@@ -15,5 +15,9 @@ export default defineConfig({
     host: '127.0.0.1',  // 这里设置
     port: 4321,         // 这里设置
     allowedHosts: ['csi6220-1-vm4.ucd.ie']
+  },
+  prefetch: true,
+  devToolbar: {
+    enabled: false // 完全禁用工具栏
   }
 });

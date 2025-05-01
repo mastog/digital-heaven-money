@@ -1,23 +1,22 @@
 import FormComponent from '../FormComponents.jsx';
-import login from '../../utils/formConfigs/login';
+import join from '../../utils/formConfigs/join';
 
-export default function LoginForm() {
+export default function JoinForm() {
   return (
       <FormComponent
           client:load
-          apiUrl="/login"
+          apiUrl="/join"
           method="POST"
           fields={[
-            { name: 'username', label: 'Username*', type: 'text', placeholder: 'Username', required: true },
-            { name: 'password', label: 'Password*', type: 'password', placeholder: 'Password', required: true }
+            { name: 'Key', type: 'text', placeholder: 'Redemption Code', required: true }
           ]}
-          submitText="Login"
-          classConfig={login}
+          submitText="Redeem Code"
+          classConfig={join}
           onSuccess={async (data) => {
               const {showNotification} = await import('../../utils/notifications.js');
               showNotification([data.message]);
               await new Promise(resolve => setTimeout(resolve, 1000));
-              window.location.href = '/';
+              window.location.reload();
           }}
         />
   );

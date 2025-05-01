@@ -56,16 +56,18 @@ export const apiRequest = async (
 
       if (!isServer) {
         if (response.status === 401) {
-          alert('Require login');
+          const {showNotification} = await import('./notifications.js');
+          showNotification(['Require login']);
+          await new Promise(resolve => setTimeout(resolve, 1000));
           window.location.href = '/login';
-          return ;
         } else if (response.status === 404) {
-          alert(responseData?.error || 'Resource not found');
+          const {showNotification} = await import('./notifications.js');
+          showNotification([responseData?.error || 'Resource not found']);
+          await new Promise(resolve => setTimeout(resolve, 1000));
           window.location.href = '/404';
-          return;
         } else if (response.status === 400) {
-          alert(responseData?.error || 'Something wrong happened');
-          return;
+          const {showNotification} = await import('./notifications.js');
+          showNotification([responseData?.error || 'Something wrong happened']);
         }
       }
       throw new Error(responseData?.error || `HTTP error! status: ${response.status}`);
@@ -74,9 +76,9 @@ export const apiRequest = async (
     return await processResponse(response);
   } catch (error) {
     console.error('API request failed:', error);
-    try {
-      alert('API request failed: ' + error);
-    } catch (error) {}
+    if(!isServer){
+      throw(error)
+    }
   }
 };
 

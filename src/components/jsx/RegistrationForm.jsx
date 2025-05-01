@@ -15,9 +15,11 @@ export default function RegistrationForm() {
           ]}
           submitText="Join"
           classConfig={login}
-          onSuccess={() => {
-            alert('Registration successful!');
-            window.location.reload();
+          onSuccess={async () => {
+              const {showNotification} = await import('../../utils/notifications.js');
+              showNotification(['Registration successful!']);
+              await new Promise(resolve => setTimeout(resolve, 1000));
+              window.location.reload();
           }}
         />
   );

@@ -13,7 +13,6 @@ export default function TimeLineFormDelete({ options}) {
             cancelText="Cancel"
             classConfig={modalStyles}
             onSuccess={() => {
-                alert('Success');
                 window.location.reload();
             }}
             client:load

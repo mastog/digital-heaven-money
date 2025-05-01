@@ -14,7 +14,6 @@ export default function MessageForm({ id}) {
             cancelText="Cancel"
             classConfig={modalStyles}
             onSuccess={() => {
-                alert('Success');
                 window.location.reload();
             }}
             client:load

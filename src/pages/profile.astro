@@ -4,7 +4,11 @@ import Profile from "../components/sections/Profile.astro";
 
 import ModalForm from '../components/ModalForm';
 import modalStyles from '../utils/formConfigs/modal';
-
+import { apiRequest } from '../utils/api';
+const response = await apiRequest("/current", "POST", {}, Astro);
+if(!response){
+    return Astro.redirect('/login');
+}
 const formFields = [
   { name: 'username', label: 'Username', type: 'text' },
   { name: 'email', label: 'Email', type: 'email' },
@@ -15,7 +19,6 @@ const formFields = [
 <MainLayout title="About us">
 	<main class="space-y-20">
         <div class="py-0.5" />
-        <script src="../utils/loginCheck.js"></script>
         <Profile />
 	</main>
 </MainLayout>

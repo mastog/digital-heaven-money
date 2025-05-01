@@ -16,9 +16,27 @@ const FormComponent = ({
   const formRef = useRef(null);
   const [imagePreview, setImagePreview] = useState(null); // State for image preview
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
+      const allowedExtensions = ['png', 'jpg', 'jpeg'];
+      const fileExtension = file.name.split('.').pop().toLowerCase();
+
+      if (!allowedExtensions.includes(fileExtension)) {
+        const {showNotification} = await import('../utils/notifications.js');
+        showNotification(['Invalid file type. Only PNG, JPG, and JPEG files are allowed.']);
+        e.target.value = ""; // 清除文件选择
+        setImagePreview(null);
+        return;
+      }
+
+      if (file.size > 2 * 1024 * 1024) { // 2MB
+        const {showNotification} = await import('../utils/notifications.js');
+        showNotification(['Image size is too large, please no more than 2mb.']);
+        e.target.value = ""; // 清除文件选择
+        setImagePreview(null);
+        return;
+      }
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result); // Set the image preview to the file's data URL
@@ -36,7 +54,8 @@ const FormComponent = ({
     const password = formData.get('password');
     const confirmPassword = formData.get('confirm_password');
     if (password && confirmPassword && password !== confirmPassword) {
-      alert('Passwords do not match!');
+      const {showNotification} = await import('../utils/notifications.js');
+              showNotification(['Passwords do not match!']);
       return;
     }
 
@@ -46,20 +65,9 @@ const FormComponent = ({
 
     // Check if birth_date is later than death_date
     if (birthDate && deathDate && new Date(birthDate) > new Date(deathDate)) {
-      alert('Birth date must be before death date!');
+      const {showNotification} = await import('../utils/notifications.js');
+              showNotification(['Birth date must be before death date!']);
       return;
-    }
-
-    // Check file type
-    const fileInput = formRef.current.querySelector('input[type="file"]');
-    if (fileInput && fileInput.files.length > 0) {
-      const file = fileInput.files[0];
-      const allowedExtensions = ['png', 'jpg', 'jpeg'];
-      const fileExtension = file.name.split('.').pop().toLowerCase();
-      if (!allowedExtensions.includes(fileExtension)) {
-        alert('Invalid file type. Only PNG, JPG, and JPEG files are allowed.');
-        return;
-      }
     }
 
     try {
