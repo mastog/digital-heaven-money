@@ -15,6 +15,8 @@ export default function JoinForm() {
           onSuccess={async (data) => {
               const {showNotification} = await import('../../utils/notifications.js');
               showNotification([data.message]);
+              await new Promise(resolve => setTimeout(resolve, 1000));
+              window.location.reload();
           }}
         />
   );
