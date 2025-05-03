@@ -9,7 +9,7 @@ const menuitems = [
   { href: '/profile', label: 'Profile' },
 ];
 
-if (response.is_admin) {
+if (response && response.is_admin) {
   menuitems.push({ href: '/administration', label: 'Administration' });
 }
 ---
