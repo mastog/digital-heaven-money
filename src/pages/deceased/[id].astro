@@ -1,6 +1,4 @@
 ---
-
-
 import MainLayout from "../../layouts/MainLayout.astro";
 import AboutCard from "./AboutCard.astro";
 import Oblation from "../../components/sections/Oblation.astro";
@@ -8,6 +6,8 @@ import Testimonials from "./Testimonials.astro";
 import { apiRequest } from '../../utils/api';
 import MountainPhysics from "../../components/sections/MountainPhysics.astro";
 import AiForm from '../../components/jsx/AiForm.jsx';
+import PriTeamFormModify from '../../components/jsx/PriTeamFormModify.jsx';
+import DeleteButton from '../../components/jsx/DeleteButton.jsx';
 import TimeLine from "./TimeLine.astro";
 import Relationship from "./Relationship.astro";
 import Section from "../../components/sections/Section.astro";
@@ -82,11 +82,15 @@ const items = await apiRequest(`/decreasedOfferings/${id}`, 'GET');
         </div>
         <Oblation testimonialData={testimonialContent} id={id}/>
         <Section>
+            <div class="flex flex-col sm:flex-row gap-3">
             <ModalKey id={id} client:load>
                 <button class="btn-primary items-center mb-5">
                 Invite Key
                 </button>
             </ModalKey>
+                <PriTeamFormModify deceased={deceased[0]} client:load/>
+                <DeleteButton id={id} client:load />
+            </div>
             <TimeLine id={id}/>
             <Relationship id={id}/>
                 <SectionTitle

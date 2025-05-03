@@ -1,0 +1,32 @@
+import ModalForm from '../ModalForm';
+import modalStyles from '../../utils/formConfigs/modal';
+import { Image } from "astro:assets";
+import p0 from "../../assets/team/d0.png";
+export default function PriTeamFormModify({deceased}) {
+    const formFields = [
+    { name: 'pic', label: 'Picture', type: 'file'},
+    { name: 'name', label: 'Name', type: 'text',value:deceased.name },
+    { name: 'birth_date', label: 'Birth Date', type: 'date',value:deceased.birth_date },
+    { name: 'death_date', label: 'Death Date', type: 'date',value:deceased.death_date },
+    { name: 'biography', label: 'Description', type: 'textarea',value:deceased.biography },
+    { name: 'id', type: 'hidden', value: deceased.id }
+];
+  return (
+      <ModalForm
+            apiUrl="/crud/Deceased/update"
+            method="POST"
+            fields={formFields}
+            submitText="Submit"
+            cancelText="Cancel"
+            classConfig={modalStyles}
+            onSuccess={() => {
+                window.location.reload();
+            }}
+            client:load
+            >
+          <button className="btn-primary mb-5">
+                    Modify Decreased
+                </button>
+        </ModalForm>
+  );
+}

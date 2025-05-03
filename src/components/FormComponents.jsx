@@ -51,6 +51,35 @@ const FormComponent = ({
     e.preventDefault();
     const formData = new FormData(formRef.current);
 
+    const fileInput = formRef.current.querySelector('input[type="file"]');
+    if (fileInput && !fileInput.files[0]) {
+      formData.delete('pic'); // 如果没有文件，移除 pic 字段
+    }
+
+    for (const field of fields) {
+    const fieldType = field.type || 'text';
+    if (['file', 'select'].includes(fieldType)) {
+      continue; // 跳过文件和选择框
+    }
+
+    const value = formData.get(field.name);
+    const trimmedValue = (value || '').trim();
+
+    // 必填字段检查
+    if (field.required && trimmedValue === '') {
+      const { showNotification } = await import('../utils/notifications.js');
+      showNotification([`${field.label} cannot be empty or only contain Spaces.`]);
+      return;
+    }
+
+    // 非必填字段但输入了内容，检查是否全空格
+    if (!field.required && value !== '' && trimmedValue === '') {
+      const { showNotification } = await import('../utils/notifications.js');
+      showNotification([`${field.label} cannot only contain Spaces.`]);
+      return;
+    }
+  }
+
     const password = formData.get('password');
     const confirmPassword = formData.get('confirm_password');
     if (password && confirmPassword && password !== confirmPassword) {
@@ -184,7 +213,7 @@ const FormComponent = ({
               name={field.name}
               placeholder={field.placeholder}
               required={field.required}
-              value={field.value}
+              defaultValue={field.value}
               className={classConfig.input || ""}
             />
           )}

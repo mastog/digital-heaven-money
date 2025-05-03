@@ -1,13 +1,17 @@
 ---
 import { Astronav, MenuItems, MenuIcon } from "astro-navbar";
-
+import { apiRequest } from '../../utils/api';
+const response = await apiRequest("/current", "POST", {}, Astro);
 const menuitems = [
   { href: '/about', label: 'About us' },
   { href: '/services', label: 'Services' },
   { href: '/memorial-hall', label: 'Memorial Hall' },
-  { href: '/profile', label: 'Profile'},
-  { href: '/administration', label: 'Administration'},
+  { href: '/profile', label: 'Profile' },
 ];
+
+if (response.is_admin) {
+  menuitems.push({ href: '/administration', label: 'Administration' });
+}
 ---
 
 <div class="mt-20">
