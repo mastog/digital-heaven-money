@@ -33,16 +33,23 @@ const ModalKey = ({
   }, []);
 
   const handleCopy = useCallback(() => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(fetchedText)
       .then(async () => {
-        const {showNotification} = await import('../utils/notifications.js');
+        const { showNotification } = await import('../utils/notifications.js');
         showNotification(['Copied!']);
       })
       .catch(async () => {
-        const {showNotification} = await import('../utils/notifications.js');
+        const { showNotification } = await import('../utils/notifications.js');
         showNotification(['Copy failed.']);
       });
-  }, [fetchedText]);
+  } else {
+    const success = fallbackCopyTextToClipboard(fetchedText);
+    import('../utils/notifications.js').then(({ showNotification }) => {
+      showNotification([success ? 'Copied!' : 'Copy failed.']);
+    });
+  }
+}, [fetchedText]);
 
   return (
     <div onClick={handleTriggerClick}>
