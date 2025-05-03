@@ -380,6 +380,22 @@ def decreased_offerings(id):
     result = list(offering_map.values())
     return jsonify(result), 200
 
+@app.route('/userOfferings', methods=['GET'])
+@login_required
+def user_offerings():
+    current_user_id = current_user.id
+    offerings=dao_factory.get_dao("DeceasedOffering").get_all(user_id= current_user_id)
+    offering_map = {"Wreath": 0,
+                    "Joss Paper" :0,
+                    "Incense": 0,
+                    "Dessert": 0,
+                    "Tribute Meat":0,
+                    "Liquor":0}
+    for offering in offerings:
+        offering_map[offering.offering.name]+= offering.quantity
+
+    return jsonify(offering_map), 200
+
 @app.route('/offering', methods=['POST'])
 @login_required
 def offering():

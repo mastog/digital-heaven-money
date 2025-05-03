@@ -1,6 +1,11 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
 import Repos from "../components/sections/Repository.astro";
+import { apiRequest } from '../utils/api';
+const response = await apiRequest("/current", "POST", {}, Astro);
+if(!response){
+    return Astro.redirect('/login');
+}
 ---
 
 <MainLayout title="Services">
