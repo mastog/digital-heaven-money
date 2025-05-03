@@ -12,10 +12,10 @@ const ecoData = [
   },
   {
     image: "/images/oblation2.png",
-    name: "Heaven Money",
+    name: "Joss Paper",
     value: 86,
     brief: "Burning releases toxic particulates/heavy metals; ash residues damage air, soil, and water.",
-    detail: "Burning paper money releases particulate matter (PM2.5), carbon monoxide, and toxic inks/metallic foils into the air. Large-scale incineration during festivals worsens urban smog and leaves ash residues containing heavy metals that contaminate soil and water systems."
+    detail: "Burning joss paper releases particulate matter (PM2.5), carbon monoxide, and toxic inks/metallic foils into the air. Large-scale incineration during festivals worsens urban smog and leaves ash residues containing heavy metals that contaminate soil and water systems."
   },
   {
     image: "/images/oblation3.png",
@@ -46,6 +46,9 @@ const ecoData = [
     detail: "Alcohol production requires intensive water/energy resources (e.g., 10L water per 1L beer). Glass/plastic bottles often end up in landfills, while spilled liquor alters soil pH and harms microorganisms. Ritual alcohol dumping pollutes waterways with ethanol byproducts."
   },
 ];
+
+const totalCount = ecoData.reduce((sum, item) => sum + item.value, 0);
+const emissionReduction = (totalCount * 146.5).toFixed(1);
 ---
 
 <style>
@@ -200,6 +203,30 @@ const ecoData = [
         </div>
       ))}
     </div>
+    <div class="container" style="margin-top: 2rem;">
+  <div class="block mb-5">
+    <div class="image-wrapper">
+      <img
+        src="/images/kobe.jpg"
+        alt="carbon"
+        class="eco-image"
+        width="175"
+        height="175"
+      />
+      <div class="item-name">Carbon Emission Reduction</div>
+    </div>
 
+    <div class="number">~{emissionReduction}g</div>
+    <div class="label">CO₂ emissions have been avoided</div>
+
+    <div class="brief-text">
+      Burning 1g joss paper with 80% combustion efficiency emits about 2.93g CO₂.
+    </div>
+
+    <div class="detail-overlay">
+      If one ritual burns 50 papers, that's ~146.5g CO₂. Based on your choices, you've reduced ~{emissionReduction}g of carbon emissions. A true act of love—for both tradition and Earth.
+    </div>
+  </div>
+</div>
   </div>
 </Section>
