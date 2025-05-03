@@ -31,25 +31,41 @@ const ModalKey = ({
   const handleClose = useCallback(() => {
     setIsOpen(false);
   }, []);
+  const fallbackCopyTextToClipboard = (text) => {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.position = "fixed"; // 防止页面滚动
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
 
+    try {
+      const successful = document.execCommand('copy');
+      return successful;
+    } catch (err) {
+      return false;
+    } finally {
+      document.body.removeChild(textArea);
+    }
+  };
   const handleCopy = useCallback(() => {
     if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(fetchedText)
-      .then(async () => {
-        const { showNotification } = await import('../utils/notifications.js');
-        showNotification(['Copied!']);
-      })
-      .catch(async () => {
-        const { showNotification } = await import('../utils/notifications.js');
-        showNotification(['Copy failed.']);
+      navigator.clipboard.writeText(fetchedText)
+        .then(async () => {
+          const { showNotification } = await import('../utils/notifications.js');
+          showNotification(['Copied!']);
+        })
+        .catch(async () => {
+          const { showNotification } = await import('../utils/notifications.js');
+          showNotification(['Copy failed.']);
+        });
+    } else {
+      const success = fallbackCopyTextToClipboard(fetchedText);
+      import('../utils/notifications.js').then(({ showNotification }) => {
+        showNotification([success ? 'Copied!' : 'Copy failed. Please copy it by yourself']);
       });
-  } else {
-    const success = fallbackCopyTextToClipboard(fetchedText);
-    import('../utils/notifications.js').then(({ showNotification }) => {
-      showNotification([success ? 'Copied!' : 'Copy failed.']);
-    });
-  }
-}, [fetchedText]);
+    }
+  }, [fetchedText]);
 
   return (
     <div onClick={handleTriggerClick}>
