@@ -1,7 +1,5 @@
 import ModalForm from '../ModalForm';
 import modalStyles from '../../utils/formConfigs/modal';
-import { Image } from "astro:assets";
-import p0 from "../../assets/team/d0.png";
 export default function PriTeamFormModify({deceased}) {
     const formFields = [
     { name: 'pic', label: 'Picture', type: 'file'},

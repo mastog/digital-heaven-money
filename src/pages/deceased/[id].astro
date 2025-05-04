@@ -82,7 +82,7 @@ const items = await apiRequest(`/decreasedOfferings/${id}`, 'GET');
         </div>
         <Oblation testimonialData={testimonialContent} id={id}/>
         <Section>
-            <div class="flex flex-col sm:flex-row gap-3">
+            {deceased[0].is_private &&<div class="flex flex-col sm:flex-row gap-3">
             <ModalKey id={id} client:load>
                 <button class="btn-primary items-center mb-5">
                 Invite Key
@@ -90,9 +90,9 @@ const items = await apiRequest(`/decreasedOfferings/${id}`, 'GET');
             </ModalKey>
                 <PriTeamFormModify deceased={deceased[0]} client:load/>
                 <DeleteButton id={id} client:load />
-            </div>
-            <TimeLine id={id}/>
-            <Relationship id={id}/>
+            </div>}
+            <TimeLine id={id} modify={deceased[0].is_private}/>
+            {deceased[0].is_private &&<Relationship id={id}/>}
                 <SectionTitle
               sectionTitle="Echoes Beyond"
               description="Reconnect Through Voices and Reflections that Preserve the Essence of Those Who Linger in Memory"

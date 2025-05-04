@@ -1,5 +1,5 @@
 ---
-const {id} = Astro.props;
+const {id,modify} = Astro.props;
 import TimeLineCard from "./TimeLineCard.astro";
 import SectionTitle from "../../components/ui/SectionTitle.astro";
 import { apiRequest } from '../../utils/api';
@@ -27,14 +27,14 @@ const hasPics = Array.isArray(pics) && pics.length > 0;
     </div>
 </section>
 )}
-<div class="flex flex-col sm:flex-row justify-center items-center text-center mb-20">
+{modify &&<div class="flex flex-col sm:flex-row justify-center items-center text-center mb-20">
         <div class="flex-1">
             <TimeLineForm client:load id={id} />
         </div>
         <div class="flex-1">
             <TimeLineFormDelete client:load options={options} />
         </div>
-    </div>
+    </div>}
 <script>
     const $accordionButtons = document.querySelectorAll(".accordion-button");
     $accordionButtons.forEach((btn) => {

@@ -174,6 +174,7 @@ def join():  # memorial id
 
 
 @app.route('/ai', methods=['POST'])
+@login_required
 def ai_request():
     data = request.form.to_dict()
     if not data:
@@ -252,6 +253,8 @@ def public_deceased():
 
 @app.route('/checkAuth/<int:id>', methods=['GET'])
 def check_auth(id):
+    if not dao_factory.get_dao("Deceased").get(id=id).is_private:
+        return jsonify({'message': "ok"}), 200
     if not current_user.is_authenticated:
         return jsonify(None), 200
     current_user_id = current_user.id

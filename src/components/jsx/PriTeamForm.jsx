@@ -1,8 +1,5 @@
 import ModalForm from '../ModalForm';
 import modalStyles from '../../utils/formConfigs/modal';
-import { Image } from "astro:assets";
-import p0 from "../../assets/team/d0.png";
-const pic = p0;
 const name = "";
 const role = "";
 const description = "Add a private cemetery.";
@@ -30,7 +27,7 @@ export default function PriTeamForm() {
             >
           <div className="p-[60px]">
               <div className="flex flex-col sm:flex-row relative">
-                  <picture className="w-[175px] h-[175px] rounded-lg shrink-0"><img src={pic.src} alt={name} className="w-full h-full rounded-lg object-cover"/></picture>
+                  <picture className="w-[175px] h-[175px] rounded-lg shrink-0"><img src="/team/d0.png" alt={name} className="w-full h-full rounded-lg object-cover"/></picture>
                   <div className="flex flex-col justify-end sm:ml-5">
                       <h3 className="text-lg font-medium">{name}</h3>
                       <p className="text-sm font-normal">{role}</p>
