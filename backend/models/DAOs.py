@@ -145,6 +145,19 @@ class DeceasedOfferingDAO(BaseDAO):
     def __init__(self):
         super().__init__(DeceasedOffering)
 
+    def create(self, **data):
+        instance = self.get(**data)
+        if instance:
+            if hasattr(instance, 'quantity') and isinstance(instance.quantity, int):
+                instance.quantity += 1
+            else:
+                instance.quantity = 1  # fallback
+            self.session.commit()
+            self.session.refresh(instance)
+            return instance
+        else:
+            return super().create(**data)
+
 class DeceasedMessageDAO(BaseDAO):
     def __init__(self):
         super().__init__(DeceasedMessage)
