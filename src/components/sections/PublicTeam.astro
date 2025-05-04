@@ -1,0 +1,37 @@
+---
+import SectionTitle from "../ui/SectionTitle.astro";
+import TeamCard from "../ui/TeamCard.astro";
+import Section from "./Section.astro";
+import { apiRequest } from '../../utils/api';
+const description =
+  "Meet the skilled and experienced team behind our successful digital marketing strategies";
+
+const team = await apiRequest(
+        "/publicDeceased",
+        "GET",
+        {},
+      )|| [];
+---
+
+<Section id="about">
+  <div class="mb-5">
+    <SectionTitle sectionTitle="Memorial Hall" description={description} />
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 grid-rows-2 gap-10"
+    >
+      {
+        team.map((member, index) => (
+          <TeamCard
+            key={index}
+            pic={member.pic_url}
+            name={member.name}
+            birth_date={member.birth_date}
+            death_date={member.death_date}
+            description={member.biography}
+            link=`/deceased/${member.id}`
+          />
+        ))
+      }
+    </div>
+  </div>
+</Section>
