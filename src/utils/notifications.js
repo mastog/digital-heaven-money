@@ -8,16 +8,16 @@ let intervalId = null;
 const style = document.createElement('style');
 style.textContent = `
   @keyframes slideIn {
-    from { transform: translate(-50%, 0); opacity: 1; }
-    to { transform: translate(-50%, -100%); opacity: 0; }
-  }
-  @keyframes slideOut {
     from { transform: translate(-50%, -100%); opacity: 0; }
     to { transform: translate(-50%, 0); opacity: 1; }
   }
+  @keyframes slideOut {
+    from { transform: translate(-50%, 0); opacity: 1; }
+    to { transform: translate(-50%, -100%); opacity: 0; }
+  }
   @keyframes progress {
     from { width: 0; }
-    to { width: 100; }
+    to { width: 100%; }
   }
   .astro-notification {
     position: fixed;
@@ -44,6 +44,7 @@ style.textContent = `
     overflow: hidden;
   }
   .progress-inner {
+    width: 0;
     height: 100%;
     background: #000000;
     animation: progress 1s linear forwards;
