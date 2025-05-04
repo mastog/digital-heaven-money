@@ -18,7 +18,7 @@ const hasPics = Array.isArray(pics) && pics.length > 0;
             />
 {hasPics && (
 <section class="flex flex-col pt-16 gap-16 mx-auto justify-center items-center text-cente max-w-[900px] shadow-xl rounded-2xl mb-20" id="timeLine" >
-    <div class="relative flex flex-col gap-20 px-10 w-full" >
+    <div class="relative flex flex-col gap-10 px-10 w-full" >
         {pics.map((pic) => <TimeLineCard {...pic} />)}
         <div
             class="absolute left-0 border-l-[1px] h-full z-[-1] border-dashed border-light-gray-secondary dark:border-dark-gray-secondary sm:left-[50%]"
