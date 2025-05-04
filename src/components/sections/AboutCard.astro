@@ -1,15 +1,8 @@
 ---
-import p12 from "../../assets/team/d12.png";
 
-const PERSONAL_INFO = {
-  name: "Kobe Bryant",
-  birth_date: "1978-08-23",
-  death_date: "2020-01-26",
-  avatar: p12.src,
-  about: " Kobe Bryant, a basketball legend, was born in 1978. Drafted in 1996, he spent 20 seasons with the Lakers, winning 5 championships. His Mamba Mentality inspired many. ",
-} as const;
+const {PERSONAL_INFO} = Astro.props;
 
-const { birth_date,death_date, name, avatar, about } = PERSONAL_INFO;
+const { birth_date,death_date, name, pic_url, biography } = PERSONAL_INFO[0];
 ---
 <div class="flex flex-col justify-between">
     <div class="flex flex-col items-center align-middle">
@@ -25,15 +18,15 @@ const { birth_date,death_date, name, avatar, about } = PERSONAL_INFO;
                         </h1>
 
                         <p class="mb-8 text-center text-black z-[1] sm:text-left md:text-lg">
-                            {about}
+                            {biography}
                         </p>
                     </div>
 
-                    <div class="relative mx-auto h-fit max-w-xs max-h-xs overflow-hidden rounded-full bg-gray-100 object-cover object-center shadow-lg sm:max-w-md sm:max-h-md">
+                    <div class="relative mx-auto h-fit max-w-xs max-h-xs overflow-hidden rounded-full bg-gray object-cover object-center shadow-lg sm:max-w-md sm:max-h-md border-4 border-darkgray">
                         <img
-                            src={avatar}
+                            src={pic_url}
                             alt="Portrait"
-                            class="h-full w-full object-cover object-center"
+                            class="h-full w-full object-cover object-center aspect-[1/1] filter grayscale"
                         />
                     </div>
                 </div>
@@ -47,13 +40,13 @@ const { birth_date,death_date, name, avatar, about } = PERSONAL_INFO;
     function updateBackgroundHeight() {
         const grid = document.getElementById('contentGrid');
         const background = document.getElementById('backgroundLayer');
-        
+
         if (grid && background) {
                 const gridHeight = grid.offsetHeight;
             background.style.height = `${gridHeight + 30}px`;
         }
     }
-    
+
     document.addEventListener('DOMContentLoaded', () => {
         updateBackgroundHeight();
     });

@@ -1,12 +1,12 @@
 ---
 const {id} = Astro.props;
-import SectionTitle from "../../components/ui/SectionTitle.astro";
+import SectionTitle from "../ui/SectionTitle.astro";
 import { apiRequest } from '../../utils/api';
 
-import RelationshipForm from '../../components/jsx/RelationshipForm.jsx';
-import RelationshipFormDelete from '../../components/jsx/RelationshipFormDelete.jsx';
+import RelationshipForm from '../jsx/RelationshipForm.jsx';
+import RelationshipFormDelete from '../jsx/RelationshipFormDelete.jsx';
 
-import ForceGraph from "../../components/sections/ForceGraph.astro";
+import ForceGraph from "./ForceGraph.astro";
 const relationships = await apiRequest(`/get_relationship/${id}`, 'GET')||[];
 
 const deceaseds = await apiRequest(

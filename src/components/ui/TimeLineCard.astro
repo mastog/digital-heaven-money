@@ -1,21 +1,19 @@
 ---
-import { Image } from "astro:assets";
 import AccordionButton from "./AccordionButton.astro";
 
 const {
     id,
     name,
-    picture,
-    time,
+    pic_url,
+    photo_date,
     title,
     description
 } = Astro.props;
 
-const { width, height } = picture;
-const calculatedHeight = (height / width) * 200;
 ---
 
 <style>
+    /* 保持原有样式不变 */
     .description {
         display: -webkit-box;
         -webkit-box-orient: vertical;
@@ -73,13 +71,13 @@ const calculatedHeight = (height / width) * 200;
         .job-card:nth-child(2n) .job-picture img{
             transform-origin: top right;
         }
-
     }
 </style>
+
 <article
-    class="job-card group relative flex flex-col pl-6 gap-4 sm:w-[50%] sm:even:translate-x-full pr-0 sm:odd:pl-0 odd:pr-6"
-    style={`min-height: ${calculatedHeight}px;`}
-    data-calculated-height={calculatedHeight}
+    class="job-card group relative flex flex-col pl-6 gap-4 sm:w-[50%] sm:even:translate-x-full pr-0 sm:odd:pl-0 odd:pr-6 mb-10"
+    id={`card-${id}`}
+    data-calculated-height=""
 >
 
     <img src="/dot.svg" alt="dot" class="dot absolute top-0 left-[-10px] h-[24px] w-[24px] rounded-full" />
@@ -94,7 +92,7 @@ const calculatedHeight = (height / width) * 200;
             <span
                 class="text-light-gray-primary dark:text-dark-gray-primary font-bold text-base"
             >
-                {time}
+                {photo_date}
             </span>
         </div>
         <p
@@ -107,14 +105,14 @@ const calculatedHeight = (height / width) * 200;
             <AccordionButton dataTarget={id} />
         )}
     </div>
-    <div
-        class="relative job-picture top-0 p-2 flex flex-col justify-center items-center gap-4 sm:absolute w-[200px] object-contain rounded-3xl bg-white "
-    >
-        <Image
+    <div class="relative job-picture top-0 p-2 flex flex-col justify-center items-center gap-4 sm:absolute w-[200px] object-contain rounded-3xl bg-white ">
+        <img
             class="w-full h-auto transition hover:scale-110"
-            src={picture}
-            alt={`Picture on ${time}`}
+            src={pic_url}
+            alt={`Picture on ${photo_date}`}
             loading="lazy"
+            data-card-id={id}
+            id={`image-${id}`}
         />
     </div>
 </article>
