@@ -8,12 +8,12 @@ let intervalId = null;
 const style = document.createElement('style');
 style.textContent = `
   @keyframes slideIn {
-    from { transform: translate(-50%, -100%); opacity: 0; }
-    to { transform: translate(-50%, 0); opacity: 1; }
-  }
-  @keyframes slideOut {
     from { transform: translate(-50%, 0); opacity: 1; }
     to { transform: translate(-50%, -100%); opacity: 0; }
+  }
+  @keyframes slideOut {
+    from { transform: translate(-50%, -100%); opacity: 0; }
+    to { transform: translate(-50%, 0); opacity: 1; }
   }
   @keyframes progress {
     from { width: 0; }
