@@ -15,7 +15,10 @@ const { pic, name, birth_date, death_date, description, link } = Astro.props;
       <div class="flex flex-col justify-end sm:ml-5">
         <h3 class="text-lg font-medium">{name}</h3>
       </div>
-      <a href={link} class="absolute right-0 top-0">
+      <a
+        href={link}
+        class="absolute right-0 top-0 transition duration-300 hover:blur-0 blur-xs"
+      >
         <Image src={linkd} alt="Linkedin Logo" />
       </a>
     </div>

@@ -162,7 +162,7 @@ const FormComponent = ({
                 id={field.name}
                 name={field.name}
                 required={field.required}
-                className={`${classConfig.input || ""} appearance-none pr-10`} // 留出空间给图标
+                className={`${classConfig.input || ""} appearance-none pr-10 hover:border-darkgray hover:ring-1 hover:ring-darkgray transition-all duration-150`} // 留出空间给图标
                 defaultValue=""
               >
                 <option value="" disabled hidden>
@@ -199,7 +199,7 @@ const FormComponent = ({
               placeholder={field.placeholder}
               required={field.required}
               defaultValue={field.value}
-              className={`${classConfig.input || ""} resize-none overflow-hidden`}
+              className={`${classConfig.input || ""} resize-none overflow-hidden hover:border-darkgray hover:ring-1 hover:ring-darkgray transition-all duration-150`}
               rows={1}
               onInput={(e) => {
                 e.target.style.height = 'auto';
@@ -214,7 +214,7 @@ const FormComponent = ({
               placeholder={field.placeholder}
               required={field.required}
               defaultValue={field.value}
-              className={classConfig.input || ""}
+              className={`${classConfig.input || ""} hover:border-darkgray hover:ring-1 hover:ring-darkgray transition-all duration-150`}
             />
           )}
         </div>

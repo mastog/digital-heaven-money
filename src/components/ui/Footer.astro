@@ -30,8 +30,8 @@ const links = [
           class="flex flex-col lg:flex-row gap-7 items-center justify-between"
         >
           <picture>
-            <a href="#home">
-              <Image src={Logo} alt="Logo for Kreatif Brand" />
+            <a href="/">
+              <Image src={Logo} alt="Logo for Kreatif Brand" class="transform will-change-transform transition-transform duration-300 hover:scale-105"/>
             </a>
           </picture>
           <ul class="flex flex-col sm:flex-row gap-5">
@@ -39,7 +39,7 @@ const links = [
               links.map((link) => {
                 return (
                   <li class="text-center">
-                    <a class="underline" href={link.href}>
+                    <a class="hover:underline" href={link.href}>
                       {link.name}
                     </a>
                   </li>
@@ -47,7 +47,7 @@ const links = [
               })
             }
             <li class="text-center cursor-pointer">
-              <a class="underline" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+              <a class="hover:underline" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
                 Back to top
               </a>
             </li>

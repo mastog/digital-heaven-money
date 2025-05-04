@@ -56,10 +56,10 @@ import { year } from "astro:schema";
         <p class="text-sm text-gray-400">{card.year}</p>
         {/* middle font: data */}
         <p class="text-lg mt-4">{card.data}</p>
-        <a href=`https://en.wikipedia.org/wiki/${card.name}` target="_blank" class="flex items-center gap-[15px] mt-4">
+        <a href=`https://en.wikipedia.org/wiki/${card.name}` target="_blank" class="flex items-center gap-[15px] mt-4 transition-transform duration-300 hover:translate-x-5 hover:opacity-80 hover:underline">
           <span class="text-green">Wiki Info</span>
           <picture>
-            <Image src={larrow} alt="Arrow pointing up right" />
+            <Image src={larrow} alt="Arrow pointing up right"/>
           </picture>
         </a>
       </div>

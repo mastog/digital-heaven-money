@@ -37,7 +37,7 @@ const user = await apiRequest(
         <div class="edit-switch">
             <label class="switch">
                 <input type="checkbox" id="editToggle">
-                <span class="slider">
+                <span class="slider hover:translate-y-1 hover:shadow-lg">
                     <span class="edit-text">Confirm</span>
                     <span class="view-text">Edit</span>
                 </span>
@@ -303,6 +303,7 @@ const user = await apiRequest(
                 uploadOverlay.classList.add('opacity-0');
                 uploadOverlay.classList.remove('opacity-30');
                 uploadOverlay.removeEventListener('click', selectImage);
+                profileImageWrapper.classList.remove('hover:translate-y-1','transition-all' ,'duration-300');
 
             } else {
                 // 进入 Edit 模式
@@ -316,6 +317,7 @@ const user = await apiRequest(
                 uploadOverlay.classList.remove('opacity-0');
                 uploadOverlay.classList.add('opacity-30');
                 uploadOverlay.addEventListener('click', selectImage);
+                profileImageWrapper.classList.add('hover:translate-y-1','transition-all' ,'duration-300');
             }
         });
 

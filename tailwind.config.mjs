@@ -10,6 +10,9 @@ export default {
       "2xl": "1536px",
     },
     extend: {
+      blur: {
+        xs: '2px',
+      },
       fontFamily: {
         grotesk: ["Grotesk", "sans-serif"],
       },

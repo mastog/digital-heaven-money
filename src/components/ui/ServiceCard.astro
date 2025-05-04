@@ -36,10 +36,14 @@ const { index, titleTop, titleBottom, img, alt, link } = Astro.props;
       />
     </picture>
     <div class="flex items-end">
-      <a href={link} class="flex items-center gap-3.5"
-        ><Image src={index === 1 || index === 2 ? gob : wob} alt={alt} />
-        <span class="hidden sm:block">Service Info</span></a
-      >
+      <a href={link} class="flex items-center gap-3.5 group transform will-change-transform transition-transform duration-300 hover:scale-110">
+        <Image
+          src={index === 1 || index === 2 ? gob : wob}
+          alt={alt}
+          class="transition-transform duration-500 group-hover:rotate-[360deg]"
+        />
+        <span class="hidden sm:block">Go</span>
+      </a>
     </div>
   </div>
 </Card>
