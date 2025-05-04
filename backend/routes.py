@@ -52,7 +52,7 @@ def register():
 @app.route('/login', methods=['POST'])
 def login():
     if current_user.is_authenticated:
-        return jsonify({'message': f'{current_user.username} already logged in'}), 400
+        return jsonify({'error': f'{current_user.username} already logged in'}), 400
     data = request.form.to_dict()
     if not data:
         return jsonify({'error': 'No data provided'}), 400
