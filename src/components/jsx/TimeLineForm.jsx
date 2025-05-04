@@ -21,7 +21,7 @@ export default function TimeLineForm({ id}) {
             }}
             client:load
             >
-            <button className="btn-primary items-center mb-5">
+            <button className="btn-primary items-center">
                 Add Timeline
                 </button>
         </ModalForm>

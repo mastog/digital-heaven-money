@@ -17,7 +17,7 @@ export default function RelationshipFormDelete({ options}) {
             }}
             client:load
             >
-            <button className="btn-primary mb-5">
+            <button className="btn-primary">
                 Delete Relationship
                 </button>
         </ModalForm>

@@ -91,6 +91,7 @@ const items = await apiRequest(`/decreasedOfferings/${id}`, 'GET');
                 <PriTeamFormModify deceased={deceased[0]} client:load/>
                 <DeleteButton id={id} client:load />
             </div>}
+            <div class="mb-10"></div>
             <TimeLine id={id} modify={deceased[0].is_private}/>
             {deceased[0].is_private &&<Relationship id={id}/>}
                 <SectionTitle

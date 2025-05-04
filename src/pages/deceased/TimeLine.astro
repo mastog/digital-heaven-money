@@ -17,7 +17,7 @@ const hasPics = Array.isArray(pics) && pics.length > 0;
               description="Relive the Milestones and Precious Sequences that Shaped a Treasured Existence"
             />
 {hasPics && (
-<section class="flex flex-col pt-16 gap-16 mx-auto justify-center items-center text-cente max-w-[900px] shadow-xl rounded-2xl mb-20" id="timeLine" >
+<section class="flex flex-col pt-16 gap-16 mx-auto justify-center items-center text-cente max-w-[900px] shadow-xl rounded-2xl mb-10" id="timeLine" >
     <div class="relative flex flex-col gap-10 px-10 w-full" >
         {pics.map((pic) => <TimeLineCard {...pic} />)}
         <div
@@ -27,7 +27,7 @@ const hasPics = Array.isArray(pics) && pics.length > 0;
     </div>
 </section>
 )}
-{modify &&<div class="flex flex-col sm:flex-row justify-center items-center text-center mb-20">
+{modify &&<div class="flex flex-col sm:flex-row justify-center items-center text-center">
         <div class="flex-1">
             <TimeLineForm client:load id={id} />
         </div>
@@ -35,6 +35,7 @@ const hasPics = Array.isArray(pics) && pics.length > 0;
             <TimeLineFormDelete client:load options={options} />
         </div>
     </div>}
+<div class="mb-20"></div>
 <script>
     const $accordionButtons = document.querySelectorAll(".accordion-button");
     $accordionButtons.forEach((btn) => {
