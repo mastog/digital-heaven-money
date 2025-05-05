@@ -419,6 +419,12 @@ def create_message():
     dao_factory.get_dao("DeceasedMessage").create(**data)
     return jsonify({'message': "Success"}), 201
 
+@app.route('/availableDeceased', methods=['GET'])
+def available_deceased():
+    deceased_list = dao_factory.get_dao("Deceased").get_all()
+    result = [{"label": deceased.name, "value": deceased.id} for deceased in deceased_list]
+    return jsonify(result), 200
+
 # Error Handlers
 @app.errorhandler(404)
 def not_found(error):

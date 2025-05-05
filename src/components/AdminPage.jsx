@@ -4,6 +4,12 @@ import { apiRequest } from '../utils/api';
 import '../styles/admin.css';
 import modalStyles from "../utils/formConfigs/modal";
 
+const options=await apiRequest(
+        "/availableDeceased",
+        "GET",
+        {}
+      ) || [];
+
 const RESOURCES = {
   DeceasedMessage: {
     name: 'Message',
@@ -23,6 +29,7 @@ const RESOURCES = {
       { name: 'death_date', label: 'Death Date', type: 'date', required: true },
       { name: 'biography', label: 'Description', type: 'textarea', required: true },
       { name: 'creator_id', type: 'hidden', value: 2},
+      { name: 'is_private', type: 'hidden' },
       { name: 'created_at', type: 'hidden' },
     ],
   },
@@ -34,7 +41,7 @@ const RESOURCES = {
       { name: 'title', label: 'Title', type: 'text', required: true },
       { name: 'photo_date', label: 'Time', type: 'month', required: true },
       { name: 'description', label: 'Description', type: 'textarea', required: true },
-      { name: 'deceased_id', type: 'select', options: 'Deceased', required: true },
+      { name: 'deceased_id', type: 'select',label: 'Decreased', options: options, required: true },
     ],
   },
   DeceasedUser: {
@@ -136,12 +143,12 @@ const AdminTable = ({
           </ModalForm>
         )}
       </div>
-
-      <table className="w-full table-auto">
+      <div className="overflow-x-auto">
+      <table className="min-w-full w-max table-auto">
         <thead>
           <tr>
             {RESOURCES[resource].fields.map((field) => (
-              <th key={getFieldName(field)} className="px-4 py-2 text-left">
+              <th key={getFieldName(field)} className="px-4 py-2 text-left max-w-[400px] whitespace-normal break-words">
                 <button
                   onClick={() => handleSort(getFieldName(field))}
                   className="flex items-center gap-1 transform hover:scale-105"
@@ -170,7 +177,7 @@ const AdminTable = ({
                   return (
                     <td
                       key={fieldName}
-                      className={`border px-4 py-2 ${fieldName === 'pic' ? 'w-24' : ''}`}
+                      className={`border px-4 py-2 max-w-[400px] whitespace-normal break-words`}
                     >
                       {renderCellValue(fieldName, item, onNavigateToResource)}
                     </td>
@@ -189,6 +196,7 @@ const AdminTable = ({
           })}
         </tbody>
       </table>
+    </div>
     </div>
   );
 };
