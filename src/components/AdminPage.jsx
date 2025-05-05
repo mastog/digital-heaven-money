@@ -184,6 +184,29 @@ const AdminTable = ({
                   );
                 })}
                 <td className="border px-4 py-2">
+                  {(resource === 'Deceased' || resource === 'DeceasedPhoto') && (
+                    <ModalForm
+                      apiUrl={`/crud/${resource}/update`}
+                      method="POST"
+                      fields={RESOURCES[resource].fields.map((f) => {
+                      const fieldName = getFieldName(f);
+                      const isOptional = fieldName === 'pic' || fieldName === 'deceased_id';
+
+                      return {
+                        ...f,
+                        required: isOptional ? false : f.required,
+                        value: item[fieldName],
+                      };
+                    })}
+                      submitText="Save"
+                      classConfig={modalStyles}
+                      onSuccess={async () => {
+                        window.location.reload();
+                      }}
+                    >
+                      <button className="text-blue-600 hover:text-blue-800">Modify</button>
+                    </ModalForm>
+                  )}
                   <button
                     onClick={() => handleDelete(item.id)}
                     className="text-red-600 hover:text-red-800"
