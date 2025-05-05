@@ -99,6 +99,12 @@ const FormComponent = ({
       return;
     }
 
+    for (let [key, value] of formData.entries()) {
+      if (typeof value === 'string' && value.trim() === '') {
+        formData.delete(key);
+      }
+    }
+
     try {
       // Ready request data
       const requestData = formData;

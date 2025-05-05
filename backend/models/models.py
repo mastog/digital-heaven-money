@@ -107,6 +107,7 @@ class DeceasedUser(BaseModel):
     id = Column(Integer, primary_key=True, autoincrement=True)
     deceased_id = Column(Integer, ForeignKey('deceased.id', ondelete='CASCADE'))
     user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'))
+    joined_at = Column(DateTime, server_default=db.func.current_timestamp())
 
     # Relationships
     deceased = relationship("Deceased", back_populates="users")
