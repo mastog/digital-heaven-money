@@ -85,6 +85,7 @@ const AdminTable = ({
   onRefresh,
   onNavigateToResource,
   highlightedId,
+  searchQuery,
 }) => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
 
@@ -125,6 +126,7 @@ const AdminTable = ({
   return (
     <div className="admin-panel">
       <div className="flex justify-between mb-4">
+
         <h2 className="text-xl font-bold">{RESOURCES[resource].name} Management</h2>
         {showCreateButton && (
             <ModalForm
@@ -228,6 +230,7 @@ const AdminPage = () => {
   const [selectedResource, setSelectedResource] = useState('User');
   const [tableData, setTableData] = useState([]);
   const [highlightedId, setHighlightedId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const loadData = async (resource) => {
     const response = (await apiRequest(`/crud/${resource}/get`, 'POST', {})) || [];
@@ -248,7 +251,8 @@ const AdminPage = () => {
 
   return (
     <div className="p-8 max-w-6xl mx-auto">
-      <div className="flex gap-4 mb-6">
+      <div className="flex gap-4 mb-2">
+
         {Object.keys(RESOURCES).map((resource) => (
           <button
             key={resource}
@@ -264,15 +268,31 @@ const AdminPage = () => {
           </button>
         ))}
       </div>
-
+      <div className="mb-3 ml-4">
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="border p-2 w-full max-w-md rounded"
+        />
+      </div>
       {selectedResource && (
         <AdminTable
           resource={selectedResource}
-          data={tableData}
+          data={tableData.filter((item) => {
+            const fields = RESOURCES[selectedResource].fields.map(f => typeof f === 'string' ? f : f.name);
+            return fields.some((field) => {
+              const value = item[field];
+              return value && value.toString().toLowerCase().includes(searchQuery.toLowerCase());
+            });
+          })}
           onRefresh={(newData) => setTableData(newData || tableData)}
           onNavigateToResource={handleNavigateToResource}
           highlightedId={highlightedId}
+          searchQuery={searchQuery}
         />
+
       )}
     </div>
   );
