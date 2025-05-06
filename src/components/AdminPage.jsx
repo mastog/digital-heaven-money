@@ -194,16 +194,15 @@ const AdminTable = ({
                       apiUrl={`/crud/${resource}/update`}
                       method="POST"
                       fields={RESOURCES[resource].fields.map((f) => {
-                        const fieldName = getFieldName(f);
-                        const isOptional = fieldName === 'pic' || fieldName === 'deceased_id';
-                        const isCreatedAt = fieldName === 'created_at';
+                      const fieldName = getFieldName(f);
+                      const isOptional = fieldName === 'pic' || fieldName === 'deceased_id';
 
-                        return {
-                          ...f,
-                          required: isOptional ? false : f.required,
-                          ...(isCreatedAt ? {} : { value: item[fieldName] }),
-                        };
-                      })}
+                      return {
+                        ...f,
+                        required: isOptional ? false : f.required,
+                        value: ['created_at', 'is_private'].includes(fieldName) ? undefined : item[fieldName],
+                      };
+                    })}
                       submitText="Save"
                       classConfig={modalStyles}
                       onSuccess={async () => {
