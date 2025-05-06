@@ -99,10 +99,15 @@ const FormComponent = ({
       return;
     }
 
+    const keysToDelete = [];
     for (let [key, value] of formData.entries()) {
-      if (typeof value === 'string' && value.trim() === '') {
-        formData.delete(key);
+      if (!value) {
+        keysToDelete.push(key);
       }
+    }
+
+    for (let key of keysToDelete) {
+      formData.delete(key);
     }
 
     try {

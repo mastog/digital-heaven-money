@@ -101,8 +101,8 @@ const AdminTable = ({
     await apiRequest(`/crud/${resource}/delete`, 'POST', { id });
     const {showNotification} = await import('../utils/notifications.js');
     showNotification(['Deletion successful']);
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    window.location.reload();
+    const newData = await apiRequest(`/crud/${resource}/get`, 'POST', {});
+    onRefresh(newData);
   };
 
   const handleSort = (fieldName) => {
@@ -136,7 +136,10 @@ const AdminTable = ({
               submitText="Submit"
               classConfig={modalStyles}
               onSuccess={async () => {
-                window.location.reload();
+                const {showNotification} = await import('../utils/notifications.js');
+                showNotification(['Creation successful']);
+                const newData = await apiRequest(`/crud/${resource}/get`, 'POST', {});
+                onRefresh(newData);
               }}
             >
           <button className="btn-primary">
@@ -203,7 +206,10 @@ const AdminTable = ({
                       submitText="Save"
                       classConfig={modalStyles}
                       onSuccess={async () => {
-                        window.location.reload();
+                        const {showNotification} = await import('../utils/notifications.js');
+                        showNotification(['Modification successful']);
+                        const newData = await apiRequest(`/crud/${resource}/get`, 'POST', {});
+                        onRefresh(newData);
                       }}
                     >
                       <button className="text-blue-600 hover:text-blue-800">Modify</button>
@@ -235,6 +241,7 @@ const AdminPage = () => {
   const loadData = async (resource) => {
     const response = (await apiRequest(`/crud/${resource}/get`, 'POST', {})) || [];
     setTableData(response);
+    return response;
   };
 
   useEffect(() => {
