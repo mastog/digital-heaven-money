@@ -30,9 +30,9 @@ const FormComponent = ({
         return;
       }
 
-      if (file.size > 2 * 1024 * 1024) { // 2MB
+      if (file.size > 1 * 1024 * 1024) { // 2MB
         const {showNotification} = await import('../utils/notifications.js');
-        showNotification(['Image size is too large, please no more than 2mb.']);
+        showNotification(['Image size is too large, please no more than 1mb.']);
         e.target.value = ""; // 清除文件选择
         setImagePreview(null);
         return;
