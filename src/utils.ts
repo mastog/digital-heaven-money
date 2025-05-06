@@ -6,7 +6,7 @@ function formatDate(date: Date): string {
     day: 'numeric',
   };
 
-  return new Date(date).toLocaleDateString(undefined, options);
+  return new Date(date).toLocaleDateString('en-US', options);
 }
 
 // Capitalize the first letter
