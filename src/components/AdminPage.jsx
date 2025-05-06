@@ -274,6 +274,12 @@ const AdminPage = () => {
             {RESOURCES[resource].name}
           </button>
         ))}
+        <a
+        className="px-4 py-2 rounded hover:bg-gray"
+        href="/manage-docs"
+        >
+          Articles
+        </a>
       </div>
       <div className="mb-3 ml-4">
         <input

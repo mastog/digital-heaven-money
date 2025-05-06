@@ -3,7 +3,7 @@ import MainLayout from "../layouts/MainLayout.astro";
 import Admin from "../components/sections/Administration.astro";
 import { apiRequest } from '../utils/api';
 const response = await apiRequest("/current", "POST", {}, Astro);
-if(!response.is_admin){
+if(!response || !response.is_admin){
     return Astro.redirect('/404');
 }
 ---

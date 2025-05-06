@@ -1,0 +1,26 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import Section from '../components/sections/Section.astro';
+import DocumentForm from '../components/DocumentForm';
+import DocumentList from '../components/DocumentList';
+import { apiRequest } from '../utils/api';
+const response = await apiRequest("/current", "POST", {}, Astro);
+if(!response || !response.is_admin){
+    return Astro.redirect('/404');
+}
+---
+
+<MainLayout title="Articles Management">
+  <main class="space-y-20">
+    <div class="py-0.5" />
+    <Section>
+    <h1 class="text-2xl font-bold mb-4">Articles Management </h1>
+    <section>
+      <DocumentList client:load/>
+    </section>
+    <section class="mb-8">
+      <DocumentForm client:load/>
+    </section>
+    </Section>
+  </main>
+</MainLayout>
