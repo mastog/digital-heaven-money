@@ -55,7 +55,7 @@ export default function DocumentForm() {
       <div
         className={`transition-all duration-500 ease-in-out overflow-hidden ${
           showForm
-            ? 'max-h-[1263px] opacity-100 scale-100'
+            ? 'max-h-[1320px] opacity-100 scale-100'
             : 'max-h-0 opacity-0 scale-95'
         }`}
       >
