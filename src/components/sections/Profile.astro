@@ -16,6 +16,9 @@ const user = await apiRequest(
   introduction: "",
   pic_url: "/images/profile.jpg"
 };
+const items = await apiRequest(`/userOfferings`, 'GET',{},Astro);
+const totalCount = Object.values(items).reduce((acc, val) => acc + (isNaN(val) ? 0 : val), 0);
+const emissionReduction = (totalCount * 146.5).toFixed(1);
 ---
 
 <Card>
@@ -32,6 +35,7 @@ const user = await apiRequest(
           </div>
         </div>
         <h1 class="text-2xl font-bold mt-4">{user.username}</h1>
+        <h5 class="text-sm text-gray-500 mt-1 mb-4">Reduced CO₂ emissions by ~{emissionReduction}g</h5>
 
         <!-- New Edit Toggle -->
         <div class="edit-switch">
@@ -227,6 +231,10 @@ const user = await apiRequest(
             word-break: break-word;
             white-space: pre-wrap;
             overflow-wrap: break-word;
+        }
+        .editable:empty::before {
+          content: '\200B';
+          display: inline-block;
         }
 
         .editable[contenteditable="true"]:focus {
