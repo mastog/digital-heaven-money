@@ -3,7 +3,7 @@ title: 'How do Chinese people commemorate deceased loved ones during the period 
 pubDate: 2025-04-04
 author: 'Chen Boguang'
 authImage: 'https://th.bing.com/th/id/OIP.VLIeFPpOnf4No6ksx_eLcwHaHa?rs=1&pid=ImgDetMain'
-image: 'traditional-chinese-memorial-rituals.png'
+image: '/blog/traditional-chinese-memorial-rituals.png'
 tags: ['tradition','China']
 slug: tutorial-traditional-chinese-memorial-rituals
 summary: "In traditional Chinese culture, memorial rituals for the deceased are carefully observed. These ceremonies follow a structured timeline, from the first week to the forty-ninth day after a person’s passing. Families conduct offerings, prayers, and rituals to honor their loved ones and seek blessings for their afterlife."

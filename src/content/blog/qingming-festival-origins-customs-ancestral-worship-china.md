@@ -3,7 +3,7 @@ title: 'Get to know Qingming Festival with a member who participated in the cere
 pubDate: 2025-04-05
 author: 'Chen Boguang'
 authImage: 'https://th.bing.com/th/id/OIP.VLIeFPpOnf4No6ksx_eLcwHaHa?rs=1&pid=ImgDetMain'
-image: 'qingming-festival-china.png'
+image: '/blog/qingming-festival-china.png'
 tags: ['culture', 'tradition', 'festival','China']
 slug: qingming-festival-origins-customs-ancestral-worship-china
 summary: "Qingming Festival is a traditional festival in China that commemorates ancestors and welcomes the arrival of spring. Listening to the self narration of the members who held the memorial ceremony, and exploring the origin, customs, and significance of this deeply rooted cultural event."

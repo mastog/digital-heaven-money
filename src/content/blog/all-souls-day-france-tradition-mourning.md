@@ -3,7 +3,7 @@ title: "Experience France's funeral traditions and mourning customs from a first
 pubDate: 2025-04-05
 author: "Chen Boguang"
 authImage: "https://th.bing.com/th/id/OIP.VLIeFPpOnf4No6ksx_eLcwHaHa?rs=1&pid=ImgDetMain"
-image: "all-souls-day-france-tradition-mourning.png"
+image: "/blog/all-souls-day-france-tradition-mourning.png"
 tags: ['culture', 'tradition', 'festival', 'France']
 slug: all-souls-day-france-tradition-mourning
 summary: "All Souls' Day (Jour des Morts) is a Catholic holiday observed on November 2nd in France, dedicated to honoring deceased loved ones. Listen to the record of a participant who mourns their loved ones."

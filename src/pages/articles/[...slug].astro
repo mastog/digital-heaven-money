@@ -21,7 +21,7 @@ if(entry === undefined) {
 const { Content } = await entry.render();
 ---
 
-<MainLayout title="Welcome to My site">
+<MainLayout title={entry.data.title}>
 	<main class="space-y-40 mb-40 pt-24">
       <section class="bg-white">
           <div class="gap-16 items-center py-8 px-4 mx-auto max-w-screen-xl lg:grid lg:grid-cols-1 lg:py-16 lg:px-3">
@@ -36,7 +36,7 @@ const { Content } = await entry.render();
                   <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900">{entry.data.title}</h2>
                   <h3 class="text-lg mb-2">Written by {entry.data.author} on {formatDate(entry.data.pubDate)}</h3>
                   <Tags tags={entry.data.tags} />
-                  <img src={'/blog/' + entry.data.image} alt="Article Image" class="w-full h-auto rounded-xl my-6" />
+                  <img src={entry.data.image} alt="Article Image" class="w-full h-auto rounded-xl my-6" />
                   <div class="content">
                     <Content/>
                   </div>
