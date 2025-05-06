@@ -1,6 +1,6 @@
 ---
 title: 'How do Chinese people commemorate deceased loved ones during the period from the first seventh day to the seventh seventh day after their passing?'
-pubDate: 2024-03-04
+pubDate: 2025-04-04
 author: 'Chen Boguang'
 authImage: 'https://th.bing.com/th/id/OIP.VLIeFPpOnf4No6ksx_eLcwHaHa?rs=1&pid=ImgDetMain'
 image: 'traditional-chinese-memorial-rituals.png'
