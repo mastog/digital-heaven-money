@@ -12,7 +12,7 @@ interface Props {
 }
 ---
 <Card isUnderline={true}>
-<article class="p-6">
+<article class="p-6 flex flex-col h-full">
   <div class="flex justify-between items-center mb-5 text-gray-500">
       <span class="bg-green text-black text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded">
         <ArticleIcon />
@@ -22,7 +22,7 @@ interface Props {
   </div>
   <h2 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">{article.data.title}</h2>
   <p class="mb-5 font-light text-gray-500" style="white-space: pre-line">{article.data.summary}</p>
-  <div class="flex justify-between items-center">
+  <div class="mt-auto flex justify-between items-center">
       <div class="flex items-center space-x-4">
         <img class="w-7 h-7 rounded-full" src={article.data.authImage} alt={article.data.author + " cover"} />
         <span class="font-medium">

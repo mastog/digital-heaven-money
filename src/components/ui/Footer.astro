@@ -1,16 +1,7 @@
 ---
 import { Image } from "astro:assets";
-import Facebook from "../../assets/facebook.svg";
-import Linkedin from "../../assets/linkedin.svg";
 import Logo from "../../assets/logo-alt.svg";
-import Twitter from "../../assets/twitter.svg";
 import JoinForm from '../jsx/JoinForm.jsx';
-
-const logos = [
-  { name: "Facebook", src: Facebook, link: "https://facebook.com" },
-  { name: "Linkedin", src: Linkedin, link: "https://linkedin.com" },
-  { name: "Twitter", src: Twitter, link: "https://twitter.com" },
-];
 
 const links = [
   { name: "About us", href: "/about" },
@@ -105,7 +96,11 @@ const links = [
           > 
         </span>&nbsp
         <span class="text-right">
-          Original work by 
+          <a 
+            href="https://github.com/manulthanura/Positivus"
+            target="_blank"
+            class="underline">Original work</a
+          > by 
           <a 
             href="https://manulthanura.com"
             target="_blank"
