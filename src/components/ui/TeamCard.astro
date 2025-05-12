@@ -17,10 +17,10 @@ const { pic, name, birth_date, death_date, description, link } = Astro.props;
       </div>
       <a
         href={link}
-        class="w-8 h-8 absolute right-0 top-0 rounded-full bg-[#8d8d8d] transition-all duration-500 hover:pl-3"
+        class="absolute right-0 top-0 rounded-full bg-[#8d8d8d] transition-all duration-500 hover:pl-3"
         style="display: inline-flex; align-items: center;" 
       >
-        <Image src={linkd} alt="Linkedin Logo"/>
+        <Image src={linkd} alt="Linkedin Logo" class="w-8 h-8"/>
       </a>
     </div>
     <p class="text-sm font-normal my-4">{birth_date} ~ {death_date}</p>
