@@ -1,16 +1,19 @@
 ---
 const {links} = Astro.props;
 const hasLinks = Array.isArray(links) && links.length > 0;
+import Typed from '../Typed.jsx';
 ---
 <div class="container">
-  {hasLinks && (
+  {hasLinks ? (
     <>
       <svg id="force-graph"></svg>
       <div id="links-data" style="display: none;">
         {JSON.stringify(links)}
       </div>
     </>
-  )}
+  ): (
+    <Typed strings={["No Relationship available, please create one."]} client:load/>
+)}
   <script>
     import * as d3 from 'd3';
 
