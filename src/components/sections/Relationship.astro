@@ -51,11 +51,9 @@ const options = relationships.map(relationship => ({
     <ForceGraph links={relationships} />
   </div>
 </section>
-    <div class="flex flex-col sm:flex-row justify-center items-center text-center mb-20">
-        <div class="flex-1">
+<div class="w-full flex justify-center">
+    <div class="mem_button-container mb-20">
             <RelationshipForm client:load id={id} options={relationshipOptions}/>
-        </div>
-        <div class="flex-1">
             <RelationshipFormDelete client:load options={options} />
-        </div>
     </div>
+</div>

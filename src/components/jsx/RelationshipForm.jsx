@@ -19,7 +19,7 @@ export default function RelationshipForm({ id,options}) {
             }}
             client:load
             >
-            <button className="btn-primary">
+            <button className="left-button">
                     Create Relationship
                 </button>
         </ModalForm>
