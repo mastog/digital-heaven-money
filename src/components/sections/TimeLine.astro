@@ -29,7 +29,7 @@ const hasPics = Array.isArray(pics) && pics.length > 0;
 )}
 {modify &&
 <div class="w-full flex justify-center">
-  <div class="mem_button-container translate-x-[10px]">
+  <div class="mem_button-container">
     <TimeLineForm client:load id={id} />
     <TimeLineFormDelete client:load options={options} />
   </div>

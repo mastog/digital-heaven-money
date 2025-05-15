@@ -17,7 +17,7 @@ export default function TimeLineFormDelete({ options}) {
             }}
             client:load
             >
-            <button className="right-button">
+            <button className="right-button-t">
                 Delete Timeline
                 </button>
         </ModalForm>

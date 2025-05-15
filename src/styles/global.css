@@ -242,11 +242,63 @@
     background: black;
     color: white;
 }
-    .mem_button-container {
+
+.left-button-t {
+    background: white;
+    color: black;
+    border: 1px solid black;
+    border-right: 0.5px solid black;
+    border-radius: 999px 0 0 999px;
+    padding: 1rem 1.25rem 1rem 1.5rem;
+    text-align: right;
+    min-width: 100px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    text-decoration: none;
+    line-height: normal;
+    transform: translateX(10px);
+}
+
+.left-button-t:hover {
+    background: black;
+    color: white;
+}
+.right-button-t {
+    background: white;
+    color: black;
+    border: 1px solid black;
+    border-left: 0.5px solid black;
+    border-radius: 0 999px 999px 0;
+    padding: 1rem 1.5rem 1rem 1.25rem;
+    text-align: left;
+    min-width: 100px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    text-decoration: none;
+    line-height: normal;
+    font-family: inherit;
+    font-size: inherit;
+    margin: 0;
+    outline: none;
+    transform: translateX(10px);
+}
+
+.right-button-t:hover {
+    background: black;
+    color: white;
+}
+
+  .mem_button-container {
     display: inline-flex;
     border-radius: 999px;
-    overflow: hidden;
-    box-shadow: 0 0 0 1px black;
   }
 
   .mem_button-container button {
