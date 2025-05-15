@@ -182,7 +182,7 @@ const AdminTable = ({
                   return (
                     <td
                       key={fieldName}
-                      className={`border px-4 py-2 max-w-[400px] whitespace-normal break-words`}
+                      className={`border px-4 py-2 max-w-[400px] whitespace-normal break-words ${resource === 'Deceased' ? 'filter grayscale' : ''}`}
                     >
                       {renderCellValue(fieldName, item, onNavigateToResource)}
                     </td>
