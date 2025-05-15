@@ -1,0 +1,61 @@
+---
+const { leftHref, rightHref } = Astro.props;
+---
+
+<div class="button-container">
+  <a href={leftHref} class="left-button">
+    <slot name="left" />
+  </a>
+  <a href={rightHref} class="right-button">
+    <slot name="right" />
+  </a>
+</div>
+
+<style>
+  .button-container {
+    display: inline-flex;
+    border-radius: 999px;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px black;
+  }
+
+  .button-container a {
+    min-width: 100px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    text-decoration: none !important;
+    line-height: normal;
+  }
+
+  .left-button {
+    background: white;
+    color: black;
+    border-right: 0.5px solid black;
+    border-radius: 999px 0 0 999px;
+    padding: 0.75rem 1.25rem 0.75rem 1.5rem;
+    text-align: right;
+  }
+
+  .right-button {
+    background: white;
+    color: black;
+    border-left: 0.5px solid black;
+    border-radius: 0 999px 999px 0;
+    padding: 0.75rem 1.5rem 0.75rem 1.25rem;
+    text-align: left;
+  }
+
+  .left-button:hover {
+    background: black;
+    color: white;
+  }
+
+  .right-button:hover {
+    background: black;
+    color: white;
+  }
+</style>

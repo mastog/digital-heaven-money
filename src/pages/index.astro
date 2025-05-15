@@ -1,6 +1,7 @@
 ---
 import Cases from "../components/sections/Cases.astro";
 import Hero from "../components/sections/Hero.astro";
+import SplitPillButton from "../components/ui/SplitPillButton.astro";
 import MainLayout from "../layouts/MainLayout.astro";
 ---
 
@@ -11,5 +12,10 @@ import MainLayout from "../layouts/MainLayout.astro";
   <Hero />
 
   <Cases />
+
+  <SplitPillButton leftHref="/services" rightHref="/services">
+    <Fragment slot="left">Cancel</Fragment>
+    <Fragment slot="right">Confirm</Fragment>
+  </SplitPillButton>
 
 </MainLayout>
