@@ -67,9 +67,7 @@ export default function AiForm({ name, description,pic_url }) {
         }
         .hero__content {
           text-shadow: 
-            -1px -1px 0 #fff, 
             1px -1px 0 #fff, 
-            -1px 1px 0 #fff, 
             1px 1px 0 #fff;
         }
       `}</style>
