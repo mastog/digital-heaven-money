@@ -52,7 +52,7 @@ const links = [
               links.map((link) => {
                 return (
                   <li class="text-center">
-                    <a class="hover:underline" href={link.href}>
+                    <a class="py-1 underline-hover" href={link.href}>
                       {link.name}
                     </a>
                   </li>
@@ -60,7 +60,7 @@ const links = [
               })
             }
             <li class="text-center cursor-pointer">
-              <a class="hover:underline" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+              <a class="py-1 underline-hover" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
                 Back to top
               </a>
             </li>
@@ -162,6 +162,25 @@ const links = [
   </div>
 </section>
 <style>
+  .underline-hover {
+    position: relative;
+  }
+  .underline-hover::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s ease-in-out;
+  }
+  .underline-hover:hover::after {
+    transform: scaleX(1);
+  }
+
   .border-animation .animated-border {
     stroke-dasharray: 100;
     stroke-dashoffset: 100;
