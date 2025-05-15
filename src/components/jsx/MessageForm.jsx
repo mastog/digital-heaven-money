@@ -18,9 +18,10 @@ export default function MessageForm({ id}) {
             }}
             client:load
             >
-            <button className="btn-primary items-center mb-10">
-                Add Message
-                </button>
+          <button className="btn-primary flex items-center mb-10">
+              <img src="/images/message.svg" alt="Icon" className="btn-icon"/>
+              <span className="btn-text">Add Message</span>
+          </button>
         </ModalForm>
   );
 }
