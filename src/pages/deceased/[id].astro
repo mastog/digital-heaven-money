@@ -84,9 +84,10 @@ const items = await apiRequest(`/decreasedOfferings/${id}`, 'GET');
         <Section>
             {deceased[0].is_private &&<div class="flex flex-col sm:flex-row gap-3">
             <ModalKey id={id} client:load>
-                <button class="btn-primary items-center mb-5">
-                Invite Key
-                </button>
+                <button class="btn-primary flex items-center mb-5">
+                <img src="/images/key.svg" alt="Key Icon" class="btn-icon" />
+                <span class="btn-text">Invite Key</span>
+              </button>
             </ModalKey>
                 <PriTeamFormModify deceased={deceased[0]} client:load/>
                 <DeleteButton id={id} client:load />

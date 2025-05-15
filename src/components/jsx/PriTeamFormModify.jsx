@@ -22,9 +22,10 @@ export default function PriTeamFormModify({deceased}) {
             }}
             client:load
             >
-          <button className="btn-primary mb-5">
-                    Modify Decreased
-                </button>
+          <button className="btn-primary flex items-center mb-5">
+              <img src="/images/edit-2.svg" alt="Icon" className="btn-icon"/>
+              <span className="btn-text">Modify Decreased</span>
+          </button>
         </ModalForm>
   );
 }

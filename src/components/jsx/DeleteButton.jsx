@@ -11,8 +11,9 @@ export default function DeleteButton({ id }) {
   }
 
   return (
-    <button className="btn-primary mb-5" onClick={handleClick}>
-      Delete Deceased
-    </button>
+      <button className="btn-primary flex items-center mb-5" onClick={handleClick}>
+              <img src="/images/delete.svg" alt="Icon" className="btn-icon"/>
+              <span className="btn-text">Delete Deceased</span>
+          </button>
   );
 }

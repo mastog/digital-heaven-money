@@ -35,12 +35,12 @@ export default function AiForm({ name, description,pic_url }) {
       >
         <section className="w-full flex flex-col gap-8 mb-16 sm:mb-24 transition">
           <div
-            className="hero hero__bg w-full max-w-[700px] mx-auto aspect-[16/9] transform transition-transform duration-300 hover:scale-105"
+            className="hero hero__bg w-full max-w-[700px] mx-auto aspect-[16/9] transform transition-transform duration-300 hover:scale-105 will-change-transform"
             style={{
               '--bg-url': `url(${pic_url})`
             }}
           >
-            <div className="hero__content h-full max-w-[700px] mx-auto flex flex-col justify-center items-center text-center">
+            <div className="hero__content h-full max-w-[700px] mx-auto flex flex-col justify-center items-center text-center will-change-transform">
               <Typed strings={["Have a talk with your hero"]}/>
             </div>
           </div>
