@@ -121,12 +121,18 @@ document.addEventListener('DOMContentLoaded', () => {
       d3.select(this).select('image')
         .transition().duration(300)
         .style('opacity', 1)
+      d3.select(this).select('text')
+        .transition().duration(200)
+        .style('opacity', 1);
     })
     .on('mouseout', function() {
       d3.select(this).style('cursor', 'default'); // 鼠标离开恢复默认
       d3.select(this).select('image')
         .transition().duration(300)
         .style('opacity', 0.8)
+      d3.select(this).select('text')
+        .transition().duration(200)
+        .style('opacity', 0);
 
     })
 
@@ -149,13 +155,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 添加姓名标签
   node.append('text')
-    .text(d => d.name)
-    .attr('y', 60)
-    .attr('text-anchor', 'middle')
-    .attr('fill', '#333')
-    .attr('font-size', 16)
-    .attr('font-family', 'inherit')
-    .style('cursor', 'default');
+  .text(d => d.name)
+  .attr('y', 60)
+  .attr('text-anchor', 'middle')
+  .attr('fill', '#333')
+  .attr('font-size', 16)
+  .attr('font-family', 'inherit')
+  .style('cursor', 'default')
+  .style('opacity', 0);
 
   // 更新模拟器
   simulation.nodes(data.nodes).on('tick', ticked);
