@@ -98,41 +98,14 @@ const { items } = Astro.props;
     // 处理个位（半径20）
     if (len >= 1) {
       const onesDigit = parseInt(countStr[len - 1], 10);
-      for (let i = 0; i < onesDigit; i++) {
+      const tensDigit = len >= 2 ? parseInt(countStr[len - 2], 10) : 0
+      const digit=onesDigit+tensDigit*10;
+      for (let i = 0; i < digit; i++) {
         const radius = 20;
         boxes.push(
           Bodies.circle(
             Common.random(containerWidth / 2 - 30, containerWidth / 2 + 30),
-            Common.random(-400, 0),
-            radius,
-            {
-              render: {
-                sprite: {
-                  texture: processed.texture,
-                  xScale: (radius * 2) / processed.size,
-                  yScale: (radius * 2) / processed.size
-                }
-              },
-              restitution: 0.2,
-              customData: {
-                type: 'large',
-                image: item.image,
-              }
-            }
-          )
-        );
-      }
-    }
-
-    // 处理十位（半径30）
-    if (len >= 2) {
-      const tensDigit = parseInt(countStr[len - 2], 10);
-      for (let i = 0; i < tensDigit; i++) {
-        const radius = 30;
-        boxes.push(
-          Bodies.circle(
-            Common.random(containerWidth / 2 - 30, containerWidth / 2 + 30),
-            Common.random(-400, 0),
+            Common.random(-200, 0),
             radius,
             {
               render: {
@@ -156,12 +129,14 @@ const { items } = Astro.props;
     // 处理百位（半径40）
     if (len >= 3) {
       const hundredsDigit = parseInt(countStr[len - 3], 10);
-      for (let i = 0; i < hundredsDigit; i++) {
+      const thousandsDigit = len >= 4 ? parseInt(countStr[len - 4], 10) : 0; // 千位
+      const digit = hundredsDigit+thousandsDigit*10;
+      for (let i = 0; i < digit; i++) {
         const radius = 40;
         boxes.push(
           Bodies.circle(
             Common.random(containerWidth / 2 - 30, containerWidth / 2 + 30),
-            Common.random(-400, 0),
+            Common.random(-200, 0),
             radius,
             {
               render: {
@@ -183,14 +158,14 @@ const { items } = Astro.props;
     }
 
     // 处理更高位（半径50）
-    if (len > 3) {
-      const extraDigits = len - 3;
+    if (len > 4) {
+      const extraDigits = len - 4;
       for (let i = 0; i < extraDigits; i++) {
         const radius = 50;
         boxes.push(
           Bodies.circle(
             Common.random(containerWidth / 2 - 30, containerWidth / 2 + 30),
-            Common.random(-400, 0),
+            Common.random(-200, 0),
             radius,
             {
               render: {
