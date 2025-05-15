@@ -56,7 +56,7 @@ if (response && response.is_admin) {
             <div class="lg:hidden flex items-center justify-center mt-3 gap-4">
               <a 
                 id="mobile-login-btn"
-                class="mobile-nav-link px-9 py-5 rounded-2xl border border-zinc-900 bg-white hover:bg-black text-black hover:text-white inline-flex"
+                class="mobile-nav-link px-9 py-5 rounded-2xl border border-zinc-900 bg-white hover:bg-black text-black hover:text-white inline-flex transition-colors duration-300"
                 href="/login"
                 data-close-menu="true"
               >
@@ -64,7 +64,7 @@ if (response && response.is_admin) {
               </a>
               <a
                 id="mobile-logout-btn"
-                class="mobile-nav-link px-9 py-5 rounded-2xl border border-zinc-900 bg-white hover:bg-black text-black hover:text-white inline-flex hidden"
+                class="mobile-nav-link px-9 py-5 rounded-2xl border border-zinc-900 bg-white hover:bg-black text-black hover:text-white inline-flex hidden transition-colors duration-300"
                 href="#"
                 data-close-menu="true"
               >
@@ -77,10 +77,10 @@ if (response && response.is_admin) {
 
       <div>
         <div class="hidden lg:flex items-center gap-4">
-          <a id="desktop-login-btn" class="px-9 py-3 rounded-2xl border border-zinc-900 bg-white hover:bg-black text-black hover:text-white inline-flex" href="/login">
+          <a id="desktop-login-btn" class="px-9 py-3 rounded-2xl border border-zinc-900 bg-white hover:bg-black text-black hover:text-white inline-flex transition-colors duration-300" href="/login">
             <h2 class="text-center text-xl font-normal leading-7">Login</h2>
           </a>
-          <a id="desktop-logout-btn" class="px-9 py-3 rounded-2xl border border-zinc-900 bg-white hover:bg-black text-black hover:text-white inline-flex hidden" href="#">
+          <a id="desktop-logout-btn" class="px-9 py-3 rounded-2xl border border-zinc-900 bg-white hover:bg-black text-black hover:text-white inline-flex hidden transition-colors duration-300" href="#">
             <h2 class="text-center text-xl font-normal leading-7">Logout</h2>
           </a>
         </div>
@@ -227,7 +227,7 @@ if (response && response.is_admin) {
 
   @media (hover: hover) {
       a {
-          transition: transform 0.3s, scale 0.3s;
+          transition: transform 0.3s, scale 0.3s, background-color 0.3s, color 0.3s;
       }
       a .animated-border {
           transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1);
