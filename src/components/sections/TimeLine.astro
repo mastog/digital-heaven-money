@@ -29,10 +29,16 @@ const hasPics = Array.isArray(pics) && pics.length > 0;
 )}
 {modify &&
 <div class="w-full flex justify-center">
-<div class="mem_button-container">
-            <TimeLineForm client:load id={id} />
-            <TimeLineFormDelete client:load options={options} />
-    </div>
+  <div class="mem_button-container">
+    <div class="columns-wrapper">
+      <div class="column left">
+        <TimeLineForm client:load id={id} />
+      </div>
+      <div class="column right">
+        <TimeLineFormDelete client:load options={options} />
+      </div>
+    </div>  
+  </div>
 </div>}
 <div class="mb-20"></div>
 <script>
@@ -92,3 +98,26 @@ const hasPics = Array.isArray(pics) && pics.length > 0;
 
     });
 </script>
+<style>
+  .columns-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .column {
+    padding: 1rem;
+  }
+
+  .left {
+    flex: 0 1 50%;
+    text-align: right;
+    min-width: 30%;
+  }
+
+  .right {
+    flex: 0 1 50%;
+    text-align: left;
+    min-width: 30%;
+  }
+</style>

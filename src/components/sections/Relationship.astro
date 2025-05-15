@@ -53,7 +53,36 @@ const options = relationships.map(relationship => ({
 </section>
 <div class="w-full flex justify-center">
     <div class="mem_button-container mb-20">
+      <div class="columns-wrapper">
+        <div class="column left">
             <RelationshipForm client:load id={id} options={relationshipOptions}/>
+        </div>
+        <div class="column right">
             <RelationshipFormDelete client:load options={options} />
+        </div>
+      </div>
     </div>
 </div>
+<style>
+  .columns-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .column {
+    padding: 1rem;
+  }
+
+  .left {
+    flex: 0 1 50%;
+    text-align: right;
+    min-width: 30%;
+  }
+
+  .right {
+    flex: 0 1 50%;
+    text-align: left;
+    min-width: 30%;
+  }
+</style>
