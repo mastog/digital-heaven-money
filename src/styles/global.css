@@ -187,7 +187,7 @@
     border: 1px solid black;
     border-right: 0.5px solid black;
     border-radius: 999px 0 0 999px;
-    padding: 0.75rem 1.25rem 0.75rem 1.5rem;
+    padding: 1rem 1.25rem 1rem 1.5rem;
     text-align: right;
     min-width: 192px;
     font-weight: 500;
@@ -210,7 +210,7 @@
     border: 1px solid black;
     border-left: 0.5px solid black;
     border-radius: 0 999px 999px 0;
-    padding: 0.75rem 1.5rem 0.75rem 1.25rem;
+    padding: 1rem 1.5rem 1rem 1.25rem;
     text-align: left;
     min-width: 192px;
     font-weight: 500;
