@@ -54,7 +54,7 @@ document.head.appendChild(style);
 
 async function fetchItems(id) {
   try {
-    return await apiRequest(`/decreasedOfferings/${id}`, 'GET');
+    return await apiRequest(`/deceasedOfferings/${id}`, 'GET');
   } catch (error) {
     console.error('Error:', error);
     return null;

@@ -24,7 +24,7 @@ export default function PriTeamFormModify({deceased}) {
             >
           <button className="btn-primary flex items-center mb-5">
               <img src="/images/edit-2.svg" alt="Icon" className="btn-icon"/>
-              <span className="btn-text">Modify Decreased</span>
+              <span className="btn-text">Modify Deceased</span>
           </button>
         </ModalForm>
   );

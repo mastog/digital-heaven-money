@@ -41,7 +41,7 @@ const RESOURCES = {
       { name: 'title', label: 'Title', type: 'text', required: true },
       { name: 'photo_date', label: 'Time', type: 'month', required: true },
       { name: 'description', label: 'Description', type: 'textarea', required: true },
-      { name: 'deceased_id', type: 'select',label: 'Decreased', options: options, required: true },
+      { name: 'deceased_id', type: 'select',label: 'Deceased', options: options, required: true },
     ],
   },
   DeceasedUser: {
