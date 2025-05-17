@@ -91,6 +91,29 @@ const FormComponent = ({
     // Get birth_date and death_date values
     const birthDate = formData.get('birth_date');
     const deathDate = formData.get('death_date');
+    const photoDate = formData.get('photo_date');
+
+    const today = new Date();
+    today.setHours(23, 59, 59, 999);
+
+    if (birthDate && new Date(birthDate) > today) {
+      const { showNotification } = await import('../utils/notifications.js');
+      showNotification(['Birth date cannot be in the future. What do you think you\'re doing?!']);
+      return;
+    }
+
+    if (deathDate && new Date(deathDate) > today) {
+      const { showNotification } = await import('../utils/notifications.js');
+      showNotification(['Death date cannot be in the future. What do you think you\'re doing?!']);
+      return;
+    }
+
+    if (photoDate && new Date(photoDate) > today) {
+      const { showNotification } = await import('../utils/notifications.js');
+      showNotification(['Timeline date cannot be in the future. What do you think you\'re doing?!']);
+      return;
+    }
+
 
     // Check if birth_date is later than death_date
     if (birthDate && deathDate && new Date(birthDate) > new Date(deathDate)) {
