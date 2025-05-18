@@ -44,7 +44,7 @@ def register():
         return jsonify({'error': 'No data provided'}), 400
     user = dao_factory.get_dao("User").get(username=data.get('username'))
     if user:
-        return jsonify({'error': 'User already registered'}), 409
+        return jsonify({'error': 'User already registered'}), 400
     dao_factory.get_dao("User").create(**data)
     return jsonify({'message': 'Success'}), 201
 
@@ -406,7 +406,10 @@ def user_offerings():
 def offering():
     data = request.form.to_dict()
     current_user_id = current_user.id
-    offering_id=dao_factory.get_dao("Offering").get(name=data['name']).id
+    offering_item=dao_factory.get_dao("Offering").get(name=data['name'])
+    if not offering_item:
+        return jsonify({'error': 'What are u doing????'}), 400
+    offering_id=offering_item.id
     dao_factory.get_dao("DeceasedOffering").create(user_id=current_user_id,offering_id=offering_id,deceased_id=data['id'])
     return jsonify({'message': "Success"}), 201
 
