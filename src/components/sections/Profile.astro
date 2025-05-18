@@ -71,7 +71,7 @@ const emissionReduction = (totalCount * 146.5).toFixed(1);
                 <div class="font-semibold flex items-center">
                     <img src="/images/profile3.svg" alt="Gender Icon" class="w-5 h-5 mr-2"> Gender
                 </div>
-                <p class="editable" id="gender">{user.gender}</p>
+                <p class="editable" id="gender" >{user.gender}</p>
 
                 <div class="font-semibold flex items-center">
                     <img src="/images/profile4.svg" alt="Email Icon" class="w-5 h-5 mr-2"> Email
@@ -283,20 +283,27 @@ const emissionReduction = (totalCount * 146.5).toFixed(1);
             return re.test(email);
         }
 
-        toggleEdit.addEventListener('change', function (event) {
+        toggleEdit.addEventListener('change', async function (event) {
             const isEdit = this.checked;
 
             if (!isEdit) {
                 // 进入 Confirm 模式
                 let hasInvalid = false;
-                editables.forEach(element => {
+                for (const element of editables) {
                     const key = element.previousElementSibling?.innerText?.trim();
                     const value = element.innerText.trim();
                     if (key.toLowerCase().includes('email') && !validateEmail(value)) {
                         showNotification(['Invalid email format!']);
                         hasInvalid = true;
                     }
-                });
+                    const label = element.previousElementSibling?.innerText?.trim() || key;
+
+                    if ((key.toLowerCase().includes('gender') ||key.toLowerCase().includes('location')) && value.length > 50) {
+                        const {showNotification} = await import('../../utils/notifications.js');
+                        showNotification([`${label} cannot exceed 50 characters.`]);
+                        hasInvalid = true;
+                    }
+                }
 
                 if (hasInvalid) {
                     event.preventDefault();
@@ -316,13 +323,23 @@ const emissionReduction = (totalCount * 146.5).toFixed(1);
                 uploadOverlay.classList.add('opacity-0');
                 uploadOverlay.classList.remove('opacity-30');
                 uploadOverlay.removeEventListener('click', selectImage);
-                profileImageWrapper.classList.remove('hover:translate-y-1','transition-all' ,'duration-300');
+                profileImageWrapper.classList.remove('hover:translate-y-1', 'transition-all', 'duration-300');
 
             } else {
                 // 进入 Edit 模式
                 editables.forEach(element => {
                     element.contentEditable = true;
                     element.classList.add('editing-mode');
+
+                    element.addEventListener('input', async () => {
+                        const value = element.innerText.trim();
+                        const key = element.id;
+
+                        if ((key === 'gender' || key === 'location') && value.length >= 50) {
+                            const {showNotification} = await import('../../utils/notifications.js');
+                            showNotification([`${key.charAt(0).toUpperCase() + key.slice(1)} has reached the 50-character limit.`]);
+                        }
+                    });
                 });
 
                 // 允许头像点击
@@ -330,7 +347,7 @@ const emissionReduction = (totalCount * 146.5).toFixed(1);
                 uploadOverlay.classList.remove('opacity-0');
                 uploadOverlay.classList.add('opacity-30');
                 uploadOverlay.addEventListener('click', selectImage);
-                profileImageWrapper.classList.add('hover:translate-y-1','transition-all' ,'duration-300');
+                profileImageWrapper.classList.add('hover:translate-y-1', 'transition-all', 'duration-300');
             }
         });
 
@@ -355,15 +372,17 @@ const emissionReduction = (totalCount * 146.5).toFixed(1);
             };
         }
 
-        function submitProfileData() {
+        async function submitProfileData() {
             const data = new FormData();
 
             // 收集文本信息
-            editables.forEach(element => {
+            for (const element of editables) {
                 const key = element.id || 'about';
-                let value = element.innerText.trim();
+                const value = element.innerText.trim();
                 data.append(key, value);
-            });
+            }
+
+
 
             // 收集头像
             if (selectedImageFile) {
@@ -371,15 +390,15 @@ const emissionReduction = (totalCount * 146.5).toFixed(1);
             }
 
             apiRequest('/profile', 'PUT', data)
-            .then(result => {
-                console.log('Profile updated:', result);
-                showNotification(['Profile updated successfully!']);
-            })
-            .catch(error => {
-                console.error('Error updating profile:', error);
-                alert('Error updating profile: ' + error);
-            });
-            }
+                .then(result => {
+                    console.log('Profile updated:', result);
+                    showNotification(['Profile updated successfully!']);
+                })
+                .catch(error => {
+                    console.error('Error updating profile:', error);
+                    alert('Error updating profile: ' + error);
+                });
+        }
     </script>
 )}
 </Card>

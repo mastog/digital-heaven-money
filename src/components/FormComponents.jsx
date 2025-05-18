@@ -95,6 +95,15 @@ const FormComponent = ({
       showNotification([`${field.label} cannot only contain Spaces.`]);
       return;
     }
+
+    if ((field.type || 'text') === 'text') {
+      const value = formData.get(field.name) || '';
+      if (value.length > 50) {
+        const { showNotification } = await import('../utils/notifications.js');
+        showNotification([`${field.label} cannot exceed 50 characters.`]);
+        return;
+      }
+    }
   }
 
     const password = formData.get('password');
@@ -171,6 +180,13 @@ const FormComponent = ({
     } catch (error) {
     }
   };
+  const handleLengthCheck = async (e, field) => {
+      const value = e.target.value;
+      if (field.type === 'text' && value.length >= 50) {
+        const { showNotification } = await import('../utils/notifications.js');
+        showNotification([`${field.label} has reached the 50 character limit.`]);
+      }
+    };
 
   return (
     <form ref={formRef} onSubmit={handleSubmit} className={classConfig.form || ""}>
@@ -272,6 +288,8 @@ const FormComponent = ({
               required={field.required}
               defaultValue={field.value}
               className={`${classConfig.input || ""} hover:border-darkgray hover:ring-1 hover:ring-darkgray transition-all duration-150`}
+              {...(field.type === 'text' ? { maxLength: 50 } : {})}
+              onInput={(e) => handleLengthCheck(e, field)}
             />
           )}
         </div>

@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 
 export default function AiForm({ name, description,pic_url }) {
   const formFields = [
-    { name: 'text', label: 'Have a talk with your hero', type: 'text' ,required: true},
+    { name: 'text', label: 'Have a talk with your hero', type: 'textarea' ,required: true},
     { name: 'description', type: 'hidden', value: description },
     { name: 'name', type: 'hidden', value: name }
   ];
