@@ -14,7 +14,7 @@ from backend.models.DAOs import dao_factory
 # User Management
 from backend.services import aiService
 from backend.services.lunarCalendarService import get_lunarCalendar
-from backend.services.utils import allowed_file, picUpdate
+from backend.services.utils import allowed_file, picUpdate, validate_form_data
 from flask_login import login_user, logout_user, login_required, current_user
 
 # 用户加载器回调
@@ -42,6 +42,9 @@ def register():
     data = request.form.to_dict()
     if not data:
         return jsonify({'error': 'No data provided'}), 400
+    check = validate_form_data(data)
+    if not check.get('success'):
+        return jsonify({'error': check.get('error')}), 400
     user = dao_factory.get_dao("User").get(username=data.get('username'))
     if user:
         return jsonify({'error': 'User already registered'}), 400
@@ -56,6 +59,9 @@ def login():
     data = request.form.to_dict()
     if not data:
         return jsonify({'error': 'No data provided'}), 400
+    check = validate_form_data(data)
+    if not check.get('success'):
+        return jsonify({'error': check.get('error')}), 400
     user = dao_factory.get_dao("User").get(username=data.get('username'))
     if not user or not user.check_password(data.get('password')):
         return jsonify({'error': 'Invalid credentials'}), 400
@@ -86,6 +92,11 @@ def profile():
         return jsonify(user.to_dict()), 200
     elif request.method == 'PUT':
         data = request.form.to_dict()
+        if not data:
+            return jsonify({'error': 'No data provided'}), 400
+        check = validate_form_data(data)
+        if not check.get('success'):
+            return jsonify({'error': check.get('error')}), 400
         if 'pic' in request.files:
             filename = picUpdate(request)
             data['pic_url'] = filename
@@ -100,6 +111,11 @@ def data_management(resource, action):
         return jsonify({'error': 'Resource not found'}), 404
 
     data = request.form.to_dict()
+    if not data:
+        return jsonify({'error': 'No data provided'}), 400
+    check = validate_form_data(data)
+    if not check.get('success'):
+        return jsonify({'error': check.get('error')}), 400
     if 'pic' in request.files:
         filename = picUpdate(request)
         data['pic_url'] = filename
@@ -181,6 +197,9 @@ def ai_request():
     data = request.form.to_dict()
     if not data:
         return jsonify({'error': 'No data provided'}), 400
+    check = validate_form_data(data)
+    if not check.get('success'):
+        return jsonify({'error': check.get('error')}), 400
     response = aiService.communicate(data.get('name'), data.get('description'), data.get('text'))
     return jsonify({'response': response}), 201
 
@@ -320,6 +339,11 @@ def memorial_message(id):
 def create_memorial():
     current_user_id = current_user.id
     data = request.form.to_dict()
+    if not data:
+        return jsonify({'error': 'No data provided'}), 400
+    check = validate_form_data(data)
+    if not check.get('success'):
+        return jsonify({'error': check.get('error')}), 400
     if 'pic' in request.files:
         filename = picUpdate(request)
         data['pic_url'] = filename
@@ -405,6 +429,11 @@ def user_offerings():
 @login_required
 def offering():
     data = request.form.to_dict()
+    if not data:
+        return jsonify({'error': 'No data provided'}), 400
+    check = validate_form_data(data)
+    if not check.get('success'):
+        return jsonify({'error': check.get('error')}), 400
     current_user_id = current_user.id
     offering_item=dao_factory.get_dao("Offering").get(name=data['name'])
     if not offering_item:
@@ -417,6 +446,11 @@ def offering():
 @login_required
 def create_message():
     data = request.form.to_dict()
+    if not data:
+        return jsonify({'error': 'No data provided'}), 400
+    check = validate_form_data(data)
+    if not check.get('success'):
+        return jsonify({'error': check.get('error')}), 400
     current_user_id = current_user.id
     data['user_id']=current_user_id
     dao_factory.get_dao("DeceasedMessage").create(**data)
