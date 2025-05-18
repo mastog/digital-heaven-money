@@ -16,6 +16,15 @@ export default defineConfig({
     port: 4321,         // 这里设置
     allowedHosts: ['csi6220-1-vm4.ucd.ie']
   },
+  build: {
+    sourcemap: false,
+    minify: true
+  },
+  vite: {
+    server: {
+      hmr: false,
+    }
+  },
   prefetch: true,
   devToolbar: {
     enabled: false // 完全禁用工具栏
