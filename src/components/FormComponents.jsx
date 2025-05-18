@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { apiRequest } from '../utils/api';
 
 const FormComponent = ({
@@ -15,6 +15,23 @@ const FormComponent = ({
 }) => {
   const formRef = useRef(null);
   const [imagePreview, setImagePreview] = useState(null); // State for image preview
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      alert("Don't do that please.")
+      window.location.reload();
+    });
+
+    const hiddenInputs = formRef.current?.querySelectorAll('input[type="hidden"]') || [];
+
+    hiddenInputs.forEach(input => {
+      observer.observe(input, {
+        attributes: true,
+        attributeFilter: ['value']
+      });
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
