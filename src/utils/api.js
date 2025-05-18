@@ -16,7 +16,7 @@ export const apiRequest = async (
 
   const baseUrl = isServer
     ? import.meta.env.API_BASE_URL // 服务端使用
-    : import.meta.env.PUBLIC_API_BASE_URL; // 客户端使用
+    : import.meta.env.API_SERVER_URL; // 客户端使用
 
   const url = baseUrl + endpoint;
 
