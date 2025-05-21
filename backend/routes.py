@@ -111,8 +111,6 @@ def data_management(resource, action):
         return jsonify({'error': 'Resource not found'}), 404
 
     data = request.form.to_dict()
-    if not data:
-        return jsonify({'error': 'No data provided'}), 400
     check = validate_form_data(data)
     if not check.get('success'):
         return jsonify({'error': check.get('error')}), 400
