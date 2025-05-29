@@ -19,7 +19,11 @@ export default function DocumentList() {
       body: JSON.stringify({ file }),
       headers: { 'Content-Type': 'application/json' },
     });
-    if (res.ok) fetchFiles();
+    if (res.ok) {
+      const {showNotification} = await import('../utils/notifications.js');
+      showNotification(['Document deleted successfully']);
+      fetchFiles();
+    }
   };
 
   return (
