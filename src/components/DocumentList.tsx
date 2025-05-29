@@ -38,7 +38,7 @@ export default function DocumentList() {
                 {file}
               </a>
               <button
-                onClick={() => deleteFile(file)}
+                onClick={() => deleteFile(file+".md")}
                 className="text-red-600 hover:underline"
               >
                 Delete

@@ -32,7 +32,7 @@ export default function DocumentForm() {
     if (res.ok) {
       const {showNotification} = await import('../utils/notifications.js');
       showNotification(['Document created successfully']);
-      setForm(prev => ({ ...prev, title: '', content: '', slug: '' })); // Reset common fields
+      window.location.reload();
     } else {
       const {showNotification} = await import('../utils/notifications.js');
       showNotification(['Creation failed']);
