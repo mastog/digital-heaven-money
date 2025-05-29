@@ -32,6 +32,7 @@ export default function DocumentForm() {
     if (res.ok) {
       const {showNotification} = await import('../utils/notifications.js');
       showNotification(['Document created successfully']);
+      await new Promise(resolve => setTimeout(resolve, 1000));
       window.location.reload();
     } else {
       const {showNotification} = await import('../utils/notifications.js');
